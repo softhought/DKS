@@ -1,0 +1,103 @@
+.form_error{
+	border: 1px solid red;
+}
+ .select2-selection {
+
+  min-height: 30px;
+ 
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 21px !important;
+}
+.card-primary:not(.card-outline) .card-header {
+    background-color: 
+    #394077;
+}
+
+fieldset {
+
+    border: 0;
+}
+/*
+.select2-selection__rendered {
+  margin: 10px;
+}
+
+.select2-selection__arrow {
+  margin: 10px;
+}*/
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    margin-left: -5px;
+}
+
+ .datepicker-days{
+    font-size: 12px;
+  }
+
+
+  
+/*added by anil on 26-12-2019*/
+
+.btnpos{
+    padding: 3px 11px;
+    position: absolute;
+    margin-top: -5px;
+    right: 5px;
+}
+.colmargin{
+    margin-top: -14px;
+}
+.errormsgcolor{
+    color: red;
+    font-size: 20px;
+}
+.succmsg{
+     color: #e80f89;
+    font-size: 20px;
+}
+.hrfbtn{
+    font-size: 14px;
+    padding: 2px 12px;
+}
+.padbtn{
+    padding: 1px 15px;
+}
+.actibtn{
+    padding: 1px 17px;
+}
+.inactbtn{
+    padding: 1px 10px;
+}
+
+.tablepad th,td{
+
+    padding: 0.3rem !important;
+}
+.labelcol{
+    color:#a25e5e;
+}
+.inputcaptil{
+    text-transform: uppercase;
+}
+
+.inputWrapper {
+    height: 32px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    /*Using a background color, but you can use a background image to represent a button*/
+    
+}
+.legendstl{
+
+    width: unset;
+    margin-left: 14px;
+    font-size: 1.1rem !important;
+}
+
+.perrmsg{
+    color:red;
+    margin-top: -16px;
+}
+
+
