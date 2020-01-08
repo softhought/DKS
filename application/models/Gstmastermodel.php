@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Gstmastermodel extends CI_Model{
+class Intratournamentmodel extends CI_Model{
 
 	public function getallgstmasterdtl()
   {
