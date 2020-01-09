@@ -61,6 +61,34 @@ public function getAlltennisopeningmonthlist($billstyle,$month_id)
          }
 	}
 
+public function getAllTennisRecords()
+	{
+		$data = array();
+
+       
+		$query = $this->db->select("admission_register.bill_style,admission_register.student_code as studcode,admission_register.title_one,admission_register.student_name,tennis_student_opening.*,month_master.short_name,quarter_month_master.quarter")
+				->from('admission_register')
+				->join('tennis_student_opening','tennis_student_opening.student_id = admission_register.admission_id','INNER')
+				->join('month_master','tennis_student_opening.month_id = month_master.id','LEFT')
+				->join('quarter_month_master','tennis_student_opening.quarter_id = quarter_month_master.id','LEFT')
+				->where('admission_register.status <> ','RESIGNED')
+				->order_by('tennis_student_opening.opening_id','desc')
+		        ->get();
+		  #echo $this->db->last_query();exit;      
+		if($query->num_rows()> 0)
+		{
+            foreach ($query->result() as $rows)
+			{
+				$data[] = $rows;
+            }
+            return $data;
+             
+        }
+		else
+		{
+             return $data;
+         }
+	}
 
 
 }

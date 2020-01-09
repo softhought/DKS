@@ -159,6 +159,35 @@ public function tennisopeningbalance_action(){
 
   }
 
+
+public function tennisopeningbalist(){
+
+    $session = $this->session->userdata('user_detail');
+    if($this->session->userdata('user_detail'))
+    { 
+
+      $page = "dashboard/tennis-opening/tennis_opening_list";
+       
+        $header=""; 
+        
+        $result['Alltennisopeninglist'] = $this->tennisopeningbalmodel->getAllTennisRecords(); 
+
+        //pre($result['Alltennisopeninglist']);exit;
+
+       createbody_method($result, $page, $header, $session);
+
+        
+    }else{
+         redirect('login','refresh');
+    } 
+
+ }   
+
+
+
+
+
+
   function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
 
   $session = $this->session->userdata('user_detail');

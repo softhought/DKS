@@ -15,6 +15,8 @@
         <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">Student Tennis Opening</h3>
+               <a href="<?php echo base_url(); ?>tennisopening/tennisopeningbalist" class="">
+              <button class="btn btn-info btnpos">List</button></a>
                            
             </div><!-- /.card-header -->
 

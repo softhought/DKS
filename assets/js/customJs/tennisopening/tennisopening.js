@@ -7,6 +7,47 @@ $('.numberwithdecimal').bind('keyup paste', function(){
 
   });
 
+$('#studtennisopening').DataTable({
+         
+        
+          
+          "orderCellsTop": true ,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search..."
+        },
+        'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1,-2] /* 1st one, start by the right */
+            }],
+        initComplete: function () {
+            this.api().columns([1,4]).every( function () {
+                var column = this;
+                var select = $('<select class="form_input_text select2"><option value="">Show all</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+
+
+
+    } );
+
+ $('#studtennisopening tfoot tr').insertAfter($('#studtennisopening thead tr'))
+
+
 
 
  $(document).on('change','.showblllsty',function(){
