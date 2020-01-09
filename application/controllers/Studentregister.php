@@ -64,7 +64,7 @@ public function index()
         $result['studentplaygroup'] = $this->commondatamodel->getAllDropdownData('student_play_group');
         // pre($result['studentplaygroup']);exit;
 
-        $result['titleofneme'] = array('MR.','MS.','MRS.'); 
+        $result['titleofneme'] = array('MR','MR.','MS','MS.'); 
         $result['studentstatus'] = array('ACTIVE STUDENT','RESIGNED','TEMPORARY TERMINATED'); 
         $result['specialcoching'] = array('Y','N',); 
         $result['billtype'] = array('M'=>'MONTHLY','Q'=>'QUARTERLY');
@@ -141,7 +141,9 @@ public function index()
 
        if(trim(htmlspecialchars($this->input->post('studdob'))) != ''){
 
-        $studdob = date('Y-m-d',strtotime(trim(htmlspecialchars($this->input->post('studdob')))));
+         $dob = str_replace('/', '-', trim(htmlspecialchars($this->input->post('studdob'))));
+
+        $studdob = date('Y-m-d',strtotime($dob));
        }else{
 
         $studdob=NULL;
@@ -160,7 +162,9 @@ public function index()
        $email = trim(htmlspecialchars($this->input->post('email')));
 
        if(trim(htmlspecialchars($this->input->post('admission_dt'))) != ''){
-        $admission_dt =  date('Y-m-d',strtotime(trim(htmlspecialchars($this->input->post('admission_dt')))));
+
+        $admidt = str_replace('/', '-', trim(htmlspecialchars($this->input->post('admission_dt'))));
+        $admission_dt =  date('Y-m-d',strtotime($admidt));
     }else{
         $admission_dt = NULL;
     }
@@ -170,7 +174,9 @@ public function index()
        $category = trim(htmlspecialchars($this->input->post('category')));
 
        if(trim(htmlspecialchars($this->input->post('exit_dt'))) != ''){
-        $exit_dt = date('Y-m-d',strtotime(trim(htmlspecialchars($this->input->post('exit_dt')))));
+
+         $exitdt = str_replace('/', '-', trim(htmlspecialchars($this->input->post('exit_dt'))));
+        $exit_dt = date('Y-m-d',strtotime($exitdt));
        }else{
         $exit_dt = NULL;
        }
@@ -218,7 +224,7 @@ public function index()
               $method='registration_action'; 
               $master_id =$admissionId;
               $tablename = 'admission_register';
-              $description = $studtitle.$studname.' '.'date of birth-'.$studdob.' '.'has father name-'.$father_title.$fathername.' '.'landlin No.\mobileno-'.$landline_no.'/'.$mobile_no.' '.'address-'.$address_one.$address_two.$address_three.' '.'city-'.$city.' '.'pin-'.$pincode.' '.'admission_dt-'.$admission_dt.' '.'discharge_dt'.$exit_dt.' '.'monthly subscription-'.$monthly_sub.' '.'Billing Style-'.$bill_style.' '.'modify date-'.date('Y-m-d');
+              $description = $studtitle.$studname.' '.'date of birth-'.$dob.' '.'has father name-'.$father_title.$fathername.' '.'landlin No.\mobileno-'.$landline_no.'/'.$mobile_no.' '.'address-'.$address_one.$address_two.$address_three.' '.'city-'.$city.' '.'pin-'.$pincode.' '.'admission_dt-'.$admidt.' '.'discharge_dt-'.$exitdt.' '.'monthly subscription-'.$monthly_sub.' '.'Billing Style-'.$bill_style.' '.'modify date-'.date('Y-m-d');
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
              

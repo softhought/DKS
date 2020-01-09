@@ -12,7 +12,18 @@ var basepath = $("#basepath").val();
 
   });
 
+$("#bill_style").change(function(){
 
+ var value = $(this).val();
+
+  if(value == 'M'){
+
+    $("#billstytext").text('Monthly');
+  }else{
+     $("#billstytext").text('Quarterly');
+  }
+ 
+});
 
 //form submit
 
@@ -124,10 +135,11 @@ function validateform(){
 	var city = $('#city').val();
 	var pincode = $('#pincode').val();
 	var admission_dt = $('#admission_dt').val();
+    var status = $('#status').val();
 	var category = $('#category').val();
 	var bill_style = $('#bill_style').val();
 
-	$("#studnameerr,#fathernameerr,#mobilenoerr,#citynameerr,#pincodeerr,#admissiondterr,#cateerr,#billstyleerr").text('').removeClass('perrmsg');
+	$("#studnameerr,#fathernameerr,#mobilenoerr,#citynameerr,#pincodeerr,#admissiondterr,#statuserr,#cateerr,#billstyleerr").text('').removeClass('perrmsg');
 
 	if(studtitle == ''){
 
@@ -183,6 +195,13 @@ function validateform(){
      return false;		
 
 	}
+    else if(status == ''){
+
+     $("#statuserr").text('Select Status').addClass('perrmsg');
+      $("#status").focus();
+     return false;      
+
+    }
 	else if(category == ''){
 
      $("#cateerr").text('Select Category').addClass('perrmsg');

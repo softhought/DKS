@@ -425,12 +425,12 @@ class Paymenttennismodel extends CI_Model{
                           
       }
           $digit = (int)(log($lastnumber,10)+1) ;  
-        if($digit==3){
-            $autoSaleNo = $tag."/".$lastnumber;
-        }elseif($digit==2){
+        if($digit==2){
             $autoSaleNo = $tag."/0".$lastnumber;
         }elseif($digit==1){
             $autoSaleNo = $tag."/00".$lastnumber;
+        }else{
+           $autoSaleNo = $tag."/".$lastnumber;
         }
         $lastnumber = $lastnumber + 1;
         

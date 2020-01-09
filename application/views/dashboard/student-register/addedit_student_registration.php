@@ -342,6 +342,7 @@ legend.scheduler-border {
                   </select>
                           </div>
                     </div>
+                     <p id="statuserr" class="perrmsg"></p>
                   </div>
                       
                   </div>
@@ -354,7 +355,7 @@ legend.scheduler-border {
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="exit_dt" id="exit_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->admission_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->admission_dt)); } ?>">
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="exit_dt" id="exit_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->discharge_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->discharge_dt)); } ?>">
                           </div>
                     </div>
                   </div>
@@ -365,8 +366,9 @@ legend.scheduler-border {
                 
 
           <fieldset class="scheduler-border"> <legend class="scheduler-border">Coaching Details</legend>
-       
-              <div class="row">
+            
+              <div class="row" style="margin-left: 3.5px;">
+
                <div class="col-md-4">
                           <div class="form-group ">
                             <label for="playgroup">Playing Group Name</label>
@@ -428,19 +430,6 @@ legend.scheduler-border {
 
                           </div>
                </div> -->
-               <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="openingbal">Monthly Subscription</label>
-                            <div class="input-group input-group-sm">
-
-                               <input type="text" class="form-control numberwithdecimal" name="monthly_sub" id="monthly_sub" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->email; } ?>">
-                              
-                            </div>
-
-                          </div>
-                               
-              </div>
-
                <div class="col-md-2">
                           <div class="form-group">
                             <label for="specialcoching">Billing Style</label>
@@ -465,6 +454,30 @@ legend.scheduler-border {
                           </div>
                           <p id="billstyleerr" class="perrmsg"></p>
                </div>
+               <div class="col-md-3" style="max-width: 24% !important;">
+                          <div class="form-group">
+                            <label for="openingbal">
+                              <span id="billstytext">
+                              <?php if($bodycontent['mode'] == 'EDIT'){
+                                 if($bodycontent['studentregisterEditdata']->bill_style == 'M'){
+                                  echo 'Monthly';
+                                 }else if($bodycontent['studentregisterEditdata']->bill_style == 'Q'){
+                                   echo 'Quarterly';
+                                 }else{
+                                   echo 'Monthly';
+                                 }
+                              }  ?> </span> Subscription</label>
+                            <div class="input-group input-group-sm">
+
+                               <input type="text" class="form-control numberwithdecimal" name="monthly_sub" id="monthly_sub" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->monthly_subscription; } ?>">
+                              
+                            </div>
+
+                          </div>
+                               
+              </div>
+
+               
                                 
               </div>
              
