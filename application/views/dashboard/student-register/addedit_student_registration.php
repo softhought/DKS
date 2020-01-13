@@ -2,7 +2,7 @@
 
 <style>
 
-.card-body .modal-body{
+/* .card-body .modal-body{
     #color: #44423d;
 
    
@@ -33,338 +33,339 @@ legend.scheduler-border {
  .maxwidth{
   max-width: 10.33%;
   margin-left: -16px;
- }    
+ }     */
 </style>
 
-
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">Student Registration</h3>
-              <a href="<?php echo base_url(); ?>studentregister" class="">
-              <button class="btn btn-info btnpos">List</button></a>
+              <!-- <a href="<?php echo base_url(); ?>studentregister" class="">
+              <button class="btn btn-info btnpos">List</button></a> -->
+
+              <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+               
+                <a href="<?php echo base_url(); ?>studentregister" class="btn btn-default"><i class="fas fa-clipboard-list"></i> List</a>
+                
+               
+              </div>
                            
             </div><!-- /.card-header -->
                             
                   <div class="card-body">
 
-  <form id="stdentregisterForm" name="stdentregisterForm" enctype="multipart/form-data">
+                    <form id="stdentregisterForm" name="stdentregisterForm" enctype="multipart/form-data">
 
-  <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
+                    <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
 
-  <input type="hidden" name="admissionId" id="admissionId" value="<?php echo $bodycontent['admissionId']; ?>">   
+                    <input type="hidden" name="admissionId" id="admissionId" value="<?php echo $bodycontent['admissionId']; ?>">   
 
-  <div class="row">
-          <div class="col-sm-9">      
+                    <!-- Student Personal Info -->
+                    <div class="formblock-box">
+                      <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i>Personal Info</h3>
 
-                  <div class="row">
-                     
-                    <label for="studentcode" class="col-sm-4">Student Code</label>
+                          <div class="row">
+                            <div class="col-md-8 infosection">
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="studentcode">Student Code</label>
+                                          <div class="form-group">
+                                            <div class="input-group input-group-sm">
+                                              <input type="text" class="form-control" name="studcode" id="studcode" placeholder="" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->student_code; } ?>" readonly>
+                                            </div>
+                                          </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <label for="studname" >Name</label>
+                                      <div class="form-group">
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control select2" id="studtitle" name="studtitle" style="width: 18%;">
+                                                <option value=''>&nbsp; </option>
+                                                <?php foreach ($bodycontent['titleofneme'] as $value) { ?>
+                                                <option value="<?php echo $value; ?>"
+                                                  <?php if($bodycontent['mode'] == 'EDIT' && $value == $bodycontent['studentregisterEditdata']->title_one){ ?> selected <?php  } ?>><?php echo $value; ?>
+                                                </option>
+                                                <?php   } ?>
+                                            </select>
+                                            <input type="text" class="form-control" name="studname" id="studname" placeholder="" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->student_name; } ?>">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                  </div>
 
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <div class="input-group input-group-sm">
+                                  <div class="row error-row-block">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-8">
+                                      <p id="studnameerr"></p>
+                                    </div>
+                                  </div>
 
-                            <input type="text" class="form-control" name="studcode" id="studcode" placeholder="" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->student_code; } ?>" readonly>
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                      <label for="studdob" >DOB</label>
+                                      <div class="form-group">
+                                          <div class="input-group input-group-sm">
+                                                <div class="input-group-prepend">
+                                                  <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="studdob" id="studdob" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->student_dob != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->student_dob)); } ?>" />
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label for="father_title" >Father's /Mother's Name</label>
+                                        <div class="form-group">
+                                          <div class="input-group input-group-sm">
+                                              <select class="form-control select2" id="father_title" name="father_title" style="width: 18%;">
+                                                <option value=''>&nbsp; </option>
+                                                <?php foreach ($bodycontent['titleofneme'] as $titleofneme) { ?>
+                                                <option value="<?php echo $titleofneme; ?>"
+                                                  <?php if($bodycontent['mode'] == 'EDIT' && $titleofneme == $bodycontent['studentregisterEditdata']->title_two){ echo 'selected'; } ?>>
+                                                    <?php echo $titleofneme; ?>
+                                                </option>
+                                                <?php   } ?>
+                                              </select>
+                                              <input type="text" class="form-control"  name="fathername" id="fathername"  value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->guardian_name; } ?>">
+                                          </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="row error-row-block">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-8">
+                                      <p id="fathernameerr"></p>
+                                    </div>
+                                  </div>
 
-                        </div>
-              </div>
-                    </div>
-                  </div>
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="landline_no" >Mobile No 1</label>
+                                        <div class="form-group">
+                                          <div class="input-group input-group-sm">
+                                              <input type="text" class="form-control onlynumber" name="landline_no" id="landline_no" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->phone_one; } ?>">
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label for="landline_no" >Mobile No 2</label>
+                                        <div class="form-group">
+                                            <div class="input-group input-group-sm">
+                                              <input type="text" class="form-control onlynumber"  name="mobile_no" id="mobile_no" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->phone_two; } ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="landline_no" >Email</label>
+                                        <div class="form-group">
+                                              <div class="input-group input-group-sm">
+                                              <input type="email" class="form-control" name="email" id="email" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->email; } ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
 
-         
+                                  <div class="row error-row-block">
+                                    <div class="col-md-12"><p id="mobilenoerr"></p></div>
+                                  </div>
+
+                            </div><!-- end of info section -->
+                            <div class="col-md-4 uploadProfile">
+                                <label for="profilepic"></label>
+                                <div class="form-group profile-block">
+                                  <img src='<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->image_name != ''){ ?> <?php echo base_url(); ?>assets/img/student-images/<?php echo $bodycontent["studentregisterEditdata"]->image_name; } ?>' id="showimage" style="width: 120px;height:125px;border: 1px solid #6d78cb;margin-bottom:13px; ">
+                                  <div class="inputWrapper">
+                                    <label class="btn  btn-default btn-flat">Upload Photo 
+                                      <input class="fileInput "  type='file' custom-file-input name='imagefile' id="imagefile" size='20' onchange="readURL(this);" style="display: none;" accept="image/*">
+                                    </label>
+                                    <input type='hidden' name='isImage' id="isImage" value="N">
+                                  </div>
+                                </div>
+                            </div> <!-- end of uploadProfile section -->
+                          </div> <!-- end of infosection & uploadProfile section -->
 
 
-             <div class="row">
-
-                    <label for="studentcode" class="col-sm-3">Name</label>
-                    <div class="col-sm-1 maxwidth">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-
-                       <select class="form-control select2" id="studtitle" name="studtitle" style="width: 100%;">
-                    <option value=''>&nbsp; </option>
-                    <?php foreach ($bodycontent['titleofneme'] as $value) { ?>
-
-                      <option value="<?php echo $value; ?>"
-
-                       <?php if($bodycontent['mode'] == 'EDIT' && $value == $bodycontent['studentregisterEditdata']->title_one){ ?> selected <?php  } ?>
-
-                        ><?php echo $value; ?></option>
-                     
-                  <?php   } ?>
-                   
-                  </select>
-                </div>
-                </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
                           
-                             <input type="text" class="form-control" name="studname" id="studname" placeholder="" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->student_name; } ?>">
 
 
+
+
+
+                                        <!-- <div class="row">
+                            
+                                  <div class="col-sm-3">
+                                      <div class="form-group">
+
+
+
+                                      <img src='<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->image_name != ''){ ?> <?php echo base_url(); ?>assets/img/student-images/<?php echo $bodycontent["studentregisterEditdata"]->image_name; } ?>' id="showimage" style="width: 120px;height:125px;border: 2px solid #6d78cb;margin-left:40px;margin-bottom:13px; ">
+
+                                    <div class="inputWrapper" style="width:140px;margin-left: 40px;">
+
+                                      <label class="btn  btn-default btn-flat">Upload Photo 
+                                                              
+                                        <input class="fileInput "  type='file' custom-file-input name='imagefile' id="imagefile" size='20' onchange="readURL(this);" style="display: none;" accept="image/*">
+                                      </label>
+
+                                      <input type='hidden' name='isImage' id="isImage" value="N">
+
+                                        </div>
+                                      </div>
+                                    
+                                  </div>   
+                        </div>  -->
+                    </div>
+                    <!-- End of Student Personal Info -->
+
+
+
+                    
+
+                    <!------------ Address Info ----->
+                    <div class="formblock-box">
+                      <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i>Address Info</h3>
+
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="address_one">Address 1</label>
+                          <div class="form-group">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control "  name="address_one" id="address_one" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_one; } ?>" />
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="address_one">Address 2</label>
+                          <div class="form-group">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control "  name="address_two" id="address_two" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_two; } ?>" />
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="address_two">Address 3</label>
+                          <div class="form-group">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control "  name="address_two" id="address_two" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_two; } ?>" />
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    
+                      <div class="row">
+                        <div class="col-md-4">
+                            <label for="city">City</label>
+                            <div class="form-group">
+                                <div class="input-group input-group-sm">
+                                  <input type="text" class="form-control" name="city" id="city" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->city; } ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="pincode">Pincode</label>
+                          <div class="form-group">
+                            <div class="input-group input-group-sm">
+                              <input type="text" class="form-control onlynumber"  name="pincode" id="pincode" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->pin; } ?>" maxlength='6'>
+                            </div>
+                          </div>                       
+                        </div>
                        
-                     </div>
-                   </div>
-
-                   <p id="studnameerr"></p>
-                      
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <label for="studdob" class="col-sm-4">Date Of Birth</label>
-                    <div class="col-sm-6">
-                       <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                            </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="studdob" id="studdob" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->student_dob != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->student_dob)); } ?>">
-                          </div>
-                    </div>
-                   </div>
-                  </div>
-
-
-                  <div class="row">
-                    <label for="studfathername" class="col-sm-3">Father's /Mother's Name</label>
-                    <div class="col-sm-1 maxwidth">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-
-                       <select class="form-control select2" id="father_title" name="father_title" style="width: 100%;">
-                    <option value=''>&nbsp; </option>
-                    <?php foreach ($bodycontent['titleofneme'] as $titleofneme) { ?>
-
-                      <option value="<?php echo $titleofneme; ?>"
-
-                      <?php if($bodycontent['mode'] == 'EDIT' && $titleofneme == $bodycontent['studentregisterEditdata']->title_two){ echo 'selected'; } ?>
-
-                        ><?php echo $titleofneme; ?></option>
-                     
-                  <?php   } ?>
-                   
-                  </select>
-                </div>
-                </div>
-                    </div>
-                    <div class="col-sm-6">
-                       <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                            <input type="text" class="form-control"  name="fathername" id="fathername"  value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->guardian_name; } ?>">
-                          </div>
-                        </div>
-                         <p id="fathernameerr"></p>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <label for="studdob" class="col-sm-4">Land/Mobile No</label>
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                            <input type="text" class="form-control onlynumber" name="landline_no" id="landline_no" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->phone_one; } ?>">
-                          </div>
-                        </div>
-                    </div>
-                      <div class="col-sm-3">
-                        <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                            <input type="text" class="form-control onlynumber"  name="mobile_no" id="mobile_no" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->phone_two; } ?>">
-                          </div>
-                        </div>
-                         <p id="mobilenoerr"></p>
-                    </div>
-                  </div>
-
-                  </div>
-                 <div class="col-sm-3">
-                    <div class="form-group">
-
-
-
-                    <img src='<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->image_name != ''){ ?> <?php echo base_url(); ?>assets/img/student-images/<?php echo $bodycontent["studentregisterEditdata"]->image_name; } ?>' id="showimage" style="width: 120px;height:125px;border: 2px solid #6d78cb;margin-left:40px;margin-bottom:13px; ">
-
-                  <div class="inputWrapper" style="width:140px;margin-left: 40px;">
-
-                    <label class="btn  btn-default btn-flat">Upload Photo 
-                                             
-                      <input class="fileInput "  type='file' custom-file-input name='imagefile' id="imagefile" size='20' onchange="readURL(this);" style="display: none;" accept="image/*">
-                     </label>
-
-                    <input type='hidden' name='isImage' id="isImage" value="N">
-
                       </div>
-                    </div>
-                   
-                 </div>   
-       </div> 
+
+                      <div class="row error-row-block">
+                        <div class="col-md-12"><p id="pincodeerr"></p></div>
+                      </div>
+                  </div>
+
+                    <!------------ End of Address Info ----->
+
+
                  
-                    
-                    <div class="row">
-                       <label for="studsddress" class="col-sm-3">Address</label>
-                      <div class="col-sm-4">
-                       <div class="form-group">
-                       <div class="input-group input-group-sm">
+                <!--  Other Info ------------------->
 
-                        <input type="text" class="form-control "  name="address_one" id="address_one" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_one; } ?>">
-                      </div>
-                    </div>
-                  </div>
-                   <div class="col-sm-4">
-                       <div class="form-group">
-                       <div class="input-group input-group-sm">
+                <div class="formblock-box">
+                      <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i>Other Info</h3>
 
-                        <input type="text" class="form-control "  name="address_two" id="address_two" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_two; } ?>">
-                      </div>
-                    </div>
-                  </div>
-                         </div>
 
-                         
-                         <div class="row">
-                       <label for="studsddress" class="col-sm-3"></label>
-                      <div class="col-sm-8">
-                       <div class="form-group">
-                       <div class="input-group input-group-sm">
-
-                        <input type="text" class="form-control "  name="address_three" id="address_three" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_three; } ?>">
-                      </div>
-                    </div>
-                  </div>
-                         </div>
-                                        
-                                      
-
-                    <div class="row">
-                    <label for="city" class="col-sm-3">City</label>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                            <input type="text" class="form-control "  name="city" id="city" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->city; } ?>">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="admissiondate">Admission Date</label>
+                          <div class="form-group">
+                              <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="admission_dt" id="admission_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->admission_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->admission_dt)); } ?>">
+                              </div>
                           </div>
                         </div>
-                        <p id="citynameerr"></p>
-                    </div>
+                        <div class="col-md-4">
+                            <label for="category">Category</label>
+                            <div class="form-group">
+                              <div class="input-group input-group-sm">
+                                  <select class="form-control select2" id="category" name="category" style="width: 100%;">
+                                      <option value=''>Select</option>
+                                      <?php foreach ($bodycontent[ 'studentcategory'] as $studentcategory) { ?>
 
-                    <label for="pincode" class="col-sm-1">Pin</label>
-                    <div class="col-sm-3">
-                       <div class="form-group">
-                        <div class="input-group input-group-sm">
-                            
-                            <input type="text" class="form-control onlynumber"  name="pincode" id="pincode" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->pin; } ?>" maxlength='6'>
-                          </div>
-                        </div>
-                         <p id="pincodeerr"></p>
-                    </div>
-                      
-                  </div> 
-                   
-                   <div class="row">
-                    <label for="email" class="col-sm-3">Email Address</label>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <div class="input-group input-group-sm">
-                            
-                            <input type="email" class="form-control" name="email" id="email" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->email; } ?>">
-                          </div>
-                        </div>
-                    </div>
+                                      <option value="<?php echo $studentcategory->category_name; ?>" <?php if($bodycontent[ 'mode']=='EDIT' && $studentcategory->category_name == $bodycontent['studentregisterEditdata']->category){ echo 'selected'; } ?> >
 
-                    <label for="admissiondate" class="col-sm-2">Admission Date</label>
-                    <div class="col-sm-2">
-                       <div class="form-group">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                          <?php echo $studentcategory->category_name; ?></option>
+
+                                      <?php } ?>
+
+                                  </select>
+                              </div>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="admission_dt" id="admission_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->admission_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->admission_dt)); } ?>">
-                          </div>
                         </div>
-                         <p id="admissiondterr"></p>
-                    </div>
-                      
-                  </div> 
+                        <div class="col-md-4">
+                            <label for="status">Status</label>
+                            <div class="form-group">
+                              <div class="input-group input-group-sm">
+                                <select class="form-control select2" id="status" name="status" style="width: 100%;">
+                                      <option value=''>Select</option>
+                                      <?php foreach ($bodycontent[ 'studentstatus'] as $studentstatus) { ?>
+                                      <option value="<?php echo $studentstatus; ?>" <?php if($bodycontent[ 'mode']=='EDIT' && $studentstatus==$bodycontent[ 'studentregisterEditdata']->status){ echo 'selected'; } ?> >
+                                          <?php echo $studentstatus; ?>
+                                      </option>
 
-                  <div class="row">
-                    
-                  </div> 
+                                      <?php } ?>
 
-                  <div class="row">
-                    <label for="email" class="col-sm-3">Category</label>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                       <select class="form-control select2" id="category" name="category" style="width: 100%;">
-                    <option value=''>Select</option>
-                    <?php foreach ($bodycontent['studentcategory'] as $studentcategory) { ?>
-
-                      <option value="<?php echo $studentcategory->category_name; ?>"
-
-                      <?php if($bodycontent['mode'] == 'EDIT' && $studentcategory->category_name == $bodycontent['studentregisterEditdata']->category){ echo 'selected'; } ?>
-
-                        ><?php echo $studentcategory->category_name; ?></option>
-                     
-                  <?php   } ?>
-                   
-                  </select>
-                          </div>
-                        </div>
-                        <p id="cateerr" ></p>
-                    </div>
-
-                    <label for="email" class="col-sm-1">Status</label>
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                       <select class="form-control select2" id="status" name="status" style="width: 100%;">
-                    <option value=''>Select</option>
-                    <?php foreach ($bodycontent['studentstatus'] as $studentstatus) { ?>
-
-                      <option value="<?php echo $studentstatus; ?>"
-
-                      <?php if($bodycontent['mode'] == 'EDIT' && $studentstatus == $bodycontent['studentregisterEditdata']->status){ echo 'selected'; } ?>
-
-                        ><?php echo $studentstatus; ?></option>
-                     
-                  <?php   } ?>
-                   
-                  </select>
-                          </div>
-                    </div>
-                  </div>
-                      
-                  </div>
-
-                   
-                  <div class="row">
-                    <label for="studdob" class="col-sm-3">Exit Date</label>
-                    <div class="col-sm-4">
-                       <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                </select>
+                              </div>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="exit_dt" id="exit_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->admission_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->admission_dt)); } ?>">
+                        </div>
+                      </div>
+
+                      <div class="row error-row-block">
+                          <div class="col-md-4">
+                            <p id="admissiondterr"></p>
                           </div>
-                    </div>
+                          <div class="col-md-4">
+                            <p id="cateerr" ></p>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="studdob" class="col-sm-3">Exit Date</label>
+                          <div class="input-group input-group-sm">
+                           <div class="input-group-prepend">
+                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                           </div>
+                           <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="exit_dt" id="exit_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->admission_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->admission_dt)); } ?>">
+                         </div>
+                        </div>
+                      </div>
+
                   </div>
- 
 
 
-
-                
-
-          <fieldset class="scheduler-border"> <legend class="scheduler-border">Coaching Details</legend>
+                <!-- End of Other Info ------------------->
+                    
+          <!-- Coaching Detail -->
+          <div class="scheduler-border formblock-box"> 
+            <h3 class="form-block-subtitle">Coaching Details</h3>
        
               <div class="row">
                <div class="col-md-4">
@@ -469,17 +470,17 @@ legend.scheduler-border {
               </div>
              
                  
-              </fieldset>
+                              </div>  <!-- end of  Coaching Detail -->
 
-              <div class="row">
-                  <div class="col-md-4"></div>
-                   <div class="col-md-2">
-                     <button type="submit" class="btn btn-block  btn-secondary " id="studregsavebtn" style="width: 80%;"><?php echo $bodycontent['btnText']; ?></button>
-
-                       <span class="btn btn-block btn-secondary loaderbtn" id="loaderbtn" style="display:none;width: 80%;"><?php echo $bodycontent['btnTextLoader']; ?></span>
-                   </div>
-                  
-             </div>
+              <div class="formblock-box">
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4 text-right">
+                      <button type="submit" class="btn btn-sm action-button " id="studregsavebtn" ><?php echo $bodycontent['btnText']; ?></button>
+                        <span class="btn btn-block btn-secondary loaderbtn" id="loaderbtn" style="display:none;width: 80%;"><?php echo $bodycontent['btnTextLoader']; ?></span>
+                    </div>
+                </div>
+              </div>
 
                 
                    </form>
@@ -488,6 +489,5 @@ legend.scheduler-border {
          
           <!-- /.card-body -->
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+    </section>
 

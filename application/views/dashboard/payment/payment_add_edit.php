@@ -1,7 +1,7 @@
 <script src="<?php echo base_url();?>assets/js/customJs/payment/payment_tennis.js"></script>
 
 <style type="text/css">
-  .frm_header{
+  /* .frm_header{
     #background-color:#394077;
     #background-color:#394077;
     color:#9f4e7f;
@@ -11,16 +11,16 @@
     margin-bottom: 5px;
     font-size: 12px;
 
-  }
+  } */
   .card-body .modal-body{
     #color: #44423d;
    
   }
-  label{
+  /* label{
     font-size: 12px;
     color: #354668 !important;
     font-weight: 700;
-  }
+  } */
 
   #cheque_bank_dtl,
   #receivable_dtl,
@@ -48,12 +48,12 @@
 }
 
 fieldset.scheduler-border {
-    border: 1px groove #ddd !important;
+    /* border: 1px groove #ddd !important;
     #padding: 0 1.4em 1.4em 1.4em !important;
     padding: 0 1em 1em 1em !important;
     margin: 0 0 1.5em 0 !important;
     -webkit-box-shadow:  0px 0px 0px 0px #000;
-            box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000; */
 }
 
     legend.scheduler-border {
@@ -80,31 +80,39 @@ fieldset.scheduler-border {
 
 </style>
 
+
+
+
+
               <?php 
               $attr = array("id"=>"tennisPaymentForm","name"=>"tennisPaymentForm");
               echo form_open('',$attr); ?>
-<section class="content">
+<section class="content layout-box-content-format1">
+
+ 
+
    <div class="container-fluid">
 <div class="row">
     <div class="col-12">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">Receipt</h3>
 
-             <span></span>
+              <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+                <button type="button" class="btn btn-default"><i class="fas fa-plus"></i> Add </button>
+                <button type="button" class="btn btn-default"><i class="fas fa-clipboard-list"></i> List</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#codegeneration_modal" id="codegenbtn"><i class="fas fa-cog"></i> Generate Code</button>
+               
+              </div>
             </div><!-- /.card-header -->
 
             <div class="card-body ">
-            <div class="row">
-            <div class=" col-md-10"></div>
-             <div class=" col-md-2">
-           <!--  <span class="frm_header">Code Generation</span> -->
           
-           </div>
-           </div>
-            <fieldset class="scheduler-border"> <legend class="scheduler-border">Student Details</legend>
+            <fieldset class="scheduler-border formblock-box"> 
+              <!-- <legend class="scheduler-border">Student Details</legend> -->
+              <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Student Details</h3>
         <!--    <span class="frm_header">Student Details</span> -->
-            <span  class="codegencls" data-toggle="modal" data-target="#codegeneration_modal" id="codegenbtn"><i class="fas fa-cog"></i>&nbsp;Code Generation</span>
+            <!-- <span  class="codegencls" data-toggle="modal" data-target="#codegeneration_modal" id="codegenbtn"><i class="fas fa-cog"></i>&nbsp;Code Generation</span> -->
 
 
 
@@ -153,7 +161,9 @@ fieldset.scheduler-border {
 
 
      
-  <fieldset class="scheduler-border"> <legend class="scheduler-border">Payment Details</legend>
+  <fieldset class="scheduler-border formblock-box"> 
+  <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Payment Details</h3>
+    <!-- <legend class="scheduler-border">Payment Details</legend> -->
               <!--    <span class="frm_header"></span> -->
                  <div class="row">
                  
@@ -346,7 +356,7 @@ fieldset.scheduler-border {
 
 
                   <div id="cheque_bank_dtl">
-                    <span class="frm_header"><i class="fas fa-angle-right"></i> Cheque In Hand Details</span>
+                    <span class="frm_header form-block-subtitle"><i class="fas fa-angle-right"></i> Cheque In Hand Details</span>
                     <div class="row" >
                     <div class="col-md-3">
                           <div class="form-group">
@@ -396,7 +406,9 @@ fieldset.scheduler-border {
                     </fieldset>
 
                      <div id="receivable_from_student_amount">
-                        <fieldset class="scheduler-border"> <legend class="scheduler-border">Amount (Receivable From Student)</legend>
+                        <fieldset class="scheduler-border formblock-box"> 
+                          <!-- <legend class="scheduler-border">Amount (Receivable From Student)</legend> -->
+                          <h3 class="form-block-subtitle">Amount (Receivable From Student)</h3>
                          <span  class="bg-gradient-warning btn-xs receivableDtl" ><i class="fas fa-cog"></i>&nbsp;Details View</span>
                       <div class="row" >
 
@@ -516,7 +528,11 @@ fieldset.scheduler-border {
 
 
                     <div id="other_recpt_amount_adm">
-                     <fieldset class="scheduler-border"> <legend class="scheduler-border">Amount (Other Receipts-Admission)</legend>
+                     <fieldset class="scheduler-border formblock-box"> 
+                       <h3 class="form-block-subtitle">
+                       Amount (Other Receipts-Admission)
+                       </h3>
+                       <!-- <legend class="scheduler-border">Amount (Other Receipts-Admission)</legend> -->
                    <!--  <span class="frm_header">Other Receipts Amount Details(Admission)</span> -->
                     <div class="row" >
 
@@ -595,7 +611,9 @@ fieldset.scheduler-border {
                     </div>
 
                   <div id="other_recpt_amount_item">
-                  <fieldset class="scheduler-border"> <legend class="scheduler-border">Amount (Other Receipts-Item)</legend>
+                  <fieldset class="scheduler-border formblock-box"> 
+                    <!-- <legend class="scheduler-border">Amount (Other Receipts-Item)</legend> -->
+                    <h3 class="form-block-subtitle">Amount (Other Receipts-Item)</h3>
                    
                          <div class="row" >
                        <div class="col-md-2">
@@ -800,25 +818,34 @@ fieldset.scheduler-border {
 
                      </fieldset> -->
 
-                     <p id="error_msg" style="color: #bf2929;"></p>
-                      <div class="row">
-                      
-                      <div class="col-md-5"></div>
-                         <div class="col-md-2">
-                          <div class="form-group">
-                            <label for="eqpname">&nbsp;</label>
-             
-                         <!--   <button type="button" class="btn btn-block btn-primary" id="create_code">Continue</button> -->
-                         
+                     
 
-                  <div class="btnDiv">
-                      <button type="submit" class="btn btn-block btn-primary btn-sm" id="tennispaymentsavebtn"><?php echo $bodycontent['btnText']; ?></button>
-                    
-                      <span class="btn btn-primary formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i><?php echo $bodycontent['btnTextLoader']; ?></span>
-                  </div>
+                     <div class="row formblock-button-blocks">
+                       <div class="col-md-8">
+                          <p id="error_msg" class="error" style="color: #bf2929;"></p>
+                       </div>
+                       <div class="col-md-4 text-right">
+                              <div class="btnDiv">
+                                    <button type="submit" class="btn action-button btn-sm" id="tennispaymentsavebtn"><i class="fas fa-save"></i> &nbsp; <?php echo $bodycontent['btnText']; ?></button>
+                                  
+                                    <span class="btn btn-sm action-button formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i><?php echo $bodycontent['btnTextLoader']; ?></span>
+                              </div>
+                       </div>
+                     </div>
+
+                      <!-- <div class="row">
+                        <div class="col-md-5"></div>
+                          <div class="col-md-2">
+                            <div class="form-group">
+                                  <label for="eqpname">&nbsp;</label>
+                                  <div class="btnDiv">
+                                    <button type="submit" class="btn btn-block btn-primary btn-sm" id="tennispaymentsavebtn"><?php echo $bodycontent['btnText']; ?></button>
+                                  
+                                    <span class="btn btn-primary formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i><?php echo $bodycontent['btnTextLoader']; ?></span>
+                                  </div>
+                            </div>
                           </div>
-                 </div><!-- end of col-md-2 -->
-                      </div>
+                      </div> -->
 
 
 
@@ -836,7 +863,7 @@ fieldset.scheduler-border {
   <?php echo form_close(); ?>
 
 
-      <div class="modal fade" id="codegeneration_modal" data-backdrop="static" data-keyboard="false">
+      <div class="modal fade customModal format1" id="codegeneration_modal" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -873,11 +900,11 @@ fieldset.scheduler-border {
 
                           </div>
                  </div><!-- end of col-md-3 -->
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                           <div class="form-group">
                             <label for="eqpname">&nbsp;</label>
              
-                           <button type="button" class="btn btn-block btn-primary" id="create_code">  Create</button>
+                           <button type="button" class="btn btn-block btn-sm action-button" id="create_code"> <i class="fas fa-cog"></i> Create </button>
 
                           </div>
                  </div><!-- end of col-md-3 -->
@@ -885,7 +912,7 @@ fieldset.scheduler-border {
                  </div>
 
                 <div id="student_adminfo" style="display: none">
-                   <div class="frm_header">Admission Details</div>
+                   <div class="frm_header form-block-subtitle">Admission Details</div>
                    <input type="hidden" name="admissionID" id="admissionID" value="0" />
                   <input type="hidden" name="mode" id="mode" value="ADD" />
                  <div class="row">
@@ -918,7 +945,7 @@ fieldset.scheduler-border {
 
                           </div>
                      </div><!-- end of col-md-3 -->
-                 <div class="col-md-2">
+                 <div class="col-md-3">
                           <div class="form-group">
                             <label for="eqpname">&nbsp;</label>
              
@@ -926,9 +953,9 @@ fieldset.scheduler-border {
                          
 
                   <div class="btnDiv">
-                      <button type="submit" class="btn btn-primary formBtn" id="admissionsavebtn">Continue</button>
+                      <button type="submit" class="btn formBtn btn-block btn-sm action-button" id="admissionsavebtn">Continue <i class="fas fa-long-arrow-alt-right"></i></button>
                     
-                      <span class="btn btn-primary formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i> Saving...</span>
+                      <span class="btn action-button formBtn loaderbtn btn-sm" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i> Saving...</span>
                   </div>
                           </div>
                  </div><!-- end of col-md-2 -->
@@ -940,10 +967,9 @@ fieldset.scheduler-border {
 
 
             </div>
-            <div class="modal-footer justify-content-between">
+            <!-- <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-            </div>
+            </div> -->
 
              <?php echo form_close(); ?>
           </div>
