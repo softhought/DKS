@@ -208,7 +208,7 @@ public function index()
                        'discharge_dt'=>$exit_dt,
                        'play_group'=>$play_group,
                        'special_coaching'=>$special_coaching,
-                       'monthly_subscription'=>$monthly_sub,
+                       'subscription'=>$monthly_sub,
                        'bill_style'=>$bill_style,
                        'modify_date'=>date('Y-m-d')
                        );

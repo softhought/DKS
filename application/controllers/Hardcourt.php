@@ -73,6 +73,10 @@ public function addhardcourt(){
 
  public function hardcourt_action() {
 
+   $session = $this->session->userdata('user_detail');
+    if($this->session->userdata('user_detail'))
+    {
+
         $dataArry=[];
         $json_response = array();
         $formData = $this->input->post('formDatas');
@@ -177,6 +181,13 @@ public function addhardcourt(){
             header('Content-Type: application/json');
             echo json_encode( $json_response );
             exit;
+
+     }else{
+           redirect('login','refresh');
+     
+    }
+
+
 
     }
 

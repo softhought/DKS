@@ -104,4 +104,11 @@ fieldset {
     margin-top: -16px;
 }
 
+/*added by anil on 09-01-2020*/
+.rowsty{
+    background-color: #eaeaea;
+    margin-bottom: 26px;
+    padding: 17px 14px 2px 10px;
+
+}
 

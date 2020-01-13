@@ -5,13 +5,14 @@ class Tennisopeningbalmodel extends CI_Model{
 public function getAlltennisopeningmonthlist($billstyle,$month_id)
 	{
 		$data = array();
+		$session = $this->session->userdata('user_detail');
 
        $where = array('admission_register.bill_style'=>$billstyle);
 
 
 		$query = $this->db->select("admission_register.admission_id,admission_register.bill_style,admission_register.student_code as studcode,admission_register.title_one,admission_register.student_name,tennis_student_opening.*")
 				->from('admission_register')
-				->join('tennis_student_opening','tennis_student_opening.student_id = admission_register.admission_id and tennis_student_opening.month_id = '.$month_id.'','LEFT')
+				->join('tennis_student_opening','tennis_student_opening.student_id = admission_register.admission_id and tennis_student_opening.month_id = '.$month_id.' and tennis_student_opening.year_id = '.$session['yearid'].'','LEFT')
 				->where($where)
 				->where('admission_register.status <> ','RESIGNED')
 		        ->get();
@@ -35,13 +36,14 @@ public function getAlltennisopeningmonthlist($billstyle,$month_id)
 	public function getAlltennisopeningqauterlist($billstyle,$quter_id)
 	{
 		$data = array();
+		$session = $this->session->userdata('user_detail');
 
        $where = array('admission_register.bill_style'=>$billstyle);
 
 
 		$query = $this->db->select("admission_register.admission_id,admission_register.bill_style,admission_register.student_code as studcode,admission_register.title_one,admission_register.student_name,tennis_student_opening.*")
 				->from('admission_register')
-				->join('tennis_student_opening','tennis_student_opening.student_id = admission_register.admission_id and tennis_student_opening.quarter_id = '.$quter_id.'','LEFT')
+				->join('tennis_student_opening','tennis_student_opening.student_id = admission_register.admission_id and tennis_student_opening.quarter_id = '.$quter_id.' and tennis_student_opening.year_id = '.$session['yearid'].'','LEFT')
 				->where($where)
 				->where('admission_register.status <> ','RESIGNED')
 		        ->get();
@@ -65,12 +67,14 @@ public function getAllTennisRecords()
 	{
 		$data = array();
 
-       
+       $session = $this->session->userdata('user_detail');
+       $where = array('tennis_student_opening.year_id'=>$session['yearid']);
 		$query = $this->db->select("admission_register.bill_style,admission_register.student_code as studcode,admission_register.title_one,admission_register.student_name,tennis_student_opening.*,month_master.short_name,quarter_month_master.quarter")
 				->from('admission_register')
 				->join('tennis_student_opening','tennis_student_opening.student_id = admission_register.admission_id','INNER')
 				->join('month_master','tennis_student_opening.month_id = month_master.id','LEFT')
 				->join('quarter_month_master','tennis_student_opening.quarter_id = quarter_month_master.id','LEFT')
+				->where($where)
 				->where('admission_register.status <> ','RESIGNED')
 				->order_by('tennis_student_opening.opening_id','desc')
 		        ->get();

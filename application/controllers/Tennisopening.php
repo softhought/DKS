@@ -116,9 +116,19 @@ public function tennisopeningbalance_action(){
 
             }else{
 
+              $updata = array(
+                        'student_id'=>$admission_id,
+                        'student_code'=>$studcode,
+                        'billing_style'=>$bill_style,
+                        'opening_balance'=>$opening_bal,
+                        'month_id'=>$month_id,
+                        'quarter_id'=>$quter_id,
+                        
+                       );
+
             $upd_where = array('tennis_student_opening.opening_id' => $opening_id);
 
-                $insupdata = $this->commondatamodel->updateSingleTableData('tennis_student_opening',$data,$upd_where);
+                $insupdata = $this->commondatamodel->updateSingleTableData('tennis_student_opening',$updata,$upd_where);
 
                 $insertId = $opening_id;
               $activity_module='data Update';

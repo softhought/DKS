@@ -134,7 +134,7 @@ function validateform(){
 	var student_idcode = $('#student_idcode').val();
 	var quntity = $('#quntity').val();
 	var rate = $('#rate').val();
-     $("#errormsg").removeClass('succmsg');
+       $("#errormsg").removeClass('succmsg');
      $("#errormsg").addClass('errormsgcolor');
      $('#errormsg').text();
 
@@ -145,7 +145,11 @@ function validateform(){
 	  return false;
 	  
 
-	}else if(student_idcode == ''){
+	}else if(inputdatecheck(hardcourt_date) == 0){
+     
+        $('#errormsg').text('Enter Date Between Accounting Year');
+      return false;
+  }else if(student_idcode == ''){
 
       $('#errormsg').text('Select Student');
       $("#student_idcode").focus();
