@@ -479,3 +479,20 @@ border: 1px solid
 	color: #5a1143;
 }
 
+
+/*------------------Order View ---------------*/
+
+.order-view-panel {
+	width:100%;
+	background: red;
+}
+
+.left-order-panel {
+	width:60%;
+	float: left;
+}
+.right-order-panel {
+	width:35%;
+	float: right;
+}
+
