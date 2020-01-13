@@ -74,6 +74,11 @@ public function index()
                 
             }
 
+              $orderby='display_serial';
+              $result['monthList'] = $this->commondatamodel->getAllRecordWhereOrderBy('month_master',[],$orderby);
+
+              $result['quartermonthList'] = $this->commondatamodel->getAllDropdownData('quarter_month_master');
+
                 
 
             $header = "";

@@ -52,9 +52,7 @@ public function addFees(){
           $result['btnTextLoader'] = "Updating...";
           $result['paymodeId'] = $this->uri->segment(3);
 
-          $where = array('id'=>$result['paymodeId']);
-
-          $result['paymentmodeEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('payment_mode_details',$where);
+        
            
 
        }
@@ -119,7 +117,7 @@ public function addFees(){
             $json_response = array();
             $formData = $this->input->post('formDatas');
             parse_str($formData, $dataArry);
-
+            $activity_description="";
             $company=$session['companyid'];
             $year=$session['yearid'];
 
@@ -152,13 +150,37 @@ public function addFees(){
                                                 'yearid' => $year,
                                                 'billing_style' => $billing_style,
                                                 'fees' => $dataArry['fees'],
+                                                'company_id' => $company,  
                                                 'created_on' => date('Y-m-d')
                                                 
                                                );
 
           $insert = $this->commondatamodel->insertSingleTableData('intra_tournament_fees',$turnament_array);
+
+          $activity_description .= "InsertId:".$insert." * admission_id:".$admissionid." * student_code:".$student_code."*yearid:".$year." * billing_style:".$billing_style." * fees:".$dataArry['fees']."<br>";
                     
+              
+
+
                 }
+
+
+                            /* insert into activiry log*/
+
+
+                              $user_activity = array(
+                              "activity_module" => 'Intra Tournament Fees',
+                              "action" => 'Insert',
+                              "from_method" => 'Intratournament/IntraTournamentFeesAction',
+                              "table_name" => 'intra_tournament_fees',
+                              "user_id" => $session['userid'],
+                              "ip_address" => getUserIPAddress(),
+                              "user_browser" => getUserBrowserName(),
+                              "user_platform" => getUserPlatform(),
+                              "description" =>  $activity_description
+                             );
+                             
+                $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
 
                 if($insert){
 

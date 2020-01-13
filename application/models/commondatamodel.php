@@ -129,7 +129,7 @@ class Commondatamodel extends CI_Model{
 				->limit(1);
 		$query = $this->db->get();
 		
-		//echo $this->db->last_query();
+		#echo "<br>".$this->db->last_query();
 		
 		if($query->num_rows()> 0)
 		{

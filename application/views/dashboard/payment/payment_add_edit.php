@@ -125,14 +125,15 @@ fieldset.scheduler-border {
                             <label for="code">Student Code</label>
                             <div id="resetstudentlist">
                              <div class="input-group input-group-sm" id="sel_student_codeerr">
-                              <select class="form-control select2" name="sel_student_code" id="sel_student_code" >
+                              <select class="form-control " name="sel_student_code" id="sel_student_code" >
                               <option value="">Select</option>
                               <?php 
                               foreach ($bodycontent['studentCodeList'] as  $studentcode) {
                                 
                               ?>
                               <option value="<?php echo $studentcode->student_code;?>"
-                              data-name="<?php echo $studentcode->student_name; ?>"
+                               data-name="<?php echo $studentcode->student_name; ?>"
+                               data-billstyle="<?php echo $studentcode->bill_style; ?>"
 
                               ><?php echo $studentcode->student_code;?></option>
                               <?php } ?>
@@ -277,27 +278,27 @@ fieldset.scheduler-border {
                  </div>
 
                  <?php
-                      $monthlyQuarter = array(
-                                              '1' => 'Apr-Jun',
-                                              '2' => 'July-Sep',
-                                              '3' => 'Oct-Dec',
-                                              '4' => 'Jan-Mar',
-                                               );
+                      // $monthlyQuarter = array(
+                      //                         '1' => 'Apr-Jun',
+                      //                         '2' => 'July-Sep',
+                      //                         '3' => 'Oct-Dec',
+                      //                         '4' => 'Jan-Mar',
+                      //                          );
 
                  ?>
                  <div id="receivable_dtl">
                   <div class="row">
-                      <div class="col-md-3">
+                      <div class="col-md-3" id="billing_style_Q">
                           <div class="form-group">
                             <label for="code">Fees Quarter</label>
                             <div class="input-group input-group-sm">
                               <select class="form-control select2" name="fees_quarter" id="fees_quarter"  style="width: 100%;">
                               <option value="">Select</option>
                               <?php
-                              foreach ($monthlyQuarter as $key => $monthlyquarter) {
+                              foreach ($bodycontent['quartermonthList'] as $monthlyquarter) {
                               
                                ?>
-                               <option value="<?php echo $key;?>"><?php echo $monthlyquarter;?></option>
+                               <option value="<?php echo $monthlyquarter->id;?>"><?php echo $monthlyquarter->quarter;?></option>
 
                               <?php } ?>
                             
@@ -305,7 +306,7 @@ fieldset.scheduler-border {
                             </div>
                           </div>
                       </div>
-                      <?php         $months = array(
+                      <?php      /*   $months = array(
                                                 '1' => 'January', 
                                                 '2' => 'February', 
                                                 '3' => 'March', 
@@ -318,21 +319,21 @@ fieldset.scheduler-border {
                                                 '10' => 'October', 
                                                 '11' => 'November', 
                                                 '12' => 'December'
-                                                );
+                                                ); */
 
                      ?>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="billing_style_M">
                           <div class="form-group">
                             <label for="code">Fees Month</label>
                             <div class="input-group input-group-sm">
                               <select class="form-control select2" name="fees_month" id="fees_month"  style="width: 100%;">
                               <option value="">Select</option>
                               <?php
-                              foreach ($months as $key => $months) {
+                              foreach ($bodycontent['monthList'] as $months) {
                               
                                ?>
-                               <option value="<?php echo $key;?>"><?php echo $months;?></option>
+                               <option value="<?php echo $months->id;?>"><?php echo $months->short_name;?></option>
 
                               <?php } ?>
                             

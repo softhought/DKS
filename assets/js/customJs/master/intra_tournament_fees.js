@@ -46,11 +46,8 @@ $("#monthblock,#quarterblock").hide();
  $('#tournamentList tfoot tr').insertAfter($('#tournamentList thead tr'))
 
 
-
-
    $('#billing_style').on('change',function(e){
         e.preventDefault();
-
         var billing_style =$("#billing_style").val();
         $("#monthblock,#quarterblock").hide();
       	if (billing_style=='M') {
@@ -59,12 +56,12 @@ $("#monthblock,#quarterblock").hide();
       		$("#quarterblock").show();
       	}
 
-    });
+ });
 
 
       $('#billing_style_copy').on('change',function(e){
         e.preventDefault();
-alert();
+
         // var billing_style =$("#billing_style_copy").val();
         // console.log(billing_style);
         // $(".monthblockcopy,.quarterblockcopy").hide();
@@ -88,7 +85,7 @@ alert();
 	        return false;
 		 }
 
-
+            $("#response_msg").html("Processing please wait...");
             $('#loader').show();
 
             var formDataserialize = $("#interTournamentFrom").serialize();
@@ -105,7 +102,7 @@ alert();
                      $('.dataTable').DataTable();
 
               //  var tripReportProject = $("#tripReportProject").val();
-
+               $("#response_msg").html("");
             
                 },
                 error: function(jqXHR, exception) {
