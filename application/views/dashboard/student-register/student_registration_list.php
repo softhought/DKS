@@ -1,15 +1,21 @@
 
-<div class="row">
-    <div class="col-12">
+  <section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            
+
+            <div class="card-header box-shdw">
               <h3 class="card-title">Student Registration</h3>
-                           
-              
+
+              <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+                <!-- <button type="button" class="btn btn-default"><i class="fas fa-plus"></i> Add </button>
+                <button type="button" class="btn btn-default"><i class="fas fa-clipboard-list"></i> List</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#codegeneration_modal" id="codegenbtn"><i class="fas fa-cog"></i> Generate Code</button> -->
+              </div>
             </div><!-- /.card-header -->
 
             <div class="card-body">
-              <table class="table table-bordered table-hover dataTable">
+              <div class="formblock-box">
+              <table class="table customTbl table-bordered table-striped dataTable">
                 <thead>
                     <tr>
                     <th>Sl.No</th>
@@ -43,9 +49,9 @@
                      } 
                      ?></td>
                    <td>
-                     <a href="<?php echo base_url(); ?>Studentregister/addeditstudrestration/<?php echo $studentregisterdtl->admission_id; ?>" class="btn bg-gradient-info padbtn">
-                  <i class="fas fa-edit"></i> 
-                </a>
+                     <a href="<?php echo base_url(); ?>Studentregister/addeditstudrestration/<?php echo $studentregisterdtl->admission_id; ?>" class="btn tbl-action-btn padbtn">
+                   <i class="fas fa-edit"></i> 
+                  </a>
                     
                   </td>
 
@@ -55,8 +61,8 @@
                          
                 </tbody>
               </table>
+              </div>
 
             </div><!-- /.card-body -->
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+  </section>

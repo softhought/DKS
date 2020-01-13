@@ -112,3 +112,398 @@ fieldset {
 
 }
 
+/*----------------- By Mithilesh ---------------*/
+
+
+body {
+	background: linear-gradient(to right, rgba(194, 197, 219, 0.2) 0%, rgba(253, 166, 243, 0.2) 50%, rgba(240, 236, 239, 0.5) 100%);
+}
+
+.topNav {
+	padding: .1rem .5rem;
+	height: 40px;
+	box-shadow: -2px 4px 4px -4px #808080;
+}
+
+.topNav .brand-image {
+	width: 120px;
+	height: auto !important;
+}
+
+.topNav h3 {
+	text-align: center !important;
+	font-family: 'Monoton', cursive;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	margin-top: 10px;
+	background: linear-gradient(to right, rgb(14, 26, 116) 0%, rgb(188, 5, 5) 50%, rgb(80, 17, 62) 100%);
+	background-clip: border-box;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: 600;
+}
+
+.topNav .custom-fm-input-sm {
+	padding: 0;
+}
+
+.topNav .searchForm {
+	margin-top: 4px !important;
+}
+
+.topNav .searchForm input {
+	padding: 0;
+	height: 30px;
+	text-indent: 10px;
+	font-size: 14px;
+	letter-spacing: 1px;
+	border: 0;
+	background: #f2f2f2;
+	border-radius: 0;
+}
+
+.topNav .searchForm button {
+	height: 30px;
+	font-size: 14px;
+	letter-spacing: 1px;
+	border: 0;
+	background: #dfdcdc;
+	border-radius: 0;
+	color: #32323232;
+}
+
+.topNav .useloggedinOpt {
+	font-size: 12px;
+	letter-spacing: 1px;
+}
+
+.topNav .useloggedinOpt .dropdown-menu {
+	background: #fff;
+	border-radius: 0;
+	margin-top: -1px;
+	font-size: 12px;
+	letter-spacing: 1px;
+	border: 0;
+}
+
+.topMainNav {
+	z-index: 1 !important;
+	height: 40px;
+	background: linear-gradient(to right, rgb(14, 26, 116) 0%, rgb(188, 5, 5) 50%, rgb(80, 17, 62) 100%);
+}
+
+.topMainNav .nav-item .nav-link {
+	color: #FFF !important;
+	font-size: 0.75rem;
+	letter-spacing: 0.4px;
+	font-family: Sans-serif;
+	font-weight: 600;
+}
+
+.topMainNav .dropdown-menu {
+	margin-top: -10px;
+	font-size: 12px;
+	letter-spacing: 0.4px;
+	font-weight: 600;
+	background: #fbfbfb;
+}
+
+.topMainNav .dropdown-menu li {
+	border-bottom: 1px dashed #e8e8e8;
+}
+
+.wrapper .content-wrapper {
+	background-color: transparent;
+}
+
+.layout-body-container {
+	margin-top: 2%;
+	background: transparent;
+}
+
+.layout-box-content-format1 .card-header {
+	background-color: transparent !important;
+	/* padding: .3rem 1.25rem; */
+	border-bottom: 0px solid rgba(0, 0, 0, .125);
+	background: linear-gradient(90deg, #A60711 0%, #4E3FFB 100%);
+	padding: 5px;
+}
+
+.layout-box-content-format1 .card-header .card-title {
+	float: left;
+	margin: 0;
+	/* color:
+    #35155b; */
+	color: #FFF;
+	text-indent: 7px;
+	font-weight: 600;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	font-size: 14px;
+	line-height: normal !important;
+}
+
+.layout-box-content-format1 .card-header .btn-group button , .layout-box-content-format1 .card-header .btn-group a {
+	background: transparent;
+	color: #FFF;
+	border: 0;
+	letter-spacing: 2px;
+	font-size: 0.7rem;
+	font-family: Sans-serif;
+	font-weight: 700;
+}
+
+.layout-box-content-format1 .card {
+	/* box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); */
+	box-shadow: 0px 0px 0px 0px #323232;
+}
+
+.layout-box-content-format1 .box-shdw {
+	box-shadow: 0px 0px 6px 0px #b7b7b7;
+}
+
+.layout-box-content-format1 .formblock-box {
+	box-shadow: 0px 0px 6px 0px #b7b7b7;
+	padding: 18px 10px;
+	/* border-radius: 4px; */
+	/* margin: 1% 0; */
+	margin: 0;
+	background: #fff;
+}
+
+.layout-box-content-format1 .formblock-button-blocks {
+	box-shadow: 0px 0px 6px 0px #b7b7b7;
+	padding: 8px 10px;
+	/* border-radius: 4px; */
+	/* margin: 1% 0; */
+	margin: 0;
+	background: #fff;
+}
+
+.layout-box-content-format1 .form-block-subtitle {
+	border-bottom: 0px solid #d293bf;
+	font-size: 12px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	padding-bottom: 1px;
+	text-indent: 1px;
+	color: #5a1143;
+}
+
+.layout-box-content-format1 label {
+	font-size: 11px;
+	color: #561a4c !important;
+	letter-spacing: 1px;
+	font-family: Sans-serif;
+}
+
+.layout-box-content-format1 .card {
+	background: transparent;
+}
+
+.layout-box-content-format1 .card .card-body {
+	padding: 0;
+}
+
+.layout-box-content-format1 .select2-container {
+	font-size: 11px;
+	font-family: Sans-serif;
+	letter-spacing: 0.5px;
+}
+
+.layout-box-content-format1 .select2-container .select2-selection--single .select2-selection__rendered {
+	padding-left: 0 !important;
+}
+
+.layout-box-content-format1 .select2-container--default .select2-selection--single {
+	border: 1px solid #c7b7bf;
+}
+
+.select2-results {
+	font-size: 11px !important;
+	font-family: Sans-serif;
+	letter-spacing: 0.5px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+	background-color: #4b134d !important;
+	color: white;
+}
+
+.layout-box-content-format1 .action-button {
+	/* background-color: #7e0c26; */
+	color: #FFF;
+	letter-spacing: 1px;
+	font-weight: 700;
+	/* background: linear-gradient(90deg, #F01321 0%, #EA1515 100%); */
+	background: linear-gradient(90deg, #D21DC7 0%, #EA1515 100%);
+	border: 0;
+}
+
+.layout-box-content-format1 .error {
+	color: #dd0b0b;
+	background: r;
+	font-weight: 700;
+	letter-spacing: 1px;
+	font-family: Sans-serif;
+	font-size: 0.75rem;
+}
+
+.layout-box-content-format1 .table.customTbl td,
+.layout-box-content-format1 .table.customTbl th {
+	padding: .75rem 0;
+	font-size: 11px;
+	font-family: Sans-serif;
+	letter-spacing: 0.4px;
+	font-weight: 600;
+	color: #310417;
+	text-indent: 3px;
+}
+
+.layout-box-content-format1 .table.customTbl thead th {
+	border-bottom: 0;
+	border: 0;
+	background: #dab3dd;
+	border-bottom: 2px solid #7b4769;
+}
+
+.layout-box-content-format1 .dataTables_info {
+	font-size: 12px !important;
+	letter-spacing: 1.4px;
+	font-family: Sans-serif;
+	font-weight: 600;
+	color: #4a135e;
+}
+
+.layout-box-content-format1 .pagination .page-link {
+	position: relative;
+	display: block;
+	padding: .3rem .75rem;
+	margin-left: -1px;
+	line-height: 1.25;
+	color: #fff;
+	/* background-color:
+#5538a8;
+border: 1px solid
+#2e1f59; */
+	background: linear-gradient(90deg, #b73068 0%, #801551 100%);
+	box-shadow: 0px 0px 2px 0px #4f0323;
+	font-size: 12px;
+	letter-spacing: 2px;
+	border: 0;
+}
+
+.layout-box-content-format1 .pagination .next .page-link,
+.layout-box-content-format1 .pagination .previous .page-link {
+	background-color: #210471;
+}
+
+.layout-box-content-format1 .table.customTbl .tbl-action-btn {
+	background: linear-gradient(90deg, #CC232D 0%, #E10F85 100%);
+	padding: 2px 3px;
+	text-align: center;
+	box-shadow: 0px 2px 6px 0px #646363;
+	border: 0;
+	font-size: 14px;
+	color: #FFF;
+}
+
+.layout-box-content-format1 .table.customTbl .page-item.active .page-link {
+	background-color: transparent !important;
+	border-color: transparent !important;
+}
+
+.layout-box-content-format1 .table.customTbl tbody tr:nth-of-type(2n+1) {
+	background-color: #ffeef2;
+}
+
+.layout-box-content-format1 .table.customTbl tbody tr:nth-of-type(2n) {
+	background: #f8ddfb;
+}
+
+.layout-box-content-format1 .table-bordered td {
+	border: 1px solid #bb91a5;
+}
+.layout-box-content-format1 .error-row-block p{
+	margin: -16px 0;
+	font-size: 14px;
+	letter-spacing: 1px;
+	color:
+	#EA0E2D;
+	font-weight: 600;
+}
+
+.layout-box-content-format1 .uploadProfile .profile-block {
+	text-align: center;
+	background:
+	#FBFBFB;
+	border: 2px dashed
+	#952368;
+	border-radius: 14px;
+	padding: 14px;
+}
+
+
+.customModal {
+	font-size: 12px;
+	font-family: sans-serif;
+}
+
+.customModal .modal-header .frm_header {
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	font-family: Sans-serif;
+}
+
+.customModal .form-control {
+	height: 30px;
+	font-size: 12px;
+	border: 1px solid #c7b7bf;
+}
+
+.customModal .action-button {
+	/* background-color: #7e0c26; */
+	color: #FFF;
+	letter-spacing: 1px;
+	font-weight: 700;
+	background: linear-gradient(90deg, #D21DC7 0%, #EA1515 100%);
+	border: 0;
+}
+
+.customModal label {
+	font-size: 11px;
+	color: #561a4c !important;
+	letter-spacing: 1px;
+	font-family: Sans-serif;
+}
+
+.customModal .form-block-subtitle {
+	border-bottom: 0px solid #d293bf;
+	font-size: 12px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	padding-bottom: 1px;
+	text-indent: 1px;
+	color: #5a1143;
+}
+
+
+/*------------------Order View ---------------*/
+
+.order-view-panel {
+	width:100%;
+	background: red;
+}
+
+.left-order-panel {
+	width:60%;
+	float: left;
+}
+.right-order-panel {
+	width:35%;
+	float: right;
+}
+
