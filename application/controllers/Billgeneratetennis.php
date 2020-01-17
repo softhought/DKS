@@ -155,7 +155,7 @@ class Billgeneratetennis extends CI_Controller {
 		            	}
 
 
-		            echo "QM:".$search_quarter_id."| SY".$search_year_id;	
+		         //   echo "QM:".$search_quarter_id."| SY".$search_year_id;	
 
 	            }
 
@@ -173,9 +173,9 @@ class Billgeneratetennis extends CI_Controller {
              	$subscription_amount = $this->getSubscriptionFee($billing_style,$student_id);
              	$hardCourt_amount=$this->getHardCoutExtra($billing_style,$student_id,$search_month_id,$search_quarter_id,$search_year_id);
              	$correction_amount=$this->getCorrection($billing_style,$student_id,$search_month_id,$search_quarter_id,$search_year_id);
-             	$tournament_amount=$this->getIntraTournamentFees($billing_style,$student_id,$search_month_id,$search_quarter_id,$search_year_id);
+                $tournament_amount=$this->getIntraTournamentFees($billing_style,$student_id,$search_month_id,$search_quarter_id,$search_year_id);
 
-               
+             
 
              	$total_amount=($opening_amount+$subscription_amount+$hardCourt_amount+$correction_amount+$tournament_amount);
 
@@ -197,7 +197,7 @@ class Billgeneratetennis extends CI_Controller {
              							  );
 		             	 $upd_where = array('bill_id'=>$BillID);
 
-                         $Updatedata = $this->commondatamodel->updateSingleTableData('bill_master_tennis',$inst_bill_master,$upd_where);
+                         $insert = $this->commondatamodel->updateSingleTableData('bill_master_tennis',$inst_bill_master,$upd_where);
 
 		             }else{
 
@@ -270,7 +270,7 @@ class Billgeneratetennis extends CI_Controller {
              							  );
 		             	 $upd_where = array('bill_id'=>$BillID);
 
-                         $Updatedata = $this->commondatamodel->updateSingleTableData('bill_master_tennis',$inst_bill_master,$upd_where);
+                         $insert = $this->commondatamodel->updateSingleTableData('bill_master_tennis',$inst_bill_master,$upd_where);
 
 		             }else{
 
@@ -308,7 +308,7 @@ class Billgeneratetennis extends CI_Controller {
              	}
 
      
-              exit;     
+          
             
 
                 if($insert){

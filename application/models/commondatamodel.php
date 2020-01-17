@@ -88,7 +88,7 @@ class Commondatamodel extends CI_Model{
 				->from($table)
 				->where($where);
 		$query = $this->db->get();
-	
+	   #echo $this->db->last_query();
 		if($query->num_rows()>0){
 			return 1;
 		}

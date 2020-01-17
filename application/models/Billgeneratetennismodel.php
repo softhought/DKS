@@ -143,9 +143,9 @@ class Billgeneratetennismodel extends CI_Model{
     $data = 0;
 
     $where = array(
-                    'corrections.admission_id' => $student_id, 
-                    'corrections.year_id' => $year_id, 
-                    'corrections.company_id' => $company_id 
+                    'corrections.student_id' => $student_id, 
+                    'corrections.yearid' => $year_id, 
+                    'corrections.companyid' => $company_id 
                   );
 
     

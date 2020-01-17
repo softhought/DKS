@@ -17,6 +17,8 @@ if ( ! function_exists('createbody_method'))
 	 /* leftmenu */
 	
 	 $menu = $CI->menumodel->getAllAdministrativeMenu($session['userid']);
+
+	
 	 //print_r(json_encode($left_menu));exit;
 	//  $acdsessionData= $CI->menumodel->getAcademicSessionData();
 	//  $AccountingYearData= $CI->menumodel->getAccountingYearData();

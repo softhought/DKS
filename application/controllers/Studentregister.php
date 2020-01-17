@@ -224,7 +224,7 @@ public function index()
               $method='registration_action'; 
               $master_id =$admissionId;
               $tablename = 'admission_register';
-              $description = $studtitle.$studname.' '.'date of birth-'.$dob.' '.'has father name-'.$father_title.$fathername.' '.'landlin No.\mobileno-'.$landline_no.'/'.$mobile_no.' '.'address-'.$address_one.$address_two.$address_three.' '.'city-'.$city.' '.'pin-'.$pincode.' '.'admission_dt-'.$admidt.' '.'discharge_dt-'.$exitdt.' '.'monthly subscription-'.$monthly_sub.' '.'Billing Style-'.$bill_style.' '.'modify date-'.date('Y-m-d');
+              $description = $studtitle.$studname.' '.'date of birth-'.$dob.' '.'has father name-'.$father_title.$fathername.' '.'landlin No.\mobileno-'.$landline_no.'/'.$mobile_no.' '.'address-'.$address_one.$address_two.$address_three.' '.'city-'.$city.' '.'pin-'.$pincode.' '.'admission_dt-'.$admidt.' '.'discharge_dt-'.$exit_dt.' '.'monthly subscription-'.$monthly_sub.' '.'Billing Style-'.$bill_style.' '.'modify date-'.date('Y-m-d');
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
              
