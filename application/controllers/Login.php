@@ -12,27 +12,35 @@ class Login extends CI_Controller {
 
     public function index(){
         $this->load->helper('form');
-        $this->load->library('form_validation');      
+        $this->load->library('form_validation'); 
+        $where = array('is_active'=>'Y');
+        $result['financilayear'] = $this->commondatamodel->getAllRecordWhere('financialyear',$where); 
+
         $page="login/login";
-        $this->load->view($page);
+        $this->load->view($page,$result);
     }
 
     public function check_login() 
-    {  
+    {
+
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_rules('yearid', 'Year', 'required');
         $this->form_validation->set_error_delimiters('<div class="error-login">', '</div>');
         
         if ($this->form_validation->run() == FALSE)
            {
+               $this->session->set_flashdata('msg','<div style="color: red;" class="error-login">Select Year</div>');
+                     
                 redirect('login');                     
            }
            else
            {
                 $username = $this->input->post('username');
                 $password = $this->input->post('password');
+                $year_id = $this->input->post('yearid');
                 $user_id = $this->login->checkLogin($username,$password);
                 if($user_id!=""){
                     $arr=[
@@ -53,7 +61,7 @@ class Login extends CI_Controller {
                     "userid"=>$user->id,
                     "username"=>$user->user_name,
                     "companyid"=>1,// It will be come login page
-                    "yearid"=>1,// It will be come login page
+                    "yearid"=>$year_id,// It will be come login page
                     "name"=>$user->name,
                     "user_role"=>$user->user_role_id,
                     "user_account_activity_id"=>$insertid,

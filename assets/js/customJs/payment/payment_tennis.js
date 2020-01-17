@@ -11,11 +11,66 @@ $(document).on('click','#codegenbtn',function(){
 
 });
 
+$(document).on('click','#close_btn_patment_rec',function(){
+
+     location.reload();
+  
+
+});
+
+
+
 $(document).on('change','#sel_student_code',function(){
    
   var selectedCode = $('#sel_student_code').find('option:selected');
   $("#studentname").val(selectedCode.data('name'));
   //console.log(selectedCode);
+  showBillingStyle();
+  getReceivableBillAmount();
+
+});
+
+$(document).on('change','#fees_quarter,#fees_month',function(){
+
+  getReceivableBillAmount();
+
+});
+
+$(document).on('click','#clear_fine_rec',function(){
+
+    var receivable_student_fineamt = $("#receivable_student_fineamt").val();
+    $("#clear_fine_amt").val(receivable_student_fineamt);
+    $("#receivable_student_fineamt").val(''); 
+    calculateReceivableFrmStudentGst();
+    calculateReceivableFrmNetAmount();
+    $("#fine_ac_drp").hide();
+
+
+
+
+});
+
+$(document).on('input keyup','#payment_dt',function(){
+
+  var payment_dt= $(this).val();
+   
+  console.log("payment date :"+payment_dt);
+  
+  $('#error_msg').text('');
+  if (isDate(payment_dt)) {
+     console.log("payment date is valid:");
+      getReceivableBillAmount();
+     if(inputdatecheck(payment_dt) == 0){   
+        $('#error_msg').text('Enter Date Between Accounting Year');
+      return false;
+     }
+
+  }else{
+       $('#error_msg').text('Payment date is not valid');
+  }
+
+ // isDate(txtDate)
+
 
 });
 
@@ -84,8 +139,8 @@ $(document).on('change','#sel_student_code',function(){
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
             var urlpath = basepath + 'paymenttennis/admission_action';
-            $("#albumsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+           // $("#albumsavebtn").css('display', 'none');
+           // $("#loaderbtn").css('display', 'block');
 
             $.ajax({
                 type: type,
@@ -150,6 +205,10 @@ $(document).on('change','#tran_type',function(){
 		  	$('#other_recpt_amount_item').hide();
 		  	resetAdmissionAmountDetails();
 		  	resetItemAmountDetails();
+        showBillingStyle();
+
+
+
 		  }else if(selectedValue=='ORADM'){
 		  	$('#receivable_dtl').hide();
 		  	$('#other_recpt_amount_item').hide();
@@ -361,10 +420,10 @@ calculateReceivableFrmNetAmount();
     $(document).on('submit','#tennisPaymentForm',function(e){
 		e.preventDefault();
 
-
+      $("#error_msg").html('');
 		if(validateTennisPaymentData())
 		{
-
+        if (ckeckBillPaid()) { 
           
             var formDataserialize = $("#tennisPaymentForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
@@ -373,8 +432,8 @@ calculateReceivableFrmNetAmount();
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
             var urlpath = basepath + 'paymenttennis/saveTennisPaymentData';
-            $("#albumsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#tennispaymentsavebtn").css('display', 'none');
+            $("#loaderbtn").css('display', 'inline-table');
 
             $.ajax({
                 type: type,
@@ -385,14 +444,14 @@ calculateReceivableFrmNetAmount();
                 success: function(result) {
 					if (result.msg_status == 1) {
 						resetStudentCodeDropdown(result.student_code);
-						
- 
-						   // $("#tennispaymentaftersavemodel").modal({
-         //                    "backdrop": "static",
-         //                    "keyboard": true,
-         //                    "show": true
-         //                });
-               // $('#tennisPaymentForm').trigger("reset");
+						  $('#tennisPaymentForm').trigger("reset");
+              
+						   $("#tennispaymentaftersavemodel").modal({
+                            "backdrop": "static",
+                            "keyboard": true,
+                            "show": true
+                        });
+             
                         $('#codegeneration_modal').modal('hide');
 
                     } 
@@ -410,11 +469,71 @@ calculateReceivableFrmNetAmount();
             });
             
             
-            
+           } 
 			
 		}
 
     });
+
+
+
+
+
+    $(document).on('click','#bill_dtl_btn',function(e){
+    e.preventDefault();
+   
+         var bill_id=$('#bill_id').val();
+    if(1)
+    {
+
+   console.log(bill_id);
+      
+       $("#bill_details_data").html('');
+          
+        $.ajax({
+            type: "POST",
+            url: basepath+'paymenttennis/getbillDetailsModelData',
+            dataType: "html",
+            data: {bill_id:bill_id},
+            success: function (result) {
+         
+              $("#billModalDetails").modal({backdrop: false});
+              
+             $("#bill_details_data").html(result);
+
+            // $('.select2').select2();
+               var selectedCode = $("#sel_student_code").find('option:selected');
+                console.log(selectedCode);
+               $("#studentname").val(selectedCode.data('name'));
+         
+            }, 
+            error: function (jqXHR, exception) {
+              var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+               // alert(msg);  
+            }
+            }); /*end ajax call*/
+
+    }
+
+
+
+    });
+
 
 
 
@@ -529,7 +648,7 @@ function validateAdmData(){
 
 function validateTennisPaymentData(){
 
-     var studentcode = $("#sel_student_code").val();
+  var studentcode = $("#sel_student_code").val();
 	 var studentname = $("#studentname").val();
 	 var payment_dt = $("#payment_dt").val();
 	 var tran_type = $("#tran_type").val();
@@ -541,11 +660,17 @@ function validateTennisPaymentData(){
 	 var oth_rec_cgst_rate = $("#oth_rec_cgst_rate").val();
 	 var oth_rec_sgst_rate = $("#oth_rec_sgst_rate").val();
 
+  var receivable_student_amt = $("#receivable_student_amt").val();
+  var receivable_student_cgst_rate = $("#receivable_student_cgst_rate").val();
+  var receivable_student_sgst_rate = $("#receivable_student_sgst_rate").val();
+  var receivable_student_paymentamt = $("#receivable_student_paymentamt").val();
+
 	 $("#error_msg").text('');
 
 	 $("#sel_student_codeerr,#studentname,#payment_dt,#tran_typeerr,#actobedebitederr,#actobecreditederr,#paymentmodeerr").removeClass("form_error");
-	 $("#oth_rec_amterr,#oth_rec_cgst_rateerr,#oth_rec_sgst_rateerr").removeClass("form_error");
-	 console.log(studentname);
+	 $("#oth_rec_amterr,#oth_rec_cgst_rateerr,#oth_rec_sgst_rateerr,#receivable_student_amterr,#receivable_student_cgst_rateerr,#receivable_student_sgst_rateerr,#receivable_student_paymentamterr").removeClass("form_error");
+	 $("#fees_quartererr,#fees_montherr").removeClass("form_error");
+   console.log(studentname);
 
 	 if (studentcode=='') {
 	 	 $("#sel_student_codeerr").addClass("form_error");
@@ -563,6 +688,11 @@ function validateTennisPaymentData(){
          $("#payment_dt").focus();
         return false;
 	 }
+
+     if(inputdatecheck(payment_dt) == 0){   
+        $('#error_msg').text('Enter Date Between Accounting Year');
+      return false;
+     }
 
 	 if (tran_type=='') {
 	 	 $("#tran_typeerr").addClass("form_error");
@@ -618,7 +748,66 @@ function validateTennisPaymentData(){
 
 
 
-	}
+	}else if(tran_type=='RCFS'){
+
+     var selectedCode = $('#sel_student_code').find('option:selected');
+     var billstyle = selectedCode.data('billstyle');
+     var fees_quarter = $("#fees_quarter").val();
+     var fees_month = $("#fees_month").val();
+     var receivable_student_fineamt = $("#receivable_student_fineamt").val();
+     var fine_ledger_ac = $("#fine_ledger_ac").val();
+
+
+       if(billstyle=='M') {
+     
+          if (fees_month=='') {
+          $("#fees_montherr").addClass("form_error");
+            return false;
+          } 
+
+      }else if(billstyle=='Q'){
+
+          if (fees_quarter=='') {
+          $("#fees_quartererr").addClass("form_error");
+            return false;
+          }
+
+      }
+    
+      if (receivable_student_fineamt!='' && receivable_student_fineamt!='0') {
+
+          if (fine_ledger_ac=='') {
+          $("#fine_ledger_acerr").addClass("form_error");
+            return false;
+          }
+
+      }
+ 
+    if (receivable_student_amt=='') {
+     $("#receivable_student_amterr").addClass("form_error");
+        return false;
+      }
+     if (receivable_student_cgst_rate=='') {
+      $("#receivable_student_cgst_rateerr").addClass("form_error");
+        return false;
+      }
+
+      if (receivable_student_sgst_rate=='') {
+      $("#receivable_student_sgst_rateerr").addClass("form_error");
+        return false;
+      }
+      if (receivable_student_paymentamt=='') {
+      $("#receivable_student_paymentamterr").addClass("form_error");
+        return false;
+      }
+
+
+
+
+
+
+
+  }
 
 
 
@@ -737,7 +926,7 @@ function calculateOthRecAdmNetAmount(){
 }
 
 
-function calculateReceivableFrmStudentGst(){
+function calculateReceivableFrmStudentGst(){ 
 	taxableReceivableFrmStudent();
 	getReceivableFrmCgst();
 	getReceivableFrmSgst();
@@ -747,6 +936,7 @@ function calculateReceivableFrmStudentGst(){
 function taxableReceivableFrmStudent(){
 	  var receivable_student_amt = parseFloat($('#receivable_student_amt').val() || 0);
       var receivable_student_fineamt = parseFloat($('#receivable_student_fineamt').val() || 0);
+      console.log("fine:"+receivable_student_fineamt);
       var taxableAmt = parseFloat(receivable_student_amt+receivable_student_fineamt);
      $("#receivable_student_taxable").val(taxableAmt.toFixed(2));
 
@@ -781,6 +971,7 @@ function calculateReceivableFrmNetAmount(){
   
     var netAmt=parseFloat((taxable+cgst+sgst));
      $("#receivable_student_netamt").val(netAmt.toFixed(2));
+     $("#receivable_student_paymentamt").val(netAmt.toFixed(2));
 }
 
 
@@ -831,3 +1022,201 @@ function resetRecivableAmountDetails(){
 	$("#receivable_student_netamt").val('');
 
 }
+
+
+function showBillingStyle(){
+
+   var tran_type = $("#tran_type").val();
+   $('#billing_style_Q,#billing_style_M').hide();
+
+      if (tran_type=='RCFS') {
+       
+          var selectedCode = $('#sel_student_code').find('option:selected');
+          var billstyle = selectedCode.data('billstyle');
+
+          if (billstyle=="M") {
+            $('#billing_style_M').show();
+          }else if(billstyle=="Q"){
+            $('#billing_style_Q').show();
+          }
+
+      }
+
+
+}
+
+
+function getReceivableBillAmount(){
+  var basepath = $("#basepath").val();
+  var sel_student_code = $("#sel_student_code").val();
+  var tran_type = $("#tran_type").val();
+  var fees_quarter = $("#fees_quarter").val();
+  var fees_month = $("#fees_month").val();
+  var selectedCode = $('#sel_student_code').find('option:selected');
+ 
+  var billstyle =  selectedCode.data('billstyle');
+
+  if (tran_type=='RCFS' && sel_student_code!='') {
+
+            
+            var type = "POST"; //for creating new resource
+            var urlpath = basepath + 'paymenttennis/getBillAmount';
+         
+            $.ajax({
+                type: type,
+                url: urlpath,
+                data: {sel_student_code:sel_student_code,tran_type:tran_type,fees_quarter:fees_quarter,fees_month:fees_month,billstyle:billstyle},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) {
+
+                  if (result.msg_status==1) {
+                     console.log(result);
+                     
+                     $("#bill_id").val(result.msg_data.bill_id);
+                     $("#receivable_student_amt").val(result.msg_data.total_amount);
+
+                     if (billstyle=='Q') {
+                       calculateReceivableFineAmount(result.msg_data.bill_id);
+                     }
+                     
+
+                  }else{
+                     console.log(result.msg_data);
+                    $("#bill_id").val("");
+                     $("#receivable_student_amt").val("");
+                     $("#receivable_student_fineamt").val("");
+                     $("#receivable_student_taxable").val("");
+                     $("#receivable_student_netamt").val("");
+                     $("#receivable_student_cgst_amt,#receivable_student_sgst_amt").val("");
+                     $("#receivable_student_cgst_rate").val(null).trigger("change");
+                     $("#receivable_student_sgst_rate").val(null).trigger("change");
+                  
+
+                  }
+                   calculateReceivableFrmStudentGst();
+                   calculateReceivableFrmNetAmount();
+        
+               
+                  
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+
+  }
+
+
+}
+
+function calculateReceivableFineAmount(bill_id){
+     var basepath = $("#basepath").val();
+     var payment_dt = $("#payment_dt").val();
+     console.log("bill id"+bill_id);
+      $("#error_msg").html('');
+     var type = "POST"; //for creating new resource
+            var urlpath = basepath + 'paymenttennis/getReceivableFine';
+          
+           $("#fine_ac_drp").hide();
+             $("#clear_fine_amt").val("");
+                $("#receivable_student_fineamt").val("");
+                  $("#student_new_status").val("");
+            $.ajax({
+                type: type,
+                url: urlpath,
+                data: {payment_dt:payment_dt,bill_id:bill_id},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) { 
+
+                  
+
+                    if (result.msg_status==1) {
+                        $("#receivable_student_fineamt").val(result.fine);
+                        $("#error_msg").html(result.msg);
+                        $("#student_new_status").val(result.student_status);
+
+                        var fineamt = $("#receivable_student_fineamt").val();
+
+                        if (fineamt!='' && fineamt!='0') {
+                            $("#fine_ac_drp").show();
+                        }
+
+                       
+
+                    }else{
+                        $("#receivable_student_fineamt").val("");
+                    }
+
+
+                       calculateReceivableFrmStudentGst();
+                       calculateReceivableFrmNetAmount();
+
+    
+                  
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+
+}
+
+function ckeckBillPaid(){
+
+  var selectedCode = $('#sel_student_code').find('option:selected');
+  var billstyle =  selectedCode.data('billstyle');
+  var tran_type = $("#tran_type").val();
+  var bill_id = $("#bill_id").val();
+  var basepath = $("#basepath").val();
+  
+
+  if (tran_type=='RCFS') {
+
+     var billexist = 1;
+    //console.log(basepath + "GSTtaxinvoice/getAmount");
+    $.ajax({
+            url :  basepath + "paymenttennis/checkBillPaymentExist",
+            type: "POST",
+            dataType:'json',
+            data : {bill_id:bill_id},
+    success: function(result) {
+       
+              if (result.msg_status==1) {
+                billexist=0;
+                $("#error_msg").html(result.msg);
+
+              }else{
+                billexist=1;
+              }
+    },
+    async:false
+  });
+    
+   
+   return billexist;  
+
+     
+  }else{
+        return true;
+  }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+

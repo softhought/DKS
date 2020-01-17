@@ -77,6 +77,13 @@ fieldset.scheduler-border {
     
 }
 
+.modal.fade:not(.in).right .modal-dialog {
+  -webkit-transform: translate3d(125%, 0, 0);
+  transform: translate3d(125%, 0, 0);
+}
+
+
+
 
 </style>
 
@@ -132,7 +139,8 @@ fieldset.scheduler-border {
                                 
                               ?>
                               <option value="<?php echo $studentcode->student_code;?>"
-                              data-name="<?php echo $studentcode->student_name; ?>"
+                               data-name="<?php echo $studentcode->student_name; ?>"
+                               data-billstyle="<?php echo $studentcode->bill_style; ?>"
 
                               ><?php echo $studentcode->student_code;?></option>
                               <?php } ?>
@@ -175,7 +183,7 @@ fieldset.scheduler-border {
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="payment_dt" id="payment_dt">
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="payment_dt" id="payment_dt" value="<?php echo date('d/m/Y');?>">
                           </div>
                         </div>
                  </div>
@@ -186,21 +194,20 @@ fieldset.scheduler-border {
                                     'RCFS' => "Receivable From Student",
                                      );
                  ?>
-                 <div class="col-md-3">
+                 <div class="col-md-2">
                           <div class="form-group">
                             <label for="code">Transaction Type</label>
                              <div class="input-group input-group-sm" id="tran_typeerr">
+                             
                               <select class="form-control select2" name="tran_type" id="tran_type"  style="width: 100%;">
                               <option value="">Select</option>
                               <?php
                               foreach ($tran_type as $key => $tran_type) {
-                              
-                               ?>
-                               <option value="<?php echo $key;?>"><?php echo $tran_type?></option>
-
+                              ?>
+                              <option value="<?php echo $key;?>"><?php echo $tran_type?></option>
                               <?php } ?>
-                            
                             </select>
+
                             </div>
 
                           </div>
@@ -253,7 +260,7 @@ fieldset.scheduler-border {
                             </div>
                           </div>
                   </div>
-                          <div class="col-md-3">
+                       <div class="col-md-2">
                           <div class="form-group">
                             <label for="code">A/C to be credited</label>
                             <div class="input-group input-group-sm" id="actobecreditederr">
@@ -271,33 +278,51 @@ fieldset.scheduler-border {
                             </div>
                           </div>
                        </div>
+                         <div class="col-md-2" id="fine_ac_drp" style="display: none">
+                          <div class="form-group">
+                            <label for="code">Ledger For Fine</label>
+                            <div class="input-group input-group-sm" id="fine_ledger_acerr">
+                              <select class="form-control select2" name="fine_ledger_ac" id="fine_ledger_ac"  style="width: 100%;">
+                              <option value="">Select</option>
+                              <?php
+                              foreach ($bodycontent['fineAccountList'] as $fineaccountlist) {
+                              
+                               ?>
+                               <option value="<?php echo $fineaccountlist->account_id;?>"><?php echo $fineaccountlist->account_name;?></option>
+
+                              <?php } ?>
+                            
+                            </select>
+                            </div>
+                          </div>
+                       </div>
 
             
 
                  </div>
 
                  <?php
-                      $monthlyQuarter = array(
-                                              '1' => 'Apr-Jun',
-                                              '2' => 'July-Sep',
-                                              '3' => 'Oct-Dec',
-                                              '4' => 'Jan-Mar',
-                                               );
+                      // $monthlyQuarter = array(
+                      //                         '1' => 'Apr-Jun',
+                      //                         '2' => 'July-Sep',
+                      //                         '3' => 'Oct-Dec',
+                      //                         '4' => 'Jan-Mar',
+                      //                          );
 
                  ?>
                  <div id="receivable_dtl">
                   <div class="row">
-                      <div class="col-md-3">
+                      <div class="col-md-3" id="billing_style_Q">
                           <div class="form-group">
                             <label for="code">Fees Quarter</label>
-                            <div class="input-group input-group-sm">
+                            <div class="input-group input-group-sm" id="fees_quartererr">
                               <select class="form-control select2" name="fees_quarter" id="fees_quarter"  style="width: 100%;">
                               <option value="">Select</option>
                               <?php
-                              foreach ($monthlyQuarter as $key => $monthlyquarter) {
+                              foreach ($bodycontent['quartermonthList'] as $monthlyquarter) {
                               
                                ?>
-                               <option value="<?php echo $key;?>"><?php echo $monthlyquarter;?></option>
+                               <option value="<?php echo $monthlyquarter->id;?>"><?php echo $monthlyquarter->quarter;?></option>
 
                               <?php } ?>
                             
@@ -305,7 +330,7 @@ fieldset.scheduler-border {
                             </div>
                           </div>
                       </div>
-                      <?php         $months = array(
+                      <?php      /*   $months = array(
                                                 '1' => 'January', 
                                                 '2' => 'February', 
                                                 '3' => 'March', 
@@ -318,21 +343,21 @@ fieldset.scheduler-border {
                                                 '10' => 'October', 
                                                 '11' => 'November', 
                                                 '12' => 'December'
-                                                );
+                                                ); */
 
                      ?>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="billing_style_M">
                           <div class="form-group">
                             <label for="code">Fees Month</label>
-                            <div class="input-group input-group-sm">
+                            <div class="input-group input-group-sm" id="fees_montherr" >
                               <select class="form-control select2" name="fees_month" id="fees_month"  style="width: 100%;">
                               <option value="">Select</option>
                               <?php
-                              foreach ($months as $key => $months) {
+                              foreach ($bodycontent['monthList'] as $months) {
                               
                                ?>
-                               <option value="<?php echo $key;?>"><?php echo $months;?></option>
+                               <option value="<?php echo $months->id;?>"><?php echo $months->short_name;?></option>
 
                               <?php } ?>
                             
@@ -345,7 +370,7 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Fees Year</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="fees_year" name="fees_year" placeholder="" autocomplete="off" value="<?php echo date('Y');?>"   readonly >
+                            <input type="text" class="form-control forminputs " id="fees_year" name="fees_year" placeholder="" autocomplete="off" value="<?php echo $bodycontent['acyear'];?>"   readonly >
                             </div>
 
                           </div>
@@ -409,24 +434,27 @@ fieldset.scheduler-border {
                         <fieldset class="scheduler-border formblock-box"> 
                           <!-- <legend class="scheduler-border">Amount (Receivable From Student)</legend> -->
                           <h3 class="form-block-subtitle">Amount (Receivable From Student)</h3>
-                         <span  class="bg-gradient-warning btn-xs receivableDtl" ><i class="fas fa-cog"></i>&nbsp;Details View</span>
+                         <span  class="bg-gradient-warning btn-xs receivableDtl" data-toggle="modal" data-target="#billModalDetails" id="bill_dtl_btn"  ><i class="fas fa-cog"></i>&nbsp;Bill Details </span>
                       <div class="row" >
 
+                         <input type="hidden" name="bill_id" id="bill_id" value="" />
+                         <input type="hidden" name="clear_fine_amt" id="clear_fine_amt" value="" />
+                         <input type="hidden" name="student_new_status" id="student_new_status" value="" />
                       <div class="col-md-1">
                               <div class="form-group">
                                 <label for="firstname">Amount</label>
-                                  <div class="input-group input-group-sm">
-                                <input type="text" class="form-control forminputs " id="receivable_student_amt" name="receivable_student_amt" placeholder="" autocomplete="off" value="" onKeyUp="numericFilter(this);" >
+                                  <div class="input-group input-group-sm" id="receivable_student_amterr">
+                                <input type="text" class="form-control forminputs " id="receivable_student_amt" name="receivable_student_amt" placeholder="" autocomplete="off" value="" onKeyUp="numericFilter(this);" readonly>
                                 </div>
 
                               </div>
                      </div><!-- end of col-md-2 -->
 
-                       <div class="col-md-1">
+                      <div class="col-md-1">
                               <div class="form-group">
                                 <label for="firstname">Fine Amt.</label>
                                   <div class="input-group input-group-sm">
-                                <input type="text" class="form-control forminputs " id="receivable_student_fineamt" name="receivable_student_fineamt" placeholder="" autocomplete="off" value="" onKeyUp="numericFilter(this);" >
+                                <input type="text" class="form-control forminputs " id="receivable_student_fineamt" name="receivable_student_fineamt" placeholder="" autocomplete="off" value="" onKeyUp="numericFilter(this);" readonly >
                                 </div>
 
                               </div>
@@ -445,7 +473,7 @@ fieldset.scheduler-border {
                       <div class="col-md-2">
                           <div class="form-group">
                             <label for="code">CGST Rate</label>
-                              <div class="input-group input-group-sm">
+                              <div class="input-group input-group-sm" id="receivable_student_cgst_rateerr">
                               <select class="form-control select2" name="receivable_student_cgst_rate" id="receivable_student_cgst_rate"  style="width: 100%;">
                               <option value="" data-rate="0">Select</option>
                                 <?php
@@ -469,7 +497,7 @@ fieldset.scheduler-border {
                          <div class="col-md-2">
                           <div class="form-group">
                             <label for="code">SGST Rate</label>
-                              <div class="input-group input-group-sm">
+                              <div class="input-group input-group-sm" id="receivable_student_sgst_rateerr">
                               <select class="form-control select2" name="receivable_student_sgst_rate" id="receivable_student_sgst_rate"  style="width: 100%;">
                               <option value="" data-rate="0">Select</option>
                                 <?php
@@ -491,11 +519,20 @@ fieldset.scheduler-border {
 
                           </div>
                      </div><!-- end of col-md-2 -->
-                       <div class="col-md-2">
+                       <div class="col-md-1">
                           <div class="form-group">
                             <label for="firstname">Net Amt.</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="receivable_student_netamt" name="receivable_student_netamt" placeholder="" autocomplete="off" value=""    >
+                            <input type="text" class="form-control forminputs " id="receivable_student_netamt" name="receivable_student_netamt" placeholder="" autocomplete="off" value=""   readonly >
+                            </div>
+
+                          </div>
+                     </div><!-- end of col-md-2 -->
+                          <div class="col-md-1">
+                          <div class="form-group">
+                            <label for="firstname">Pay. Amt.</label>
+                              <div class="input-group input-group-sm" id="receivable_student_paymentamterr">
+                            <input type="text" class="form-control forminputs " id="receivable_student_paymentamt" name="receivable_student_paymentamt" placeholder="" autocomplete="off" value=""    >
                             </div>
 
                           </div>
@@ -505,7 +542,7 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">&nbsp;</label>
                               <div class="input-group input-group-sm">
-                            <button type="button" class="btn  bg-gradient-success btn-xs">Clear Fine</button>
+                            <button type="button" class="btn  bg-gradient-success btn-xs" id="clear_fine_rec">Clear Fine</button>
                             </div>
 
                           </div>
@@ -807,16 +844,26 @@ fieldset.scheduler-border {
                       
                   
                     </fieldset>
+
+                 
                       </div>
 
 
-                  <!--    <fieldset class="scheduler-border"> <legend class="scheduler-border">Accounting</legend>
-                      <div class="row" >
-               
+                    <fieldset class="scheduler-border formblock-box">
+                        <div class="row">
+                          <div class="col-md-8">
+                                  <div class="form-group">
+                                    <label for="firstname">Narration</label>
+                                    <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control forminputs " id="narration" name="narration" placeholder="" autocomplete="off" value="" style="text-transform:uppercase"  >
+                                    </div>
+
+                                  </div>
+                          </div><!-- end of col-md-3 -->
                     </div>
 
 
-                     </fieldset> -->
+                     </fieldset> 
 
                      
 
@@ -828,7 +875,7 @@ fieldset.scheduler-border {
                               <div class="btnDiv">
                                     <button type="submit" class="btn action-button btn-sm" id="tennispaymentsavebtn"><i class="fas fa-save"></i> &nbsp; <?php echo $bodycontent['btnText']; ?></button>
                                   
-                                    <span class="btn btn-sm action-button formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i><?php echo $bodycontent['btnTextLoader']; ?></span>
+                                    <span class="btn btn-sm action-button formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i> <?php echo $bodycontent['btnTextLoader']; ?></span>
                               </div>
                        </div>
                      </div>
@@ -987,15 +1034,15 @@ fieldset.scheduler-border {
         <div class="modal-dialog modal-xs" style="width: 300px;margin-top: 260px;">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="frm_header"></h5>
+              <h5 class="frm_header"> Saved Succesfully</h5>
            
-              </button>
+              
             </div>
             <div class="modal-body" style="font-size: 12px;">
             <table>
               <tr>
                 <td><button type="button" class="btn btn-block btn-success btn-xs">Print Receipt</button></td>
-                <td><button type="button" class="btn btn-block btn-danger btn-xs" data-dismiss="modal" aria-label="Close">Close</button></td>
+                <td><button type="button" class="btn btn-block btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="close_btn_patment_rec">Close</button></td>
               </tr>
             </table>
              
@@ -1005,6 +1052,25 @@ fieldset.scheduler-border {
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+      </div>
+
+
+  <div id="billModalDetails" class="modal fade customModal format1 right"  data-keyboard="false" data-backdrop="false">
+  <div class="modal-dialog modal-xs" style="width: 350px;margin-top: 195px;">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(90deg, #A60711 0%,#4E3FFB 100%);background-color: rgba(0, 0, 0, 0);
+padding: 5px;color: #fff;">
+       <h4 class="frm_header">Bill Details</h4>
+        <button type="button" class="close" data-dismiss="modal"  >&times;<span class="sr-only">Close</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <div id="bill_details_data"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 

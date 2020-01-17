@@ -63,7 +63,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo(base_url());?>assets/dist/js/demo.js"></script>
 
+
 <script src="<?php echo(base_url());?>assets/js/jquery.nicescroll.min.js"></script>
+
+<!-- input date checker jquery -->
+<script src="<?php echo base_url(); ?>assets/js/customJs/datecheck.js"></script>
+
+
 
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">

@@ -79,7 +79,7 @@ legend.scheduler-border {
                                       <label for="studname" >Name</label>
                                       <div class="form-group">
                                         <div class="input-group input-group-sm">
-                                            <select class="form-control select2" id="studtitle" name="studtitle" style="width: 18%;">
+                                            <select class="form-control select2" id="studtitle" name="studtitle" style="width: 18%">
                                                 <option value=''>&nbsp; </option>
                                                 <?php foreach ($bodycontent['titleofneme'] as $value) { ?>
                                                 <option value="<?php echo $value; ?>"
@@ -87,7 +87,7 @@ legend.scheduler-border {
                                                 </option>
                                                 <?php   } ?>
                                             </select>
-                                            <input type="text" class="form-control" name="studname" id="studname" placeholder="" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->student_name; } ?>">
+                                            <input type="text" class="form-control" name="studname" id="studname" placeholder="" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->student_name; } ?>" style="width: 82%">
                                         </div>
                                       </div>
                                     </div>
@@ -235,7 +235,7 @@ legend.scheduler-border {
                           </div>
                         </div>
                         <div class="col-md-4">
-                          <label for="address_one">Address 2</label>
+                          <label for="address_two">Address 2</label>
                           <div class="form-group">
                               <div class="input-group input-group-sm">
                                 <input type="text" class="form-control "  name="address_two" id="address_two" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_two; } ?>" />
@@ -243,10 +243,10 @@ legend.scheduler-border {
                           </div>
                         </div>
                         <div class="col-md-4">
-                          <label for="address_two">Address 3</label>
+                          <label for="address_three">Address 3</label>
                           <div class="form-group">
                               <div class="input-group input-group-sm">
-                                <input type="text" class="form-control "  name="address_two" id="address_two" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_two; } ?>" />
+                                <input type="text" class="form-control "  name="address_two" id="address_two" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_three; } ?>" />
                               </div>
                           </div>
                         </div>
@@ -353,7 +353,7 @@ legend.scheduler-border {
                            <div class="input-group-prepend">
                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                            </div>
-                           <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="exit_dt" id="exit_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->admission_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->admission_dt)); } ?>">
+                           <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="exit_dt" id="exit_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->discharge_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->discharge_dt)); } ?>">
                          </div>
                         </div>
                       </div>
@@ -431,10 +431,20 @@ legend.scheduler-border {
                </div> -->
                <div class="col-md-3">
                           <div class="form-group">
-                            <label for="openingbal">Monthly Subscription</label>
+                            <label for="openingbal">
+                              <span id="billstytext">
+                              <?php if($bodycontent['mode'] == 'EDIT'){
+                                 if($bodycontent['studentregisterEditdata']->bill_style == 'M'){
+                                  echo 'Monthly';
+                                 }else if($bodycontent['studentregisterEditdata']->bill_style == 'Q'){
+                                   echo 'Quarterly';
+                                 }else{
+                                   echo 'Monthly';
+                                 }
+                              }  ?> </span> Subscription</label>
                             <div class="input-group input-group-sm">
 
-                               <input type="text" class="form-control numberwithdecimal" name="monthly_sub" id="monthly_sub" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->email; } ?>">
+                               <input type="text" class="form-control numberwithdecimal" name="monthly_sub" id="monthly_sub" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->subscription; } ?>">
                               
                             </div>
 
@@ -474,10 +484,11 @@ legend.scheduler-border {
 
               <div class="formblock-box">
                 <div class="row">
-                    <div class="col-md-8"></div>
-                    <div class="col-md-4 text-right">
-                      <button type="submit" class="btn btn-sm action-button " id="studregsavebtn" ><?php echo $bodycontent['btnText']; ?></button>
-                        <span class="btn btn-block btn-secondary loaderbtn" id="loaderbtn" style="display:none;width: 80%;"><?php echo $bodycontent['btnTextLoader']; ?></span>
+                    <div class="col-md-10"></div>
+                    <div class="col-md-2 text-right">
+                      <button type="submit" class="btn btn-sm action-button" id="studregsavebtn" style="width: 57%;"><?php echo $bodycontent['btnText']; ?></button>
+
+                        <span class="btn btn-sm action-button loaderbtn" id="loaderbtn" style="display:none;width: 57%;"><?php echo $bodycontent['btnTextLoader']; ?></span>
                     </div>
                 </div>
               </div>

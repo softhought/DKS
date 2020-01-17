@@ -18,7 +18,7 @@
               <table class="table customTbl table-bordered table-striped dataTable">
                 <thead>
                     <tr>
-                    <th>Sl.No</th>
+                    <th>Sl No.&ensp;</th>
                     <th>Student Code</th>
                     <th>Student Name</th>
                     <th>Father's/Mother's Name</th>

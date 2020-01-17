@@ -33,8 +33,8 @@ class Paymenttennismodel extends CI_Model{
   {
     $data = array();
     $where = array(
-                    'account_group.group_category' =>'PROFIT & LOSS',
-                    'account_group.bal_pl_item' =>'INCOME',
+                   // 'account_group.group_category' =>'PROFIT & LOSS',
+                   // 'account_group.bal_pl_item' =>'INCOME',
                     'account_master.company_id' =>$companyid,
 
                  );
@@ -167,8 +167,8 @@ class Paymenttennismodel extends CI_Model{
                $receipt_no=$this->getSerialNumber($company,$year,$serialmodule);
 
                $voucherMast['voucher_no'] = $receipt_no; 
-               $voucherMast['voucher_date'] = date("Y-m-d", strtotime($searcharray['payment_dt']));
-               $voucherMast['narration'] = "Other Receipt Invoice No ".$voucherMast['voucher_no']." Date ".date("Y-m-d", strtotime($searcharray['payment_dt']));  
+               $voucherMast['voucher_date'] = date("Y-m-d", strtotime($payment_dt));
+               $voucherMast['narration'] = "Other Receipt Invoice No ".$voucherMast['voucher_no']." Date ".date("d-m-Y", strtotime($payment_dt));  
                $voucherMast['cheque_no'] =$searcharray['cheque_no'];         
                $voucherMast['cheque_date'] =$cheque_dt;        
                $voucherMast['bank_name'] = $searcharray['bank'];        
@@ -223,7 +223,7 @@ class Paymenttennismodel extends CI_Model{
        $vouchrDtlVat = array();
 
       
-  
+    //  pre($searcharray);exit;
           
        $debitAccId = $searcharray['actobedebited'];
        $creditAccId = $searcharray['actobecredited'];
@@ -267,7 +267,7 @@ class Paymenttennismodel extends CI_Model{
 
 
                   /*------------------------------------------------------------------------------------------------*/     
-                       // for GST(cgst+sgst+igst)
+                       /* for GST(cgst+sgst+igst) */
                      
                        $cgstarray=array();
                        $sgstarray =array();
@@ -362,6 +362,54 @@ class Paymenttennismodel extends CI_Model{
 
        }else if($tran_type=='RCFS'){
 
+
+          $receivable_student_amt=$searcharray['receivable_student_amt'];
+          $receivable_student_fineamt=$searcharray['receivable_student_fineamt'];
+          $fine_ledger_ac=$searcharray['fine_ledger_ac'];
+          $receivable_student_cgst_rate=$searcharray['receivable_student_cgst_rate'];
+          $receivable_student_cgst_amt=$searcharray['receivable_student_cgst_amt'];
+          $receivable_student_sgst_rate=$searcharray['receivable_student_sgst_rate'];
+          $receivable_student_sgst_amt=$searcharray['receivable_student_sgst_amt'];
+          $receivable_student_netamt=$searcharray['receivable_student_netamt'];
+
+          $vsrl_no=1;
+                       /* For Customer Acc */
+                       $vouchrDtlCus['voucher_master_id'] = $vMastId;
+                       $vouchrDtlCus['srl_no'] = 1;
+                       $vouchrDtlCus['tran_tag'] ='Dr' ;
+                       $vouchrDtlCus['account_master_id'] = $debitAccId;
+                       $vouchrDtlCus['amount'] = $receivable_student_netamt;   
+                       $this->db->insert('voucher_detail', $vouchrDtlCus);
+
+                       /* For Fine Acc*/
+                       if ( $receivable_student_fineamt!='' &&  $receivable_student_fineamt!=0) {
+                           $vouchrDtlSale['voucher_master_id'] = $vMastId;
+                           $vouchrDtlSale['srl_no'] = 5;
+                           $vouchrDtlSale['tran_tag'] ='Cr' ;
+                           $vouchrDtlSale['account_master_id'] = $fine_ledger_ac;
+                           $vouchrDtlSale['amount'] = $receivable_student_fineamt;
+                           $this->db->insert('voucher_detail', $vouchrDtlSale);
+                       }
+
+
+                       /* For Sale Acc */
+                       $vouchrDtlSale['voucher_master_id'] = $vMastId;
+                       $vouchrDtlSale['srl_no'] = 2;
+                       $vouchrDtlSale['tran_tag'] ='Cr' ;
+                       $vouchrDtlSale['account_master_id'] = $creditAccId;
+                       $vouchrDtlSale['amount'] = $receivable_student_amt;
+                       $this->db->insert('voucher_detail', $vouchrDtlSale);
+
+                       $this->GSTinsertionOnVoucherDetails($vMastId,$receivable_student_cgst_rate,$receivable_student_cgst_amt, "CGST",3);
+                       $this->GSTinsertionOnVoucherDetails($vMastId,$receivable_student_sgst_rate,$receivable_student_sgst_amt, "SGST",4);
+
+
+
+
+
+
+
+
        }
 
 
@@ -425,12 +473,12 @@ class Paymenttennismodel extends CI_Model{
                           
       }
           $digit = (int)(log($lastnumber,10)+1) ;  
-        if($digit==3){
-            $autoSaleNo = $tag."/".$lastnumber;
-        }elseif($digit==2){
+        if($digit==2){
             $autoSaleNo = $tag."/0".$lastnumber;
         }elseif($digit==1){
             $autoSaleNo = $tag."/00".$lastnumber;
+        }else{
+           $autoSaleNo = $tag."/".$lastnumber;
         }
         $lastnumber = $lastnumber + 1;
         
@@ -529,7 +577,7 @@ class Paymenttennismodel extends CI_Model{
                }
 
 
-      
+              
            
               $admission_id = $this->commondatamodel->getSingleRowByWhereCls('admission_register',$where)->admission_id;
 
@@ -537,6 +585,7 @@ class Paymenttennismodel extends CI_Model{
               $patment_mst_inst['payment_date']=$payment_dt;
               $patment_mst_inst['receipt_no']=$receipt_no;
               $patment_mst_inst['student_code']=$searcharray['sel_student_code'];
+             
               $patment_mst_inst['admission_id']=$admission_id;
               $patment_mst_inst['transaction_type']=$searcharray['tran_type'];
               $patment_mst_inst['payment_mode']=$searcharray['paymentmode'];
@@ -544,7 +593,7 @@ class Paymenttennismodel extends CI_Model{
               $patment_mst_inst['actobecredited']=$searcharray['actobecredited'];
               $patment_mst_inst['fees_quarter']=$searcharray['fees_quarter'];
               $patment_mst_inst['fees_month']=$searcharray['fees_month'];
-              $patment_mst_inst['fees_year']=$searcharray['fees_month'];
+              $patment_mst_inst['fees_year']=$searcharray['fees_year'];
               $patment_mst_inst['cheque_bank']=$searcharray['bank'];
               $patment_mst_inst['cheque_bank_branch']=$searcharray['branch'];
               $patment_mst_inst['cheque_no']=$searcharray['cheque_no'];
@@ -552,6 +601,8 @@ class Paymenttennismodel extends CI_Model{
               $patment_mst_inst['voucher_master_id']=$vMastId;
               $patment_mst_inst['company_id']=$company;
               $patment_mst_inst['year_id']=$year;
+              $patment_mst_inst['created_on']=date('Y-m-d');
+              $patment_mst_inst['narration']=$searcharray['narration'];
 
               if ($searcharray['tran_type']=='ORADM') {
 
@@ -563,6 +614,17 @@ class Paymenttennismodel extends CI_Model{
               $patment_mst_inst['total_amount']=$searcharray['oth_rec_netamt']; 
 
               }else if($searcharray['tran_type']=='RCFS'){
+
+              $patment_mst_inst['taxable_amount']=$searcharray['receivable_student_amt']; 
+              $patment_mst_inst['fine_amt']=$searcharray['receivable_student_fineamt'];  
+              $patment_mst_inst['clear_fine_amt']=$searcharray['clear_fine_amt'];  
+              $patment_mst_inst['cgst_id']=$searcharray['receivable_student_cgst_rate']; 
+              $patment_mst_inst['cgst_amt']=$searcharray['receivable_student_cgst_amt']; 
+              $patment_mst_inst['sgst_id']=$searcharray['receivable_student_sgst_rate']; 
+              $patment_mst_inst['sgst_amt']=$searcharray['receivable_student_sgst_amt']; 
+              $patment_mst_inst['total_amount']=$searcharray['receivable_student_netamt']; 
+              $patment_mst_inst['payment_amount']=$searcharray['receivable_student_paymentamt']; 
+              $patment_mst_inst['bill_id']=$searcharray['bill_id']; 
 
               }
 
@@ -633,6 +695,52 @@ class Paymenttennismodel extends CI_Model{
               
            
      }
+
+  public function getBillData($billing_style,$student_id,$month_id,$quarter_id,$year_id,$company_id)
+  {
+
+    if ($billing_style=='M') {
+    
+     $where = array(
+                      'student_id' => $student_id, 
+                      'month_id' => $month_id, 
+                      'year_id' => $year_id, 
+                      'company_id' => $company_id, 
+                    );
+
+    }else{
+
+       $where = array(
+                      'student_id' => $student_id, 
+                      'quarter_id' => $quarter_id, 
+                      'year_id' => $year_id, 
+                      'company_id' => $company_id, 
+                    );
+
+    }
+    
+    
+    $this->db->select('*')
+        ->from('bill_master_tennis')
+        ->where($where)
+        ->limit(1);
+    $query = $this->db->get();
+   #echo $this->db->last_query();
+    if($query->num_rows()>0){
+
+           $row = $query->row();
+           return $row;
+     
+    }
+    else
+    {
+      return 0;
+    }
+    
+  }
+
+
+
 
     
 

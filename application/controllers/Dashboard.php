@@ -20,6 +20,43 @@ class Dashboard extends CI_Controller {
 	}
 
 
+  public function checkdateRange(){
+  	 $session = $this->session->userdata('user_detail');
+    if($this->session->userdata('user_detail'))
+    {
+
+       $year_id = $session['yearid'];
+    	$datedata = $this->input->post('datedata');
+
+    	 $inputdt = str_replace('/', '-', $datedata);
+          $input_date=date('Y-m-d',strtotime($inputdt));
+
+    	$getdata = $this->dashboard->checkdaterange($input_date,$year_id);
+    	
+    	if(!empty($getdata))
+                    {
+                        $json_response = array(
+                            "msg_status" => 1,
+                        
+                        );
+                    }
+                    else
+                    {
+                        $json_response = array(
+                            "msg_status" => 0,
+                           
+                        );
+                    }
+            header('Content-Type: application/json');
+            echo json_encode( $json_response );
+            exit;
+
+
+    }else{
+           redirect('login','refresh');
+     
+    }
+  }
 
 
 
