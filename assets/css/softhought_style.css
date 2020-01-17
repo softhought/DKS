@@ -53,7 +53,8 @@ fieldset {
 }
 .errormsgcolor{
     color: red;
-    font-size: 20px;
+    font-size: 16px;
+    font-family: initial;
 }
 .succmsg{
      color: #e80f89;
@@ -507,3 +508,23 @@ border: 1px solid
 	float: right;
 }
 
+/*-----added by anil on 13-01-2020---------*/
+.actinct{
+	background:  linear-gradient(90deg, #D21DC7 0%, #820863 100%) !important;
+}
+
+.layout-box-content-format1 .table.customTbl .tbl-del-action-btn {
+	background: linear-gradient(90deg, #CC232D 0%, #E10F85 100%);
+	padding: 2px 7px 2px 2px;
+	text-align: center;
+	box-shadow: 0px 2px 6px 0px #646363;
+	border: 0;
+	font-size: 14px;
+	color: #FFF;
+}
+.dispnone{
+	display: none;
+}
+.dispblock{
+	display: inline-block;
+}

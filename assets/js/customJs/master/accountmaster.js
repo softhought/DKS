@@ -36,7 +36,7 @@ $(document).on('submit','#acountmasterFrom',function(event)
             var formData = { formDatas: formDataserialize };
                     
             $("#accmastersavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#loaderbtn").css('display', 'inline-block');
         
                
         $.ajax({
@@ -54,7 +54,7 @@ $(document).on('submit','#acountmasterFrom',function(event)
                     	if(mode == 'EDIT'){
 
 
-                    	 $("#accmastersavebtn").css('display', 'block');
+                    	 $("#accmastersavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          window.location.href=basepath+'accountmaster';
                          //showMsg();
@@ -62,7 +62,7 @@ $(document).on('submit','#acountmasterFrom',function(event)
                     	}else{
 
                     	 $("#errormsg").text(result.msg_data).css('color','#e80f89'); 
-                         $("#accmastersavebtn").css('display', 'block');
+                         $("#accmastersavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          $('#groupname').val('');                    
                          $('#accountname').val('');                    

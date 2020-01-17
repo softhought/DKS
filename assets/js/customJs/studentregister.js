@@ -43,7 +43,7 @@ $(document).on('submit','#stdentregisterForm',function(event)
             var formData = new FormData($(this)[0]);
                     
             $("#studregsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#loaderbtn").css('display', 'inline-block');
         
                
         $.ajax({
@@ -60,7 +60,7 @@ $(document).on('submit','#stdentregisterForm',function(event)
                     if (result.msg_status == 1) {
 
                     
-                    	 $("#studregsavebtn").css('display', 'block');
+                    	 $("#studregsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          window.location.href=basepath+'studentregister';
                          

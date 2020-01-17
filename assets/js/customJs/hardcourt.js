@@ -56,7 +56,7 @@ $(document).on('submit','#hardcourtFrom',function(event)
            
                     
             $("#hardcourtsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#loaderbtn").css('display', 'inline-block');
         
                
         $.ajax({
@@ -74,7 +74,7 @@ $(document).on('submit','#hardcourtFrom',function(event)
                     	if(mode == 'EDIT'){
 
 
-                    	 $("#hardcourtsavebtn").css('display', 'block');
+                    	 $("#hardcourtsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          window.location.href=basepath+'hardcourt';
                          //showMsg();
@@ -83,13 +83,13 @@ $(document).on('submit','#hardcourtFrom',function(event)
 
                          $("#errormsg").removeClass('errormsgcolor');
                     	 $("#errormsg").text(result.msg_data).addClass('succmsg'); 
-                         $("#hardcourtsavebtn").css('display', 'block');
+                         $("#hardcourtsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
 	                      $('#hardcourt_date').val('');
-						  $('#student_idcode').val('').change();
-						  $('#quntity').val('');
-						  $('#rate').val('');
-						  $('#amount').val('');
+          						  $('#student_idcode').val('').change();
+          						  $('#quntity').val('');
+          						  $('#rate').val('');
+          						  $('#amount').val('');
                          //$("#hardcourtId").val(result.hardcourtId);
                          
 
