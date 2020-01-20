@@ -63,22 +63,20 @@
               </div>
              </div>
             
-             <div class="row">
-               <div class="col-md-4"></div>
-                 <div class="col-md-5">
-                    <p id="errormsg" class="errormsgcolor"></p>
-                 </div>
-               
-             </div>
+           
            </div>
 
             <div class="formblock-box">
             
              <div class="row">
               <?php if($bodycontent['mode'] == 'ADD'){ ?>
-                    <div class="col-md-8"></div>
+                    <div class="col-md-8">
+                      <p id="errormsg" class="errormsgcolor"></p>
+                    </div>
                 <?php }else{  ?>
-                    <div class="col-md-10"></div>
+                    <div class="col-md-10">
+                      <p id="errormsg" class="errormsgcolor"></p>
+                    </div>
                <?php  }?>
                <div class="col-md-2 text-right">
                  <button type="submit" class="btn btn-sm action-button" id="tennisitemsavebtn" style="width: 70%;"><?php echo $bodycontent['btnText']; ?></button>

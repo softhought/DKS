@@ -34,8 +34,8 @@
                    <tr>
                    <td><?php echo $i++; ?></td>
                    <td><?php echo $studentregisterdtl->student_code; ?></td>
-                   <td><?php echo $studentregisterdtl->title_one.''.$studentregisterdtl->student_name; ?></td>
-                    <td><?php echo $studentregisterdtl->title_two.''.$studentregisterdtl->guardian_name; ?></td>
+                   <td><?php echo $studentregisterdtl->title_one.' '.$studentregisterdtl->student_name; ?></td>
+                    <td><?php echo $studentregisterdtl->title_two.' '.$studentregisterdtl->guardian_name; ?></td>
                    <td><?php if($studentregisterdtl->phone_one != '' && $studentregisterdtl->phone_two != ''){
 
                      echo  $studentregisterdtl->phone_one.'/'.$studentregisterdtl->phone_two;

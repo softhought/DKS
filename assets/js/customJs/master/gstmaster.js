@@ -107,9 +107,70 @@ $(document).on('submit','#gstFrom',function(event)
 
 
 
-
-
 });
+
+
+function deletegst(id) {
+
+  var basepath = $("#basepath").val();
+  
+      Swal.fire({
+      title: 'Are you sure?',
+      // text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+  
+         $.ajax({
+                type: "POST",
+                url: basepath+'gstmaster/deletegstmaster',
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: {id:id},
+                
+                success: function (result) {
+
+                    window.location.href=basepath+'gstmaster';
+                                    
+                }, 
+                error: function (jqXHR, exception) {
+                  var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                   // alert(msg);  
+                }
+            }); /*end ajax call*/
+
+                // Swal.fire(
+        //   'Deleted!',
+        //   'Your file has been deleted.',
+        //   'success'
+        // )
+      }
+    })
+
+}  
+
+
+
+
 
 function validateform(){
 

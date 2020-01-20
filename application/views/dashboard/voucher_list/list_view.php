@@ -1,17 +1,17 @@
 
 
     <hr> 
-   <table id="voucherlistTable" class="table table-striped display" cellspacing="0" width="100%;" border="0" >
+   <table id="voucherlistTable" class="table customTbl table-striped display" cellspacing="0" width="100%;" border="0" >
          
-     <thead style="background:#db4849;color:white; font-size: 12px;text-indent: 4px;">
+     <thead>
          <tr>
-        <th>Sl.</th>
-        <th>Voucher No.</th>
-        <th>Voucher Date</th>
+        <th>Sl. &emsp;</th>
+        <th>Voucher No.&emsp;</th>
+        <th>Voucher Date&emsp;</th>
         <th>Narration</th>
-        <th>Voucher Type</th>
-        <th>Voucher Detail</th>
-        <th>Action</th>
+        <th>Voucher Type&emsp;</th>
+        <th>Voucher Detail&emsp;</th>
+        <th>Action&emsp;</th>
          </tr>
         
     </thead>

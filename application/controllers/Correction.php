@@ -148,12 +148,13 @@ public function correction_action() {
           
             $insertData = $this->correctionmodel->insertCorrectionData($dataArry);
 
+             
               $activity_module='Data Insert';
               $action = 'Insert';
               $method='correction_action'; 
               $master_id =$insertData;
               $tablename = 'corrections';
-              $description = 'date of correction-'.$dataArry['correction_dt'].' '.'student code-'.$dataArry['student'].' '.'bill style-'.$dataArry['bill_style'].' amount-'.$dataArry['correction_acc_id'];
+              $description = 'date of correction-'.$dataArry['correction_dt'].' '.'student code-'.$dataArry['student'].' '.'bill style-'.$dataArry['bill_style'].' amount-'.$dataArry['correction_acc_id'].' correction-No= '.$insertData;
               $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
                if($insertData)
@@ -249,7 +250,7 @@ public function deletecorrection(){
         if($this->session->userdata('user_detail'))
         {
 
-            $correctionId = $this->uri->segment(3);
+            $correctionId = $this->input->post('id');
             $where = array('id'=>$correctionId);
 
            $delete = $this->commondatamodel->deleteTableData('corrections',$where);
@@ -261,7 +262,13 @@ public function deletecorrection(){
               $description = '';
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
-           redirect('correction');
+          $json_response = array(
+                                    "msg_status" => 1,
+                                   );                                                      
+         
+        header('Content-Type: application/json');
+        echo json_encode( $json_response );
+        exit; 
 
         }else{
             redirect('login','refresh');

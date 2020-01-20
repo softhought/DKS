@@ -1,3 +1,4 @@
+<script src="<?php echo base_url(); ?>assets/js/customJs/master/gstmaster.js"></script>
 
 <section class="layout-box-content-format1">
         <div class="card card-primary">
@@ -48,9 +49,11 @@
                    <a href="<?php echo base_url(); ?>gstmaster/addgstmaster/<?php echo $gstmasterlist->id; ?>" class="btn tbl-action-btn padbtn">
                   <i class="fas fa-edit"></i> 
                 </a>
-                <a href="<?php echo base_url(); ?>gstmaster/deletegstmaster/<?php echo $gstmasterlist->id; ?>" class="btn tbl-del-action-btn padbtn">
+
+                <button class="btn tbl-del-action-btn padbtn" onclick="deletegst(<?php echo $gstmasterlist->id; ?>)"><i class="fas fa-trash"></i></button>
+                <!-- <a href="<?php echo base_url(); ?>gstmaster/deletegstmaster/<?php echo $gstmasterlist->id; ?>" class="btn tbl-del-action-btn padbtn">
                   <i class="fas fa-trash"></i> 
-                </a>
+                </a> -->
                   </td>
 
 

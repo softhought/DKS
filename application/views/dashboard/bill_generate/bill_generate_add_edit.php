@@ -2,10 +2,9 @@
 <style type="text/css">
 
 </style>
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">Tennis - Bill Generation</h3>
             <!--  <a href="<?php echo base_url(); ?>intratournament" class="">
               <button class="btn btn-info btnpos">List</button></a>  -->
@@ -17,9 +16,10 @@
            <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
         
             <div class="card-body">
-                
+                <div class="formblock-box">
         
             <div id="copy_div">
+              
 
              <div class="row">
               <!-- <div class="col-md-1"></div> -->
@@ -160,11 +160,12 @@
 
 
              </div>
-                      
+           </div>
+                     
           </div> <!-- /.card-body -->
         
 
-        <hr>
+       <!--  <hr> -->
 
         <div id="student_list" style="padding: 5px;">
           
@@ -178,8 +179,7 @@
 
 
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+   </section>
 
 
 

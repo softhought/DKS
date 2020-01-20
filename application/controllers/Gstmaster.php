@@ -176,7 +176,7 @@ public function gstmaster_action(){
         if($this->session->userdata('user_detail'))
         {
 
-            $gstid = $this->uri->segment(3);
+            $gstid = $this->input->post('id');
             $where = array('id'=>$gstid);
 
            $delete = $this->commondatamodel->deleteTableData('gstmaster',$where);
@@ -185,9 +185,20 @@ public function gstmaster_action(){
               $method='deletegstmaster'; 
               $master_id =$gstid;
               $tablename = 'gstmaster';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename);
+              $description = '';
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
-           redirect('gstmaster');
+                   
+
+            $json_response = array(
+                                    "msg_status" => 1,
+                                   );                                                      
+         
+        header('Content-Type: application/json');
+        echo json_encode( $json_response );
+        exit; 
+
+           //redirect('gstmaster');
 
         }else{
             redirect('login','refresh');
