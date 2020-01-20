@@ -111,7 +111,8 @@ $(document).on('submit','#paymentmodeFrom',function(event)
 
                     	}else{
 
-                    	 $("#errormsg").text(result.msg_data).css('color','#e80f89'); 
+                    	 $("#errormsg").removeClass('errormsgcolor');
+                         $("#errormsg").text(result.msg_data).addClass('succmsg'); 
                          $("#paymentmodesavebtn").css('display', 'block');
                          $("#loaderbtn").css('display', 'none');
                          $('#paymentmode').val('');                    
@@ -164,7 +165,8 @@ function valiadtePaymentinfo(){
 	var paymentmode = $('#paymentmode').val();
 	var acccountid = $('#acccountid').val();
 	
-
+ $("#errormsg").removeClass('succmsg');
+ $("#errormsg").addClass('errormsgcolor');
   $('#errormsg').text();
 
 	if(paymentmode == ''){

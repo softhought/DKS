@@ -1,26 +1,21 @@
 <script src="<?php echo base_url(); ?>assets/js/customJs/tennisopening/tennisopening.js"></script>
-<style>
-.card-body .modal-body{
-    #color: #44423d;
 
-   
-  }
-  label{
-     font-size: 15px;
-     color: #354668 !important;
-  }
-</style>
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">Student Tennis Opening</h3>
-               <a href="<?php echo base_url(); ?>tennisopening/tennisopeningbalist" class="">
-              <button class="btn btn-info btnpos">List</button></a>
+               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+               
+                <a href="<?php echo base_url(); ?>tennisopening/tennisopeningbalist" class="btn btn-default"><i class="fas fa-clipboard-list"></i> List</a>
+                
+               
+              </div>
+             
                            
             </div><!-- /.card-header -->
 
             <div class="card-body">
+               <div class="formblock-box">
 
               <div class="row">
                 <div class="col-sm-3">
@@ -47,6 +42,7 @@
                       </div>
                     </div>
               </div>
+
 
              <form id="tennisopeningForm" name="tennisopeningForm" enctype="multipart/form-data">
 
@@ -113,7 +109,7 @@
 
                     
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-block btn-primary btn-sm" id="showopeninglist" style="width: 50%;font-size: 14px;">Show</button>
+                  <button type="button" class="btn btn-sm action-button" id="showopeninglist" style="width: 50%;font-size: 14px;">Show</button>
 
                    </div>
                 
@@ -130,9 +126,9 @@
         <div id="openingballist"></div>
 
     </form>
-              
+             
+             </div> 
 
             </div><!-- /.card-body -->
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+    </section>

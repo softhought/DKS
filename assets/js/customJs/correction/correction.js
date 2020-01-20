@@ -80,7 +80,7 @@ $(document).on('submit','#correctionFrom',function(event)
            
                     
             $("#correctionsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#loaderbtn").css('display', 'inline-block');
         
                
         $.ajax({
@@ -98,7 +98,7 @@ $(document).on('submit','#correctionFrom',function(event)
                     	if(mode == 'EDIT'){
 
 
-                    	 $("#correctionsavebtn").css('display', 'block');
+                    	 $("#correctionsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          window.location.href=basepath+'correction';
                          //showMsg();
@@ -109,7 +109,7 @@ $(document).on('submit','#correctionFrom',function(event)
 
                          $("#errormsg").removeClass('errormsgcolor');
                     	 $("#errormsg").text(result.msg_data).addClass('succmsg'); 
-                         $("#correctionsavebtn").css('display', 'block');
+                         $("#correctionsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
 	                      $('#correction_dt').val('');
 						  $('#student').val('').change();

@@ -26,7 +26,7 @@ $(document).on('submit','#tennisitemFrom',function(event)
             var formData = { formDatas: formDataserialize };
                     
              $("#tennisitemsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#loaderbtn").css('display', 'inline-block');
         
                
         $.ajax({
@@ -44,15 +44,16 @@ $(document).on('submit','#tennisitemFrom',function(event)
                     	if(mode == 'EDIT'){
 
 
-                    	 $("#tennisitemsavebtn").css('display', 'block');
+                    	 $("#tennisitemsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          window.location.href=basepath+'tennisitem';
                          //showMsg();
 
                     	}else{
 
-                    	 $("#errormsg").text(result.msg_data).css('color','#e80f89'); 
-                         $("#tennisitemsavebtn").css('display', 'block');
+                    	   $("#errormsg").removeClass('errormsgcolor');
+                         $("#errormsg").text(result.msg_data).addClass('succmsg'); 
+                         $("#tennisitemsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          $('#tennisitem').val('');                    
                          $('#hsn_no').val('');                    
@@ -105,7 +106,8 @@ function validateform(){
 	var hsn_no = $('#hsn_no').val();
 	var rate = $('#rate').val();
 	
-
+ $("#errormsg").removeClass('succmsg');
+ $("#errormsg").addClass('errormsgcolor');
   $('#errormsg').text();
 
 	if(tennisitem == ''){

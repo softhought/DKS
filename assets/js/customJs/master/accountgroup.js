@@ -115,7 +115,8 @@ $(document).on('submit','#groupnameFrom',function(event)
 
                     	}else{
 
-                    	 $("#errormsg").text(result.msg_data).css('color','#e80f89'); 
+                    	 $("#errormsg").removeClass('errormsgcolor');
+                         $("#errormsg").text(result.msg_data).addClass('succmsg'); 
                          $("#accgroupsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          $('#groupname').val('');                    
@@ -190,6 +191,8 @@ function valiadtegroupinfo(){
 	var gropcat = $('#gropcat').val();
 	var subgropucat = $('#subgropucat').val();
 
+  $("#errormsg").removeClass('succmsg');
+  $("#errormsg").addClass('errormsgcolor');
   $('#errormsg').text();
 
 	if(groupname == ''){

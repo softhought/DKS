@@ -61,7 +61,8 @@ $(document).on('submit','#acountmasterFrom',function(event)
 
                     	}else{
 
-                    	 $("#errormsg").text(result.msg_data).css('color','#e80f89'); 
+                    	   $("#errormsg").removeClass('errormsgcolor');
+                         $("#errormsg").text(result.msg_data).addClass('succmsg'); 
                          $("#accmastersavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          $('#groupname').val('');                    
@@ -113,7 +114,8 @@ function valiadteaccinfo(){
 	var accountname = $('#accountname').val();
 	var acccountgrpid = $('#acccountgrpid').val();
 	
-
+  $("#errormsg").removeClass('succmsg');
+  $("#errormsg").addClass('errormsgcolor');
   $('#errormsg').text();
 
 	if(accountname == ''){

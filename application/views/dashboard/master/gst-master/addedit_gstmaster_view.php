@@ -134,15 +134,22 @@
              <div class="formblock-box"> 
             
                    <div class="row">
-                    <div class="col-md-8"></div>
+                    <?php if($bodycontent['mode'] == 'ADD'){ ?>
+                          <div class="col-md-8"></div>
+                        <?php }else{  ?>
+                          <div class="col-md-10"></div>
+                        <?php  }?>
+                   
                      <div class="col-md-2">
                        <button type="submit" class="btn btn-sm action-button" id="gstsavebtn" style="width: 80%;"><?php echo $bodycontent['btnText']; ?></button>
 
                          <span class="btn btn-sm action-button loaderbtn" id="loaderbtn" style="display:none;width: 80%;"><?php echo $bodycontent['btnTextLoader']; ?></span>
                      </div>
+                      <?php if($bodycontent['mode'] == 'ADD'){ ?>
                       <div class="col-md-2">
                        <button type="reset" id="resetgstform" class="btn btn-sm action-button" style="width: 80%;">Reset</button>
                      </div>
+                   <?php } ?>
                    </div>
               </div>
                       

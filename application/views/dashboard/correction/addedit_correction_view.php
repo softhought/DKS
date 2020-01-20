@@ -1,27 +1,15 @@
 <script src="<?php echo base_url(); ?>assets/js/customJs/correction/correction.js"></script>
-<style>
-
-.card-body .modal-body{
-    #color: #44423d;
-
-   
-  }
-  label{
-    font-size: 14px;
-     color: #354668 !important;
-  }
-
-</style>
 
 
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">Corrections-Tennis Coaching</h3>
-              <a href="<?php echo base_url(); ?>Correction" class="">
-              <button class="btn btn-info btnpos">List</button></a>
-                           
+              <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>Correction" class="btn btn-info btnpos">
+              <i class="fas fa-clipboard-list"></i> List </a>
+                </div> 
+                                        
             </div><!-- /.card-header -->
 
         <form name="correctionFrom" id="correctionFrom" enctype="multipart/form-data">
@@ -29,50 +17,53 @@
            <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
            <input type="hidden" name="correctionId" id="correctionId" value="<?php echo $bodycontent['correctionId']; ?>">
             <div class="card-body">
+               <div class="formblock-box">
+                 <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i>Corrections-Tennis Coaching Info</h3> 
+
+                   <div class="row">
+                      
+                          <div class="col-sm-4">
+                             <label for="correction_dt">Correction Date</label>
+                             <div class="form-group">
+                              <div class="input-group input-group-sm">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                  </div>
+                                  <input type="text" class="form-control datemask datevalid" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="correction_dt" id="correction_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['correctionEditdata']->date_of_correction != ''){ echo date('d/m/Y',strtotime($bodycontent['correctionEditdata']->date_of_correction)); } ?>">
+                                </div>
+                              </div>
+                               <p id="correctionerr"></p>
+                          </div>
+
+                      
+                          <div class="col-sm-4">
+                             <label for="student">Student</label>
+                            <div class="form-group">
+                             <div class="input-group input-group-sm">
+                                  
+                             <select class="form-control select2" id="student" name="student" style="width: 100%;">
+                          <option value=''>Select</option>
+                          <?php foreach ($bodycontent['studentcodelist'] as $studentcodelist) { ?>
+
+                            <option value="<?php echo $studentcodelist->admission_id.'_'.$studentcodelist->student_code; ?>"
+
+                            <?php if($bodycontent['mode'] == 'EDIT' && $studentcodelist->admission_id == $bodycontent['correctionEditdata']->student_id){ echo 'selected'; } ?>
+
+                              ><?php echo $studentcodelist->student_code; ?></option>
                            
-             <div class="row">
-              <label for="correction_dt" class="col-sm-2">Correction Date</label>
-                    <div class="col-sm-3">
-                       <div class="form-group">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                            </div>
-                            <input type="text" class="form-control datemask datevalid" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="correction_dt" id="correction_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['correctionEditdata']->date_of_correction != ''){ echo date('d/m/Y',strtotime($bodycontent['correctionEditdata']->date_of_correction)); } ?>">
-                          </div>
-                        </div>
-                         <p id="correctionerr"></p>
-                    </div>
-
-                 <label for="student" class="col-sm-1">Student</label>
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                       <select class="form-control select2" id="student" name="student" style="width: 100%;">
-                    <option value=''>Select</option>
-                    <?php foreach ($bodycontent['studentcodelist'] as $studentcodelist) { ?>
-
-                      <option value="<?php echo $studentcodelist->admission_id.'_'.$studentcodelist->student_code; ?>"
-
-                      <?php if($bodycontent['mode'] == 'EDIT' && $studentcodelist->admission_id == $bodycontent['correctionEditdata']->student_id){ echo 'selected'; } ?>
-
-                        ><?php echo $studentcodelist->student_code; ?></option>
-                     
-                  <?php   } ?>
-                   
-                  </select>
-                          </div>
-                        </div>
-                        <p id="studentcoderr"></p>
-                    </div>   
+                        <?php   } ?>
+                         
+                        </select>
+                                </div>
+                              </div>
+                              <p id="studentcoderr"></p>
+                          </div>   
 
 
-             </div>
-
-             <div class="row">
-               <label for="name" class="col-sm-2">Name</label>
-                    <div class="col-sm-3">
+                    <!-- <label for="student" class="col-sm-1">Student</label> -->
+               
+                    <div class="col-sm-4">
+                      <label for="name">Name</label>
                        <div class="form-group">
                         <div class="input-group input-group-sm">
                            
@@ -81,8 +72,11 @@
                         </div>
                          
                     </div>
-                    <label for="billstyle" class="col-sm-1">Billing Style</label>
-                    <div class="col-sm-3">
+                  </div>
+                  <div class="row">
+                    
+                    <div class="col-sm-4">
+                      <label for="billstyle">Billing Style</label>
                        <div class="form-group">
                         <div class="input-group input-group-sm">
                            
@@ -91,12 +85,11 @@
                         </div>
                         
                     </div>
-             </div>
-
-             <div class="row">
-              <label for="correction_acc" class="col-sm-2">Correction Account</label>
-                    <div class="col-sm-3">
+            
+             
+                    <div class="col-sm-4">
                       <div class="form-group">
+                         <label for="correction_acc">Correction Account</label>
                        <div class="input-group input-group-sm">
                             
                        <select class="form-control select2" id="correction_acc_id" name="correction_acc_id" style="width: 100%;">
@@ -117,8 +110,9 @@
                         <p id="correctionaccounterr"></p>
                     </div> 
 
-                   <label for="amount" class="col-sm-1">Amount</label>
-                    <div class="col-sm-3">
+                   
+                    <div class="col-sm-4">
+                      <label for="amount">Amount</label>
                        <div class="form-group">
                         <div class="input-group input-group-sm">
                            
@@ -131,8 +125,9 @@
              </div>
              <div class="row">
 
-               <label for="narration" class="col-sm-2">Narration</label>
-                    <div class="col-sm-3">
+              
+                    <div class="col-sm-4">
+                       <label for="narration">Narration</label>
                        <div class="form-group">
                         <div class="input-group input-group-sm">
                            <textarea id="narration" name="narration" class="form-control"><?php if($bodycontent['mode'] == 'EDIT'){
@@ -149,29 +144,31 @@
              
             
              <div class="row">
-               <div class="col-md-3"></div>
-                 <div class="col-md-5 colmargin">
+               <div class="col-md-4"></div>
+                 <div class="col-md-5">
                     <p id="errormsg" class="errormsgcolor"></p>
                  </div>
                
                </div>
-                        
+             </div>
+               
+           <div class="formblock-box">             
              <div class="row">
-              <div class="col-md-4"></div>
-               <div class="col-md-2">
-                 <button type="submit" class="btn btn-block  btn-secondary " id="correctionsavebtn" style="width: 60%;"><?php echo $bodycontent['btnText']; ?></button>
+              <div class="col-md-10"></div>
+               <div class="col-md-2 text-right">
+                 <button type="submit" class="btn btn-sm action-button" id="correctionsavebtn" style="width: 60%;"><?php echo $bodycontent['btnText']; ?></button>
 
-                   <span class="btn btn-block btn-secondary loaderbtn" id="loaderbtn" style="display:none;width: 60%;"><?php echo $bodycontent['btnTextLoader']; ?></span>
+                   <span class="btn btn-sm action-button loaderbtn" id="loaderbtn" style="display:none;width: 60%;"><?php echo $bodycontent['btnTextLoader']; ?></span>
                </div>
                 <div class="col-md-2">
                 <!--  <button type="reset" id="resetgrpform" class="btn btn-block btn-secondary" style="width: 80%;">Reset</button> -->
                </div>
              </div>
+           </div>
                       
           </div>
           </form>
           <!-- /.card-body -->
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+  </section>
 

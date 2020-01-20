@@ -1,16 +1,16 @@
 <script src="<?php echo base_url();?>assets/js/customJs/useraudit.js"></script>
 
 
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">User(s) Activity</h3>
               
             </div><!-- /.card-header -->
 
             <div class="card-body">
-              <table id="userAuditTable" class="table table-bordered table-hover dataTable">
+                <div class="formblock-box">
+              <table id="userAuditTable" class="table customTbl table-bordered table-hover dataTable">
                 <thead>
                     <tr>
                     <th>User Name</th>
@@ -42,7 +42,7 @@
                     <?php } ?>     
                 </tbody>
               </table>
+          </div>
             </div><!-- /.card-body -->
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+    </section>
