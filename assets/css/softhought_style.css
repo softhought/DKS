@@ -794,7 +794,7 @@ color:
 }
 .summary-box-container {
 	margin:0;
-	margin-bottom: 4px;
+	margin-bottom: 7px;
 	min-height: 40px;
 
 
@@ -807,6 +807,10 @@ color:
 .summary-box-container .summary-box {
 	border-right: 5px solid #FFF;
 	border-radius: 8px;
+	color:
+	#FFF;
+	text-shadow: 1px 1px 1px
+	#323232;
 	
 }
 .summary-box-container .summary-box.bg-1 {
@@ -823,17 +827,17 @@ color:
 	background: linear-gradient(90deg, #A6076F 0%, #f9453c 100%);
 }
 .summary-box-container .summary-box i {
-	font-size: 3.5rem;
+	font-size: 3rem;
 }
 .summary-box-container .summary-box h3 {
 	margin-top: 11px;
-	font-size: 1.58rem;
+	font-size: 1.25rem;
 	font-weight: 700;
 	letter-spacing: 1px;
 }
 .summary-box-container .summary-box h4 {
 	margin-top: -13px;
-	font-weight: 400;
+	font-weight: 600;
 	letter-spacing: 0.5px;
-	font-size: 1.1rem;
+	font-size: 1rem;
 }

@@ -40,5 +40,5 @@
                          
                 </tbody>
               </table>
-              <input type="text" name="total_amt" id="total_amt" value="<?php echo number_format($total,2);?>">
+              <input type="hidden" name="total_amt" id="total_amt" value="<?php echo number_format($total,2);?>">
               
