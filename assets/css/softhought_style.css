@@ -781,3 +781,59 @@ color:
 .dispblock{
 	display: inline-block;
 }
+
+
+/*--------By Mith on 20.01.2019-----------*/
+.list-search-block .box {
+	margin: 0;
+	padding-top: 10px;
+	background:
+	#FFF;
+	box-shadow: 0px -6px 5px 0px
+	#CCC;
+}
+.summary-box-container {
+	margin:0;
+	margin-bottom: 4px;
+	min-height: 40px;
+
+
+}
+.align-vh-center {
+	display: flex;
+	align-content: center;
+	align-items: center;
+}
+.summary-box-container .summary-box {
+	border-right: 5px solid #FFF;
+	border-radius: 8px;
+	
+}
+.summary-box-container .summary-box.bg-1 {
+	background: linear-gradient(90deg, #07A681 0%, #c6b908 100%);
+}
+.summary-box-container .summary-box.bg-2 {
+	background: linear-gradient(90deg, #A60752 0%, #d96b1b 100%);
+}
+.summary-box-container .summary-box.bg-3 {
+	background: linear-gradient(90deg, #9813E3 0%,#00b5b5 100%);
+
+}
+.summary-box-container .summary-box.bg-4 {
+	background: linear-gradient(90deg, #A6076F 0%, #f9453c 100%);
+}
+.summary-box-container .summary-box i {
+	font-size: 3.5rem;
+}
+.summary-box-container .summary-box h3 {
+	margin-top: 11px;
+	font-size: 1.58rem;
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+.summary-box-container .summary-box h4 {
+	margin-top: -13px;
+	font-weight: 400;
+	letter-spacing: 0.5px;
+	font-size: 1.1rem;
+}
