@@ -1,83 +1,76 @@
 <script src="<?php echo base_url(); ?>assets/js/customJs/correction/correction.js"></script>
-<style>
+<section class="layout-box-content-format1">
 
-.card-body .modal-body{
-    #color: #44423d;
-
-   
-  }
-  label{
-    font-size: 14px;
-     color: #354668 !important;
-  }
-</style>
-<div class="row">
-    <div class="col-12">
         <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">Corrections-Tennis Coaching</h3>
-              <a href="<?php echo base_url(); ?>correction/addeditcorrection" class="">
-              <button class="btn btn-info btnpos">ADD</button></a>
+               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>correction/addeditcorrection" class="btn btn-default btnpos">
+               <i class="fas fa-plus"></i> Add </a>
+             </div>
+              
              
               
             </div><!-- /.card-header -->
 
             <div class="card-body">
-              <div class="row rowsty">
-                <label for="from_dt" class="col-sm-1">From Date</label>
-                    <div class="col-sm-2">
-                       <div class="form-group">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+              <div class="formblock-box">
+                <div class="row">
+                  <label for="from_dt" class="col-sm-1">From Date</label>
+                      <div class="col-sm-2">
+                         <div class="form-group">
+                          <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                              </div>
+                              <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="from_dt" id="from_dt" im-insert="false" value="">
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="from_dt" id="from_dt" im-insert="false" value="">
                           </div>
-                        </div>
-                        <p id="fromdaterr" style="font-size: 12px;"></p>
-                    </div>
-                    <label for="to_date" class="col-sm-1">To Date</label>
-                    <div class="col-sm-2">
-                       <div class="form-group">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                          <p id="fromdaterr" style="font-size: 12px;"></p>
+                      </div>
+                      <label for="to_date" class="col-sm-1">To Date</label>
+                      <div class="col-sm-2">
+                         <div class="form-group">
+                          <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                              </div>
+                              <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="to_date" id="to_date" im-insert="false" value="">
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="to_date" id="to_date" im-insert="false" value="">
                           </div>
-                        </div>
-                         <p id="todateerr" style="font-size: 12px;"></p>
-                    </div>
+                           <p id="todateerr" style="font-size: 12px;"></p>
+                      </div>
 
-                    <label for="student" class="col-sm-1">Student</label>
-                    <div class="col-sm-2">
-                      <div class="form-group">
-                       <div class="input-group input-group-sm">
-                            
-                       <select class="form-control select2" id="student_code" name="student_code" style="width: 100%;">
-                    <option value=''>Select</option>
-                    <?php foreach ($bodycontent['studentcodelist'] as $studentcodelist) { ?>
+                      <label for="student" class="col-sm-1">Student</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                         <div class="input-group input-group-sm">
+                              
+                         <select class="form-control select2" id="student_code" name="student_code" style="width: 100%;">
+                      <option value=''>Select</option>
+                      <?php foreach ($bodycontent['studentcodelist'] as $studentcodelist) { ?>
 
-                      <option value="<?php echo $studentcodelist->student_id; ?>"
+                        <option value="<?php echo $studentcodelist->student_id; ?>"
 
-                         ><?php echo $studentcodelist->student_code; ?></option>
+                           ><?php echo $studentcodelist->student_code; ?></option>
+                       
+                    <?php   } ?>
                      
-                  <?php   } ?>
-                   
-                  </select>
+                    </select>
+                            </div>
                           </div>
-                        </div>
-                        <p id="studenterr" ></p>
-                    </div> 
+                          <p id="studenterr" ></p>
+                      </div> 
 
-                <div class="col-md-2">
-                 <button type="button" class="btn btn-block btn-primary btn-sm" id="correctionshowbtn" style="width: 60%;">Show</button>
+                  <div class="col-md-2">
+                   <button type="button" class="btn btn-sm action-button padbtn" id="correctionshowbtn" style="width: 60%;">Show</button>
 
-                  
-               </div>
-              </div>
+                    
+                 </div>
+                </div>
+
               <div id="correctionlist">
-              <table class="table table-bordered table-hover dataTable tablepad">
+              <table class="table customTbl table-bordered table-hover dataTable tablepad">
                 <thead>
                     <tr>
                     <th>Sl.No</th>
@@ -118,10 +111,10 @@
                            }
                         ?></td>
                    <td>
-                     <a href="<?php echo base_url(); ?>correction/addeditcorrection/<?php echo $correctiondtl->id; ?>" class="btn bg-gradient-info padbtn">
+                     <a href="<?php echo base_url(); ?>correction/addeditcorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
                   <i class="fas fa-edit"></i> 
                    </a>
-                   <a href="<?php echo base_url(); ?>correction/deletecorrection/<?php echo $correctiondtl->id; ?>" class="btn bg-gradient-info padbtn">
+                   <a href="<?php echo base_url(); ?>correction/deletecorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
                   <i class="fas fa-trash"></i>  
                   </td>
 
@@ -131,6 +124,7 @@
                          
                 </tbody>
               </table>
+              </div>
               </div>
 
             </div><!-- /.card-body -->

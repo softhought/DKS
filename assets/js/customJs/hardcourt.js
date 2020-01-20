@@ -82,7 +82,7 @@ $(document).on('submit','#hardcourtFrom',function(event)
                     	}else{
 
                          $("#errormsg").removeClass('errormsgcolor');
-                    	 $("#errormsg").text(result.msg_data).addClass('succmsg'); 
+                    	   $("#errormsg").text(result.msg_data).addClass('succmsg'); 
                          $("#hardcourtsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
 	                      $('#hardcourt_date').val('');
@@ -134,7 +134,7 @@ function validateform(){
 	var student_idcode = $('#student_idcode').val();
 	var quntity = $('#quntity').val();
 	var rate = $('#rate').val();
-       $("#errormsg").removeClass('succmsg');
+     $("#errormsg").removeClass('succmsg');
      $("#errormsg").addClass('errormsgcolor');
      $('#errormsg').text();
 

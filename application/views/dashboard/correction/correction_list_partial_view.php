@@ -1,4 +1,4 @@
-<table class="table table-bordered table-hover dataTable tablepad">
+<table class="table customTbl table-bordered table-hover dataTable tablepad">
                 <thead>
                     <tr>
                     <th>Sl.No</th>
@@ -39,10 +39,10 @@
                            }
                         ?></td>
                    <td>
-                     <a href="<?php echo base_url(); ?>correction/addeditcorrection/<?php echo $correctiondtl->id; ?>" class="btn bg-gradient-info padbtn">
+                     <a href="<?php echo base_url(); ?>correction/addeditcorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
                   <i class="fas fa-edit"></i> 
                    </a>
-                   <a href="<?php echo base_url(); ?>correction/deletecorrection/<?php echo $correctiondtl->id; ?>" class="btn bg-gradient-info padbtn">
+                   <a href="<?php echo base_url(); ?>correction/deletecorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
                   <i class="fas fa-trash"></i>  
                   </td>
 

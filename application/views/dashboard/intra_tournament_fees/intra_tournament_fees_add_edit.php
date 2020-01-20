@@ -12,13 +12,15 @@
   cursor: pointer;
 }
 </style>
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">Intra Tournament Fees</h3>
-             <a href="<?php echo base_url(); ?>intratournament" class="">
-              <button class="btn btn-info btnpos">List</button></a> 
+               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>intratournament" class="btn btn-info btnpos">
+              <i class="fas fa-clipboard-list"></i> List </a>
+                </div>
+             
                            
             </div><!-- /.card-header -->
 
@@ -27,6 +29,8 @@
            <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
         
             <div class="card-body">
+              <div class="formblock-box">
+
                 
               <!-- <a href="<?php echo base_url(); ?>intratournament/copyHeaderView" class="">
                 <span  class="copycls" ><i class="fas fa-cog"></i>&nbsp;Copy&nbsp; </span> 
@@ -35,6 +39,7 @@
             <div id="copy_div">
 
              <div class="row">
+
               <div class="col-md-2"></div>
                <div class="col-md-2">
                           <div class="form-group">
@@ -106,11 +111,11 @@
                           </div>
                      </div><!-- end of col-md-3 -->
 
-              <div class="col-md-2">
+              <div class="col-md-1 text-right">
                  <div class="form-group">
                             <label for="specialcoching">&nbsp;</label>
                             <div class="input-group input-group-sm">
-                           <button type="submit" class="btn btn-block btn-primary btn-sm" id="intraturnamentbtn">View</button>
+                           <button type="submit" class="btn btn-sm action-button" id="intraturnamentbtn">View</button>
                             </div>
 
                           </div>
@@ -121,7 +126,7 @@
                  <div class="form-group">
                             <label for="specialcoching">&nbsp;</label>
                             <div class="input-group input-group-sm">
-                           <button type="submit" class="btn btn-block btn-success btn-sm" id="intraturnamentfeeApplybtn">Apply</button>
+                           <button type="submit" class="btn btn-sm action-button" id="intraturnamentfeeApplybtn">Apply</button>
                             </div>
 
                           </div>
@@ -147,26 +152,29 @@
 
 
              </div>
+             <hr>
+
+              <div id="student_list" style="padding: 5px;">
+                
+              </div>
+             </div>
                       
           </div> <!-- /.card-body -->
         
 
-        <hr>
+        
 
-        <div id="student_list" style="padding: 5px;">
-          
-        </div>
 
      </form>
 
 
-         
+        
+
 
 
 
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+  </section>
 
 
 

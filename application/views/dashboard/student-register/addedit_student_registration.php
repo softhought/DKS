@@ -429,30 +429,8 @@ legend.scheduler-border {
 
                           </div>
                </div> -->
-               <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="openingbal">
-                              <span id="billstytext">
-                              <?php if($bodycontent['mode'] == 'EDIT'){
-                                 if($bodycontent['studentregisterEditdata']->bill_style == 'M'){
-                                  echo 'Monthly';
-                                 }else if($bodycontent['studentregisterEditdata']->bill_style == 'Q'){
-                                   echo 'Quarterly';
-                                 }else{
-                                   echo 'Monthly';
-                                 }
-                              }  ?> </span> Subscription</label>
-                            <div class="input-group input-group-sm">
 
-                               <input type="text" class="form-control numberwithdecimal" name="monthly_sub" id="monthly_sub" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->subscription; } ?>">
-                              
-                            </div>
-
-                          </div>
-                               
-              </div>
-
-               <div class="col-md-2">
+                <div class="col-md-2">
                           <div class="form-group">
                             <label for="specialcoching">Billing Style</label>
                             <div class="input-group input-group-sm">
@@ -476,6 +454,30 @@ legend.scheduler-border {
                           </div>
                           <p id="billstyleerr" class="perrmsg"></p>
                </div>
+               <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="openingbal">
+                              <span id="billstytext">
+                              <?php if($bodycontent['mode'] == 'EDIT'){
+                                 if($bodycontent['studentregisterEditdata']->bill_style == 'M'){
+                                  echo 'Monthly';
+                                 }else if($bodycontent['studentregisterEditdata']->bill_style == 'Q'){
+                                   echo 'Quarterly';
+                                 }else{
+                                   echo 'Monthly';
+                                 }
+                              }  ?> </span> Subscription</label>
+                            <div class="input-group input-group-sm">
+
+                               <input type="text" class="form-control numberwithdecimal" name="monthly_sub" id="monthly_sub" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->subscription; } ?>">
+                              
+                            </div>
+
+                          </div>
+                               
+              </div>
+
+              
                                 
               </div>
              

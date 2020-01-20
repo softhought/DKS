@@ -6,7 +6,7 @@
 
 
 
-        <table class="table table-bordered table-striped dataTable" style="border-collapse: collapse !important;">
+        <table class="table customTbl table-bordered table-striped dataTable" style="border-collapse: collapse !important;">
                 
                  <thead>
                   <tr>

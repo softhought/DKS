@@ -56,7 +56,8 @@ $(document).on('submit','#gstFrom',function(event)
 
                     	}else{
 
-                    	 $("#errormsg").text(result.msg_data).css('color','#e80f89'); 
+                    	 $("#errormsg").removeClass('errormsgcolor');
+                         $("#errormsg").text(result.msg_data).addClass('succmsg'); 
                          $("#gstsavebtn").css('display', 'block');
                          $("#loaderbtn").css('display', 'none');
                          $('#gstrate').val('');                    
@@ -118,6 +119,8 @@ function validateform(){
 	var accountid = $('#accountid').val();
 	var usedfor = $('#usedfor').val();
 
+  $("#errormsg").removeClass('succmsg');
+     $("#errormsg").addClass('errormsgcolor');
   $('#errormsg').text();
 
 	if(gstdescription == ''){

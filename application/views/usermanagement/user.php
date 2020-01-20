@@ -14,16 +14,20 @@
     </div>
 <?php }?>
 
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">User List</h3>
-              <a href="<?php echo base_url();?>user/create" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
+                 <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>user/create" class="btn btn-info btnpos link_tab">
+              <i class="fas fa-clipboard-list"></i> Add </a>
+                </div>
+             <!--  <a href="<?php echo base_url();?>user/create" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a> -->
             </div><!-- /.card-header -->
 
             <div class="card-body">
-              <table id="example2" class="table table-bordered table-hover dataTable">
+                <div class="formblock-box">
+              <table id="example2" class="table customTbl table-bordered table-hover dataTable">
                 <thead>
                     <tr>
                     <th>Name</th>
@@ -81,11 +85,10 @@
                     <?php } ?>     
                 </tbody>
               </table>
+          </div>
             </div><!-- /.card-body -->
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
-
+    </section>
 
 <!-- Modal -->
 

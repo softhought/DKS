@@ -1,17 +1,21 @@
 <script src="<?php echo base_url(); ?>assets/js/customJs/tennisopening/tennisopening.js"></script>
-<div class="row">
-    <div class="col-12">
+<section class="layout-box-content-format1">
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">Student Tennis Opening</h3>
-              <a href="<?php echo base_url(); ?>tennisopening" class="">
-              <button class="btn btn-info btnpos">ADD</button></a>
+
+              <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>tennisopening" class="btn btn-default btnpos">
+               <i class="fas fa-plus"></i> Add </a>
+             </div>
+             
              
               
             </div><!-- /.card-header -->
 
             <div class="card-body">
-              <table id="studtennisopening" class="table table-bordered table-hover dataTable tablepad">
+              <div class="formblock-box">
+              <table id="studtennisopening" class="table customTbl table-bordered table-hover dataTable tablepad">
                 <thead>
                     <tr>
                     <th>Sl.No</th>
@@ -68,8 +72,8 @@
                            </tr>
                            </tfoot> 
               </table>
+            </div>
 
             </div><!-- /.card-body -->
         </div><!-- /.card -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+   </section>

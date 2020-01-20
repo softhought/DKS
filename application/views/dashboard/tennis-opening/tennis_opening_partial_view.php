@@ -1,5 +1,5 @@
 
-    <table class="table table-bordered table-hover dataTable tablepad">
+    <table class="table customTbl table-bordered table-hover dataTable tablepad">
                 <thead>
                     <tr>
                     <th>Sl.No</th>
@@ -42,15 +42,15 @@
 
                     <?php if($tennisopeninglist->opening_id == ''){ ?>
 
-                       <button type="button" class="btn btn-block btn-primary btn-sm formsubmitbtn" id="tennisopeningbtn_<?php echo $i; ?>" style="padding: 1px;">Insert</button>
+                       <button type="button" class="btn btn-sm action-button padbtn formsubmitbtn" id="tennisopeningbtn_<?php echo $i; ?>">Insert</button>
 
                      <?php }else { ?>
 
-                    <button type="button" class="btn btn-block btn-primary btn-sm formsubmitbtn" id="tennisopeningbtn_<?php echo $i; ?>" style="padding: 1px;">Update</button>
+                    <button type="button" class="btn btn-sm action-button padbtn formsubmitbtn" id="tennisopeningbtn_<?php echo $i; ?>">Update</button>
 
                   <?php } ?>
 
-                       <span class="btn btn-block btn-primary btn-sm" id="loaderbtn_<?php echo $i; ?>" style="padding: 1px;margin-top: unset; display: none;">Update...</span>
+                       <span class="btn btn-sm action-button padbtn" id="loaderbtn_<?php echo $i; ?>"style="display: none;">Update...</span>
                     
                                         
                   </td>
