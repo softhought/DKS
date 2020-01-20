@@ -295,6 +295,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         cursorcolor:"#F4AFD9",
         boxzoom:false,
         smoothscroll:true,
+       // boxzoom:true
       
         }); 
 
