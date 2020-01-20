@@ -14,8 +14,9 @@ class Login extends CI_Controller {
         $this->load->helper('form');
         $this->load->library('form_validation'); 
         $where = array('is_active'=>'Y');
-        $result['financilayear'] = $this->commondatamodel->getAllRecordWhere('financialyear',$where); 
-
+        $orderby="year_id desc";
+        $result['financilayear'] = $this->commondatamodel->getAllRecordWhereOrderBy('financialyear',$where,$orderby); 
+       
         $page="login/login";
         $this->load->view($page,$result);
     }

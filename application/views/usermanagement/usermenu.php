@@ -250,7 +250,7 @@ a:hover, a:focus {
                                         <?php } ?>
                                     </div>
                                 </div>
-<?php// pre($bodycontent['Menulist']); ?>
+
                                 <div id="myjstree" class="col-sm-6"> 
                                     <!-- {{-- daynamic Menu section --}}                                         -->
                                     <ul> 
@@ -290,5 +290,5 @@ a:hover, a:focus {
     </div>
 
 <div id="btnusersaveDiv" style="margin: 50px auto;text-align: center;display: none;">
-	<input type="Button" id="btnusersave" class="btn formBtn btn-primary" value="Save"/>
+	<input type="Button" id="btnusersave" class="btn formBtn  btn-primary" value="Save"/>
 </div>

@@ -50,7 +50,7 @@
                   <i class="fas fa-edit"></i> 
                 </a>
 
-                <button class="btn tbl-del-action-btn padbtn" onclick="deletegst(<?php echo $gstmasterlist->id; ?>)"><i class="fas fa-trash"></i></button>
+              <!--   <button class="btn tbl-del-action-btn padbtn" onclick="deletegst(<?php echo $gstmasterlist->id; ?>)"><i class="fas fa-trash"></i></button> -->
                 <!-- <a href="<?php echo base_url(); ?>gstmaster/deletegstmaster/<?php echo $gstmasterlist->id; ?>" class="btn tbl-del-action-btn padbtn">
                   <i class="fas fa-trash"></i> 
                 </a> -->

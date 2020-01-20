@@ -202,7 +202,7 @@ class Commondatamodel extends CI_Model{
 				->where($where)
 				->order_by($orderby);
 		$query = $this->db->get();
-		//echo $this->db->last_query();
+		#echo $this->db->last_query();
 
 		if($query->num_rows()> 0)
 		{

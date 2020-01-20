@@ -768,7 +768,7 @@ color:
 
 .layout-box-content-format1 .table.customTbl .tbl-del-action-btn {
 	background: linear-gradient(90deg, #CC232D 0%, #E10F85 100%);
-	padding: 2px 7px 2px 2px;
+	padding: 2px 7px 2px 7px;
 	text-align: center;
 	box-shadow: 0px 2px 6px 0px #646363;
 	border: 0;
@@ -841,3 +841,7 @@ color:
 	letter-spacing: 0.5px;
 	font-size: 1rem;
 }
+.infosection .select2{
+    width: 18% !important;
+  }
+  

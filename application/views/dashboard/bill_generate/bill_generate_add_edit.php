@@ -132,7 +132,8 @@
                  <div class="form-group">
                             <label for="specialcoching">&nbsp;</label>
                             <div class="input-group input-group-sm">
-                           <button type="submit" class="btn btn-block btn-primary btn-sm" id="billgeneratebtn">Generate</button>
+                           <button type="submit" class="btn btn-sm action-button
+                           " id="billgeneratebtn">Generate</button>
                             </div>
 
                           </div>

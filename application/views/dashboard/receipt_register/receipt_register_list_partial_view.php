@@ -29,7 +29,18 @@
                    <td><?php echo date("d-m-Y", strtotime($paymentdata->payment_date)); ?></td>
                    <td><?php echo $paymentdata->student_code; ?></td>
                    <td><?php echo $paymentdata->student_name; ?></td>
-                   <td><?php echo $paymentdata->transaction_type; ?></td>
+                   <td><?php 
+                     
+                   if ($paymentdata->transaction_type=='ORADM') {
+                    echo "Other Receipts(Admission)";
+                   }else if($paymentdata->transaction_type=='ORITM'){
+                    echo "Other Receipts(Item)";
+                   }else if($paymentdata->transaction_type=='RCFS'){
+                    echo "Receivable From Student";
+                   }
+
+                   
+                    ?></td>
                    <td><?php echo $paymentdata->total_amount; ?></td>
                
                  

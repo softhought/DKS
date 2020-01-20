@@ -179,9 +179,9 @@ public function index()
             $mode = trim(htmlspecialchars($dataArry['mode']));
             $student_code = trim(htmlspecialchars($dataArry['student_code']));
             $title_one = trim(htmlspecialchars($dataArry['title_one']));
-            $student_name = trim(htmlspecialchars($dataArry['student_name']));
+            $student_name = strtoupper(trim(htmlspecialchars($dataArry['student_name'])));
 
-        
+     
                 if($admissionID>0 && $mode=="EDIT")
                 {
                     /*  EDIT MODE
