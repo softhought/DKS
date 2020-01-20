@@ -74,6 +74,15 @@ public function index()
                 
             }
 
+              $where_year = array('financialyear.year_id' => $year);
+              $result['acyear'] = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where_year)->year;
+
+              $orderby='display_serial';
+              $result['monthList'] = $this->commondatamodel->getAllRecordWhereOrderBy('month_master',[],$orderby);
+
+              $result['quartermonthList'] = $this->commondatamodel->getAllDropdownData('quarter_month_master');
+              $result['fineAccountList'] = $this->commondatamodel->getAllDropdownData('account_master');
+
                 
 
             $header = "";
@@ -290,6 +299,7 @@ public function index()
                          foreach ($result['studentCodeList'] as $codelist) {  ?>
                          <option value="<?php echo $codelist->student_code;?>"
                           data-name="<?php echo $codelist->student_name; ?>"
+                          data-billstyle="<?php echo $codelist->bill_style; ?>"
                           <?php
                          if ($studentcode==$codelist->student_code) {
                            echo "selected";
@@ -407,6 +417,218 @@ public function index()
 
     
 
+    public function getBillAmount()
+    {
+        if($this->session->userdata('user_detail'))
+        {
+            $session = $this->session->userdata('user_detail');
+            $company=$session['companyid'];
+            $year=$session['yearid'];
+
+            $student_code = $this->input->post('sel_student_code');
+            $student_id=$this->getStudentID($student_code);
+            $data['tran_type'] = $this->input->post('tran_type');
+            $quarter_id = $this->input->post('fees_quarter');
+            $month_id = $this->input->post('fees_month');
+            $billing_style = $this->input->post('billstyle');
+
+
+           $billData=$this->payment_tennis_model->getBillData($billing_style,$student_id,$month_id,$quarter_id,$year,$company);
+
+
+           if ($billData) {
+               $json_response = array(
+                            "msg_status" => 1,
+                            "msg_data" => $billData,
+                        );
+           }else{
+                 $json_response = array(
+                            "msg_status" => 0,
+                            "msg_data" => "No Data",
+                        );
+
+           }
+
+            header('Content-Type: application/json');
+            echo json_encode( $json_response );
+            exit;
+        }
+        else
+        {
+            redirect('login','refresh');
+        }
+    }
+
+
+function getStudentID($student_code){
+$where = array('student_code' => $student_code);
+return $this->commondatamodel->getSingleRowByWhereCls('admission_register',$where)->admission_id;
+}
+
+
+    public function getReceivableFine()
+    {
+        if($this->session->userdata('user_detail'))
+        {
+            $session = $this->session->userdata('user_detail');
+            $company=$session['companyid'];
+            $year=$session['yearid'];
+            $fine=0;
+            $payment_dt=$this->input->post('payment_dt');
+             if($payment_dt!=""){
+                $payment_dt = str_replace('/', '-', $payment_dt);
+                $payment_dt = date("d-m-Y",strtotime($payment_dt));
+                $payment_dtMonth = date("m-Y",strtotime($payment_dt));
+               
+             }
+             else{
+                 $payment_dt = NULL;
+                 $payment_dtMonth = NULL;
+                
+             }
+ 
+   
+         //echo "PDt:".$payment_dt;
+         $bill_id = $this->input->post('bill_id');
+
+         $where = array('bill_id' => $bill_id);
+
+         $billData = $this->commondatamodel->getSingleRowByWhereCls('bill_master_tennis',$where);
+
+         $bill_dt = date("d-m-Y", strtotime($billData->billing_date));
+         $bill_dtMonth = date("m-Y", strtotime($billData->billing_date));
+
+        $afterFirstMonthPayment=date('m-Y', strtotime("+1 month", strtotime($billData->billing_date)));
+        $afterSecondMonthPayment=date('m-Y', strtotime("+2 month", strtotime($billData->billing_date)));
+
+        $diff = strtotime($payment_dt) - strtotime($bill_dt); 
+      
+        // 1 day = 24 hours 
+        // 24 * 60 * 60 = 86400 seconds 
+       $diffDays= (round($diff / 86400)); 
+       $msg="";
+       $student_status="";
+
+        if ($diffDays >= 0 ) {
+        
+                 if ($payment_dtMonth==$bill_dtMonth) {
+                   $fine=0;
+                 }else if ($payment_dtMonth==$afterFirstMonthPayment) {
+                    // echo "after one month";
+                    $fine=300;
+                 }else if ($payment_dtMonth==$afterSecondMonthPayment) {
+                     //echo "after two month";
+                     $fine=500;
+                 }else{
+                     $msg="<span class='btn btn-danger btn-xs'>Terminated.Bill generated ".$diffDays." days ago</span>";
+                     $student_status='TEMPORARY TERMINATED';
+                 }
+
+                 $json_response = array(
+                            "msg_status" => 1,
+                            "fine" => $fine,
+                            "msg" => $msg,
+                            "student_status" => $student_status,
+                        );
+
+
+         }else{
+            
+                 $fine=0;
+                 $json_response = array(
+                            "msg_status" => 0,
+                            "msg_data" => "No Data",
+                            "student_status" => $student_status,
+                        );
+         }
+
+          // echo $add9month = date('l d M Y', strtotime($add7days.'+9 months'));
+
+
+
+        
+
+            header('Content-Type: application/json');
+            echo json_encode( $json_response );
+            exit;
+        }
+        else
+        {
+            redirect('login','refresh');
+        }
+    }
+
+
+public function getbillDetailsModelData()
+  {
+      if($this->session->userdata('user_detail'))
+      {
+        
+
+      $bill_id = $this->input->post('bill_id');
+
+
+          $where = array('bill_id' => $bill_id);
+
+         $data['billData'] = $this->commondatamodel->getSingleRowByWhereCls('bill_master_tennis',$where);
+
+       // pre($data['billData']);exit;
+
+
+
+         $page = 'dashboard/payment/bill_details_model_view.php';
+           
+            $viewTemp = $this->load->view($page,$data,TRUE);
+            echo $viewTemp;
+       
+
+
+      }
+      else
+      {
+          redirect('login','refresh');
+      }
+  }
+
+
+
+    public function checkBillPaymentExist()
+    {
+        if($this->session->userdata('user_detail'))
+        {
+            $session = $this->session->userdata('user_detail');
+            $company=$session['companyid'];
+            $year=$session['yearid'];
+
+            $bill_id = $this->input->post('bill_id');
+         
+
+            $where = array('payment_master.bill_id' => $bill_id );
+            $result = $this->commondatamodel->checkExistanceData('payment_master',$where);
+
+
+           if ($result) {
+               $json_response = array(
+                            "msg_status" => 1,
+                            "msg" => "Payment already done against this bill",  
+                        );
+           }else{
+                 $json_response = array(
+                            "msg_status" => 0,
+                            "msg" => "",
+                        );
+
+           }
+
+            header('Content-Type: application/json');
+            echo json_encode( $json_response );
+            exit;
+        }
+        else
+        {
+            redirect('login','refresh');
+        }
+    } 
 
 
 

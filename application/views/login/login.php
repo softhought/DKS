@@ -55,6 +55,21 @@
             </div> 
             <?php echo form_error('password'); ?>
         </div>
+        <div class="form-group  mb-3">
+             <label>Year</label>
+                <select name="yearid" id="yearid" class="custom-select">
+                    <option value="">Select</option>
+                     <?php 
+                     foreach ($financilayear as $financilayear) { ?>
+                       
+                       <option value="<?php echo $financilayear->year_id; ?>"><?php echo $financilayear->year; ?></option>
+
+
+                     <?php } ?>                          
+                </select>
+                      
+            <?php echo form_error('year'); ?>
+        </div>
         <div class="row">
           <div class="col-12">
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>

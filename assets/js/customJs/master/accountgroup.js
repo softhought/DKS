@@ -90,7 +90,7 @@ $(document).on('submit','#groupnameFrom',function(event)
             var formData = { formDatas: formDataserialize };
                     
              $("#accgroupsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#loaderbtn").css('display', 'inline-block');
         
                
         $.ajax({
@@ -108,7 +108,7 @@ $(document).on('submit','#groupnameFrom',function(event)
                     	if(mode == 'EDIT'){
 
 
-                    	 $("#accgroupsavebtn").css('display', 'block');
+                    	 $("#accgroupsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          window.location.href=basepath+'accountgroup';
                          //showMsg();
@@ -116,7 +116,7 @@ $(document).on('submit','#groupnameFrom',function(event)
                     	}else{
 
                     	 $("#errormsg").text(result.msg_data).css('color','#e80f89'); 
-                         $("#accgroupsavebtn").css('display', 'block');
+                         $("#accgroupsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          $('#groupname').val('');                    
                          $('#gropcat').val('').change();                    
