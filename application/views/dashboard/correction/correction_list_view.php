@@ -2,7 +2,7 @@
 <section class="layout-box-content-format1">
 
         <div class="card card-primary">
-            <div class="card-header">
+            <div class="card-header box-shdw">
               <h3 class="card-title">Corrections-Tennis Coaching</h3>
                <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
               <a href="<?php echo base_url(); ?>correction/addeditcorrection" class="btn btn-default btnpos">
@@ -63,7 +63,7 @@
                       </div> 
 
                   <div class="col-md-2">
-                   <button type="button" class="btn btn-sm action-button padbtn" id="correctionshowbtn" style="width: 60%;">Show</button>
+                   <button type="button" class="btn btn-sm action-button padbtn" id="correctionshowbtn" style="padding: 4px 15px;">Show</button>
 
                     
                  </div>
