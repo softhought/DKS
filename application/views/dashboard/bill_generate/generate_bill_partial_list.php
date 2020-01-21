@@ -28,7 +28,14 @@
                      <td><?php echo $i++; ?></td>
                      <td><?php echo $genbilllist->title_one.' '.$genbilllist->student_name; ?></td>
                      <td><?php echo $genbilllist->student_code; ?></td>
-                     <td><?php echo $genbilllist->billing_style; ?></td>
+                     <td><?php  if($genbilllist->billing_style == 'M'){
+
+                               echo 'Monthly';
+
+                             }else if($genbilllist->billing_style == 'Q'){
+
+                               echo 'Quarterly';
+                             } ?></td>
                      <td><?php echo date('d-m-Y',strtotime($genbilllist->billing_date)); ?></td>
                       <td><?php echo $genbilllist->opening_bal; ?></td>
                      <td><?php echo $genbilllist->subscription_fee; ?></td>
