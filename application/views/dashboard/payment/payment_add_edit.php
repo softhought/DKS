@@ -106,8 +106,8 @@ fieldset.scheduler-border {
               <h3 class="card-title">Receipt</h3>
 
               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
-                <button type="button" class="btn btn-default"><i class="fas fa-plus"></i> Add </button>
-                <button type="button" class="btn btn-default"><i class="fas fa-clipboard-list"></i> List</button>
+              <!--   <button type="button" class="btn btn-default"><i class="fas fa-plus"></i> Add </button>
+                <button type="button" class="btn btn-default"><i class="fas fa-clipboard-list"></i> List</button> -->
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#codegeneration_modal" id="codegenbtn"><i class="fas fa-cog"></i> Generate Code</button>
                
               </div>
@@ -980,7 +980,9 @@ fieldset.scheduler-border {
                               <option value="MR.">MR.</option>
                               <option value="MS">MS</option>
                               <option value="MS.">MS.</option>
-                              <option value="MR.">MRS.</option>
+                              <option value="MRS.">MRS.</option>
+                              <option value="DR">DR</option>
+                              <option value="DR.">DR.</option>
                               
                             </select>
 

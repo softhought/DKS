@@ -2,8 +2,8 @@ $(document).ready(function(){
 
 var basepath = $("#basepath").val();
 $('.datepicker').datepicker({
-    format: 'mm/dd/yyyy',
-    startDate: '-3d'
+    format: 'dd/mm/yyyy'
+    
 });
 
  var total_amt = $("#total_amt").val();

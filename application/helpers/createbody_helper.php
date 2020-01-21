@@ -18,6 +18,11 @@ if ( ! function_exists('createbody_method'))
 	
 	 $menu = $CI->menumodel->getAllAdministrativeMenu($session['userid']);
 
+	  $where = array('year_id' => $session['yearid']);
+
+      $data['accountingyear'] = $CI->commondatamodel->getSingleRowByWhereCls('financialyear',$where);
+
+
 	
 	 //print_r(json_encode($left_menu));exit;
 	//  $acdsessionData= $CI->menumodel->getAcademicSessionData();

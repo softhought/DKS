@@ -844,4 +844,17 @@ color:
 .infosection .select2{
     width: 18% !important;
   }
+
+
+  #ac_year_title{
+  	background: linear-gradient(to right, rgb(14, 26, 116) 0%, rgb(188, 5, 5) 50%,
+rgb(80, 17, 62) 100%);
+    
+
+-webkit-background-clip: text;
+-webkit-text-fill-color:
+transparent;
+font-weight: 600;
+margin-top: 7px;
+  }
   

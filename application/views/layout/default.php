@@ -112,6 +112,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <a class="dropdown-item" href="<?php echo base_url(); ?>logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
                   </div>
                 </li>
+                  <li>
+                    <h6 id="ac_year_title"> <?php echo $accountingyear->year;?></h6> 
+                 </li>
             </ul>
       </div>
   </nav>
