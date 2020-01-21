@@ -2,6 +2,41 @@ $(document).ready(function(){
 
 var basepath =$("#basepath").val();
 
+var total_amt = $("#total_amt").val();
+ $("#total_amount_value").html(total_amt);
+
+ // var today = new Date();
+     
+ //    //get current month
+ //    var curMonth = today.getMonth();
+    
+ //    if (curMonth > 3) { //
+ //        var end_dt = (today.getFullYear() + 1).toString();
+ //        var start_dt = today.getFullYear().toString();
+ //         var fullend_dt = '31'+'/'+'03'+'/'+end_dt;
+ //         var fullstart_dt = '01'+'/'+'04'+'/'+start_dt; 
+       
+ //    } else {
+ //         var end_dt = today.getFullYear().toString();
+ //         var start_dt = end_dt - 1; 
+
+ //         var fullend_dt = '31'+'/'+'03'+'/'+end_dt;
+ //         var fullstart_dt = '01'+'/'+'04'+'/'+start_dt; 
+       
+ //    }
+
+  // alert(fullstart_dt); 
+  // alert(fullend_dt); 
+  
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+    
+});
+
+
+  
+
 $("#monthblock,#quarterblock").hide();
 
 
@@ -70,6 +105,40 @@ $("#monthblock,#quarterblock").hide();
 
       
     });
+
+
+$(document).on('click','#listshowbtn',function(){
+
+
+  var from_dt = $('#from_dt').val();
+  var to_date = $('#to_date').val();
+  var billstyle = $('#billstyle').val();
+  var studcode = $('#studcode').val();
+
+  $("#bill_list_details").html('');
+  $("#loaderbtn").css('display','block');
+
+    $.ajax({
+           type: "POST",
+           url: basepath+'billgeneratetennis/generatelistpartialview',
+           dataType: "html",
+           data: {from_dt:from_dt,to_date:to_date,billstyle:billstyle,studcode:studcode},
+            success: function(data) { 
+              
+                $("#loaderbtn").css('display','none');
+                $("#bill_list_details").html(data);
+  
+               $('.dataTable').DataTable();
+               var total_amt = $("#partial_total_amt").val();
+               $("#total_amount_value").html(total_amt);
+           
+            }
+
+     });
+ 
+})
+
+
 
 
 
@@ -155,6 +224,11 @@ function resetStudentDropdown(billing_style){
                // alert(msg);  
             }
             }); /*end ajax call*/
+
+
+
+
+
 
 
 

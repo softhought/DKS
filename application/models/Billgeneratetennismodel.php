@@ -269,6 +269,87 @@ class Billgeneratetennismodel extends CI_Model{
   }
 
 
+  public function getgeneratebilllist($from_dt,$to_dt,$tran_type){
+
+     $data = array();
+
+        if ($tran_type=='All') {
+            $where_in = array('M','Q');
+        }else{
+            $where_in = explode(" ",$tran_type);
+        }
+        
+       
+                $this->db->select("*")
+                ->from('bill_master_tennis')
+                ->join('admission_register','admission_register.admission_id = bill_master_tennis.student_id','INNER')
+                ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") >= ', $from_dt)
+                ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") <= ', $to_dt)
+                ->where_in('bill_master_tennis.billing_style', $where_in);
+        $query = $this->db->get();
+        #echo $this->db->last_query();exit;
+
+        if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+            return $data;
+             
+        }
+        else
+        {
+             return $data;
+         }
+
+  }
+
+
+  
+
+public function getGenratebillpartiallist($from_dt,$to_dt,$billstyle,$studcode){
+
+     $data = array();
+
+        if ($billstyle=='All') {
+            $where_in = array('M','Q');
+        }else{
+            $where_in = explode(" ",$billstyle);
+        }
+        if($studcode != ''){
+           $where = ' AND bill_master_tennis.student_code = "'.$studcode.'"';
+         }else{
+          $where = '';
+         }
+       
+              
+                $this->db->select("*")
+                ->from('bill_master_tennis')
+                ->join('admission_register','admission_register.admission_id = bill_master_tennis.student_id','INNER')
+                ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") >= ',$from_dt)
+                ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") <= "'.$to_dt.'"'.$where.'')
+                ->where_in('bill_master_tennis.billing_style', $where_in);
+        $query = $this->db->get();
+        #echo $this->db->last_query();exit;
+
+        if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+            return $data;
+             
+        }
+        else
+        {
+             return $data;
+         }
+
+  }
+
+
 
 
 }// end of class

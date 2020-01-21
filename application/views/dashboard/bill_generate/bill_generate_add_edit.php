@@ -6,6 +6,10 @@
         <div class="card card-primary">
             <div class="card-header box-shdw">
               <h3 class="card-title">Tennis - Bill Generation</h3>
+               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+                  <a href="<?php echo base_url(); ?>billgeneratetennis/generatelistbill" class="btn btn-default btnpos">
+                   <i class="fas fa-clipboard-list"></i> List </a>
+            </div>
             <!--  <a href="<?php echo base_url(); ?>intratournament" class="">
               <button class="btn btn-info btnpos">List</button></a>  -->
                            

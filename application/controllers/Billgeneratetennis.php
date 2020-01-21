@@ -572,6 +572,98 @@ return $this->commondatamodel->getSingleRowByWhereCls('admission_register',$wher
 }
 
 
+public function generatelistbill(){
+    $session = $this->session->userdata('user_detail');
+     if($this->session->userdata('user_detail'))
+        {
+
+            $company=$session['companyid'];
+            $year=$session['yearid'];
+            $page = "dashboard/bill_generate/generate_bill_list";
+            $header=""; 
+
+            $where = array('year_id' => $year);
+
+             $result['accountingyear'] = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where);
+
+             $from_dt=$result['accountingyear']->start_date;
+             $to_dt=$result['accountingyear']->end_date;
+
+              if($from_dt!=""){
+                $from_dt = str_replace('/', '-', $from_dt);
+                $from_dt = date("Y-m-d",strtotime($from_dt));
+             }
+             else{
+                 $from_dt = NULL;
+             }
+
+            if($to_dt!=""){
+                $to_dt = str_replace('/', '-', $to_dt);
+                $to_dt = date("Y-m-d",strtotime($to_dt));
+             }
+             else{
+                 $to_dt = NULL;
+             }
+
+
+                         
+             $tran_type='All';
+             $result['billtype'] = array('M'=>'Monthly','Q'=>'Quarterly');
+
+            $result['genbilllist'] = $this->billgenmodel->getgeneratebilllist($from_dt,$to_dt,$tran_type);
+            $result['studentlist'] = $this->commondatamodel->getAllRecordWhereOrderBy('admission_register',[],'student_code');
+            //pre($result['genbilllist']);exit;
+            createbody_method($result, $page, $header, $session);
+           
+        }
+        else{
+            redirect('login','refresh');
+        }
+
+}
+
+
+public function generatelistpartialview(){
+
+
+ $session = $this->session->userdata('user_detail');
+     if($this->session->userdata('user_detail'))
+        {
+
+
+
+            $from_dt = $this->input->post('from_dt');
+            $to_dt = $this->input->post('to_date');
+            $billstyle = $this->input->post('billstyle');
+            $studcode = $this->input->post('studcode');
+
+            if($from_dt!=""){
+                $from_dt = str_replace('/', '-', $from_dt);
+                $from_dt = date("Y-m-d",strtotime($from_dt));
+             }
+             else{
+                 $from_dt = NULL;
+             }
+
+            if($to_dt!=""){
+                $to_dt = str_replace('/', '-', $to_dt);
+                $to_dt = date("Y-m-d",strtotime($to_dt));
+             }
+             else{
+                 $to_dt = NULL;
+             }
+
+        $result['genbilllist'] = $this->billgenmodel->getGenratebillpartiallist($from_dt,$to_dt,$billstyle,$studcode);
+
+       //print_r($result['genbilllist']);exit;
+        $page = "dashboard/bill_generate/generate_bill_partial_list";
+        $this->load->view($page,$result);
+       }
+        else{
+            redirect('login','refresh');
+        }
+}
+
 
 function insertBillGenerateActivity($activity_description,$action){
 $session = $this->session->userdata('user_detail');

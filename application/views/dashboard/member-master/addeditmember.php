@@ -1,45 +1,10 @@
 <script src="<?php echo base_url(); ?>assets/js/customJs/studentregister.js"></script>
 
-<style>
-
-/* .card-body .modal-body{
-    #color: #44423d;
-
-   
-  }
-  label{
-    font-size: 14px;
-     color: #354668 !important;
-  }
-
- fieldset.scheduler-border {
-    border: 1px groove #ddd !important;
-    #padding: 0 1.4em 1.4em 1.4em !important;
-    margin: 0 0 1.5em 0 !important;
-    -webkit-box-shadow:  0px 0px 0px 0px #000;
-            box-shadow:  0px 0px 0px 0px #000;
-}
-
-legend.scheduler-border {
-        font-size: 1.2em !important;
-        font-weight: bold !important;
-        text-align: left !important;
-        width:auto;
-        padding:0 10px;
-        border-bottom:none;
-        color:#9f4e7f;
-        font-size: 13px !important;
-    }
- .maxwidth{
-  max-width: 10.33%;
-  margin-left: -16px;
- }     */
-</style>
 
 <section class="layout-box-content-format1">
         <div class="card card-primary">
             <div class="card-header box-shdw">
-              <h3 class="card-title">Student Registration</h3>
+              <h3 class="card-title">Member Registration</h3>
               <!-- <a href="<?php echo base_url(); ?>studentregister" class="">
               <button class="btn btn-info btnpos">List</button></a> -->
 
@@ -58,7 +23,7 @@ legend.scheduler-border {
 
                     <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
 
-                    <input type="hidden" name="admissionId" id="admissionId" value="<?php echo $bodycontent['admissionId']; ?>">   
+                    <input type="hidden" name="memberId" id="memberId" value="<?php echo $bodycontent['memberId']; ?>">   
 
                     <!-- Student Personal Info -->
                     <div class="formblock-box">
