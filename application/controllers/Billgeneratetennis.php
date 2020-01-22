@@ -611,6 +611,7 @@ public function generatelistbill(){
              $result['billtype'] = array('M'=>'Monthly','Q'=>'Quarterly');
 
             $result['genbilllist'] = $this->billgenmodel->getgeneratebilllist($from_dt,$to_dt,$tran_type);
+           // pre($result['genbilllist']);exit;
             $result['studentlist'] = $this->commondatamodel->getAllRecordWhereOrderBy('admission_register',[],'student_code');
             //pre($result['genbilllist']);exit;
             createbody_method($result, $page, $header, $session);

@@ -280,9 +280,15 @@ class Billgeneratetennismodel extends CI_Model{
         }
         
        
-                $this->db->select("*")
+                $this->db->select("bill_master_tennis.*,
+                                  admission_register.title_one,
+                                  admission_register.student_name,
+                                  month_master.`short_name`,
+                                  quarter_month_master.`quarter`")
                 ->from('bill_master_tennis')
                 ->join('admission_register','admission_register.admission_id = bill_master_tennis.student_id','INNER')
+                ->join('month_master','bill_master_tennis.month_id = month_master.id','LEFT')
+                ->join('quarter_month_master','bill_master_tennis.quarter_id = quarter_month_master.id','LEFT')
                 ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") >= ', $from_dt)
                 ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") <= ', $to_dt)
                 ->where_in('bill_master_tennis.billing_style', $where_in);
@@ -324,9 +330,15 @@ public function getGenratebillpartiallist($from_dt,$to_dt,$billstyle,$studcode){
          }
        
               
-                $this->db->select("*")
+                $this->db->select("bill_master_tennis.*,
+                                  admission_register.title_one,
+                                  admission_register.student_name,
+                                  month_master.`short_name`,
+                                  quarter_month_master.`quarter`")
                 ->from('bill_master_tennis')
                 ->join('admission_register','admission_register.admission_id = bill_master_tennis.student_id','INNER')
+                ->join('month_master','bill_master_tennis.month_id = month_master.id','LEFT')
+                ->join('quarter_month_master','bill_master_tennis.quarter_id = quarter_month_master.id','LEFT')
                 ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") >= ',$from_dt)
                 ->where('DATE_FORMAT(`bill_master_tennis`.`billing_date`,"%Y-%m-%d") <= "'.$to_dt.'"'.$where.'')
                 ->where_in('bill_master_tennis.billing_style', $where_in);
