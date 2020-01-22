@@ -33,7 +33,7 @@ function inputdatecheck(datedata,basepath){
 
 
 function isDate(txtDate)
-{
+{  console.log("isdatecheck");
     var currVal = txtDate;
     if(currVal == '')
     return false;

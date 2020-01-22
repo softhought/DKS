@@ -1,0 +1,3 @@
+#Golobal search
+
+https://semantic-ui.com/modules/search.html#using-api-settings
