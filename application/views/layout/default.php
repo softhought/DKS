@@ -261,6 +261,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
  <input type="hidden" value="<?php echo base_url();?>" id="basepath" readonly />
+ <input type="hidden" value="<?php echo $accountingyear->start_date;?>" id="acstartDate" readonly />
+ <input type="hidden" value="<?php echo $accountingyear->end_date;?>" id="acendDate" readonly />
      
       </div><!-- /.container-fluid -->
     </div>

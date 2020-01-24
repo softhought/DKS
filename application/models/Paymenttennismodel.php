@@ -636,8 +636,12 @@ class Paymenttennismodel extends CI_Model{
               if ($searcharray['tran_type']=='ORITM') {
                $this->insertintoSellItemDetails($searcharray,$payment_id);
               }
+
+              /* insert activity data */
+              $activity_description = json_encode($patment_mst_inst);
+              $this->insertPaymentActivity($activity_description,NULL,$payment_id,'Insert');
              
-             return $payment_id; 
+              return $payment_id; 
            
      }
 
@@ -738,6 +742,29 @@ class Paymenttennismodel extends CI_Model{
     }
     
   }
+
+
+public function insertPaymentActivity($description,$old_description,$table_id,$action){
+$session = $this->session->userdata('user_detail');
+    $user_activity = array(
+                              "activity_module" => 'Student Receipt ',
+                              "action" => $action,
+                              "from_method" => 'paymenttennis/saveTennisPaymentData',
+                              "table_name" => 'payment_master',
+                              "module_master_id" => $table_id,
+                              "user_id" => $session['userid'],
+                              "ip_address" => getUserIPAddress(),
+                              "user_browser" => getUserBrowserName(),
+                              "user_platform" => getUserPlatform(),
+                              "description" =>  $description,
+                              "old_description" =>  $old_description
+                             );
+                             
+                $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
+
+
+
+}
 
 
 

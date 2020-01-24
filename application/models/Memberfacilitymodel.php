@@ -8,8 +8,8 @@ class Memberfacilitymodel extends CI_Model{
         $where = array('parameter_master.entry_module' => $entry_module);
         $this->db->select("parameter_master.*,cgst.rate AS cgst_rate,sgst.rate AS sgst_rate")
                 ->from('parameter_master')
-                ->join('gstmaster as cgst','cgst.id=parameter_master.cgst_id','INNER')
-                ->join('gstmaster as sgst','sgst.id=parameter_master.sgst_id','INNER')
+                ->join('gstmaster as cgst','cgst.id=parameter_master.cgst_id','left')
+                ->join('gstmaster as sgst','sgst.id=parameter_master.sgst_id','left')
                 ->where($where)
                 ->limit(1);
         $query = $this->db->get();
@@ -133,6 +133,102 @@ class Memberfacilitymodel extends CI_Model{
         $this->db->select("member_facility_transaction.*,member_master.member_name,member_master.title_one")
                 ->from('member_facility_transaction')
                 ->join('member_master','member_master.member_id = member_facility_transaction.member_id','INNER')
+                ->where($where)
+                ->limit(1);
+        $query = $this->db->get();
+        
+        #echo "<br>".$this->db->last_query();
+        
+        if($query->num_rows()> 0)
+        {
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+        else
+        {
+            return $data;
+        }
+    }
+
+
+    public function getFixedHardCourtTimeSlot()
+    {
+        $data = array();
+        $where = array('is_active' => 'Y' );
+        $this->db->select("*")
+                ->from('fixed_hard_court_timeslot')
+                ->where($where)
+                ->order_by("display_sl", "asc");
+        $query = $this->db->get();
+        #echo $this->db->last_query();
+
+        if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+            return $data;
+             
+        }
+        else
+        {
+             return $data;
+         }
+    }
+
+
+public function getFixedHardCourtList($from_dt,$to_dt,$member_id)
+    {
+        $data = array();
+
+        // if ($entry_module=='All') {
+        //     $where_parameter = [];
+        // }else{
+        //    $where_parameter = array('member_facility_transaction.parameter_mst_id' => $entry_module );
+        // }
+
+
+        if ($member_id=='All') {
+            $where_member = [];
+        }else{
+            $where_member = array('fixed_hard_court_transaction.member_id' => $member_id ); 
+        }
+       
+                $this->db->select("fixed_hard_court_transaction.*,member_master.member_name,member_master.member_code")
+                ->from('fixed_hard_court_transaction')
+                ->join('member_master','member_master.member_id = fixed_hard_court_transaction.member_id','INNER')
+                ->where('DATE_FORMAT(`fixed_hard_court_transaction`.`tran_dt`,"%Y-%m-%d") >= ', $from_dt)
+                ->where('DATE_FORMAT(`fixed_hard_court_transaction`.`tran_dt`,"%Y-%m-%d") <= ', $to_dt)
+                //->where($where_parameter)
+                ->where($where_member);
+        $query = $this->db->get();
+        #echo $this->db->last_query();
+
+        if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+            return $data;
+             
+        }
+        else
+        {
+             return $data;
+         }
+    }
+
+
+    public function getFixedhardCourtDetailsByTranId($tran_id)
+    {
+        $data = array();
+        $where = array('fixed_hard_court_transaction.ftran_id' => $tran_id );
+        $this->db->select("fixed_hard_court_transaction.*,member_master.member_name,member_master.title_one")
+                ->from('fixed_hard_court_transaction')
+                ->join('member_master','member_master.member_id = fixed_hard_court_transaction.member_id','INNER')
                 ->where($where)
                 ->limit(1);
         $query = $this->db->get();

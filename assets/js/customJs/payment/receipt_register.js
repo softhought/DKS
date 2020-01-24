@@ -1,10 +1,17 @@
 $(document).ready(function(){
 
-var basepath = $("#basepath").val();
-$('.datepicker').datepicker({
-    format: 'dd/mm/yyyy'
+  var basepath = $("#basepath").val();
+  var startDate = new Date($("#acstartDate").val());
+  var endDate = new Date($("#acendDate").val());
+  
+  
+  $('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    startDate: startDate,
+    endDate: endDate
     
-});
+ });
+
 
  var total_amt = $("#total_amt").val();
  $("#total_amount_value").html(total_amt);
