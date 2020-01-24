@@ -132,7 +132,8 @@ public function addaccountMaster(){
               $method='accountmaster_action'; 
               $master_id =$insertdata;
               $tablename = 'account_master';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename);
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
               if($insertdata){
 
                       $json_response = array(
@@ -151,14 +152,18 @@ public function addaccountMaster(){
             }else{
 
                 $upd_where = array('account_master.account_id' => $accId);
+                //old details
+                $old_details = $this->commondatamodel->getSingleRowByWhereCls('account_master',$upd_where);
 
-                     $Updatedata = $this->commondatamodel->updateSingleTableData('account_master',$data,$upd_where);
+                $Updatedata = $this->commondatamodel->updateSingleTableData('account_master',$data,$upd_where);
+
               $activity_module='data Upadte';
               $action = 'Update';
               $method='accountmaster_action'; 
               $master_id =$accId;
               $tablename = 'account_master';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename);
+              $description = 'Old-'.json_encode($old_details).'New-'.json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
                   if($Updatedata){
 
@@ -188,7 +193,7 @@ public function addaccountMaster(){
 
   } 
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename){
+  function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -203,7 +208,9 @@ public function addaccountMaster(){
                         "user_id" => $session['userid'],
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
-                        "user_platform" =>  getUserPlatform()
+                        "user_platform" =>  getUserPlatform(),
+                        "description"=>$description,
+                        "ip_address"=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

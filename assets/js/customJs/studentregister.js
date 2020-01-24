@@ -129,6 +129,7 @@ function validateform(){
 	
 	var studtitle = $('#studtitle').val();
 	var studname = $('#studname').val();
+    var studdob = $('#studdob').val();
 	var father_title = $('#father_title').val();
 	var fathername = $('#fathername').val();
 	var mobile_no = $('#mobile_no').val();
@@ -138,9 +139,12 @@ function validateform(){
     var status = $('#status').val();
 	var category = $('#category').val();
 	var bill_style = $('#bill_style').val();
+    var admission_dt = $('#admission_dt').val();
+    var exit_dt = $('#exit_dt').val();
 
-	$("#studnameerr,#fathernameerr,#mobilenoerr,#citynameerr,#pincodeerr,#admissiondterr,#statuserr,#cateerr,#billstyleerr").text('').removeClass('perrmsg');
 
+	$("#studnameerr,#fathernameerr,#mobilenoerr,#citynameerr,#pincodeerr,#admissiondterr,#statuserr,#cateerr,#billstyleerr,#doberr,#exitdterr").text('').removeClass('perrmsg');
+    
 	if(studtitle == ''){
 
      $("#studnameerr").text('Select Student Title').addClass('perrmsg');
@@ -153,7 +157,13 @@ function validateform(){
       $("#studname").focus();
      return false;		
 
-	}else if(father_title == ''){
+	}else if(studdob != '' && isDate(studdob) == false){
+
+     $("#doberr").text('Enter Correct DOB').addClass('perrmsg');
+      $("#studdob").focus();
+     return false;      
+
+    }else if(father_title == ''){
 
      $("#fathernameerr").text("Select Father's/Mother's Title").addClass('perrmsg');
       $("#father_title").focus();
@@ -194,21 +204,33 @@ function validateform(){
       $("#admission_dt").focus();
      return false;		
 
-	}
+	}else if(admission_dt != '' && isDate(admission_dt) == false){
+
+     $("#admissiondterr").text('Enter Correct Admission Date').addClass('perrmsg');
+      $("#admission_dt").focus();
+     return false;      
+
+    }else if(category == ''){
+
+     $("#cateerr").text('Select Category').addClass('perrmsg');
+      $("#category").focus();
+     return false;      
+
+    }
     else if(status == ''){
 
      $("#statuserr").text('Select Status').addClass('perrmsg');
       $("#status").focus();
      return false;      
 
+    }else if(exit_dt != '' && isDate(exit_dt) == false){
+
+     $("#exitdterr").text('Enter Correct Exit Date').addClass('perrmsg');
+      $("#exit_dt").focus();
+     return false;      
+
     }
-	else if(category == ''){
-
-     $("#cateerr").text('Select Category').addClass('perrmsg');
-      $("#category").focus();
-     return false;		
-
-	}
+	
 	else if(bill_style == ''){
 
      $("#billstyleerr").text('Select Billing Style').addClass('perrmsg');

@@ -858,3 +858,38 @@ font-weight: 600;
 margin-top: 7px;
   }
   
+/*added by anil on 21-01-2020*/
+
+.meberpre{
+
+	padding: 10px;
+	height: 550px;
+	overflow: auto;
+
+}
+.memblock{
+	margin-left: -6px; 
+	background-color: #9b9bdf;
+	margin-top: -2px;
+}
+.martop{
+	margin-top: 35px !important;
+}
+.spansty{
+	font-size: 20px;
+   color:#f7f4f5;
+   font-weight: bold;
+   padding: 10px;
+   text-transform: uppercase;
+}
+.form_err2{
+
+   border: 2px solid red;
+   border-radius: 5px; 
+
+}
+
+#detail_memberchild th{
+	width: 20%;
+	
+}

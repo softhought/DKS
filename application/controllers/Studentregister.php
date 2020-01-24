@@ -65,7 +65,7 @@ public function index()
         // pre($result['studentplaygroup']);exit;
 
         $result['titleofneme'] = array('MR','MR.','MS','MS.'); 
-        $result['studentstatus'] = array('ACTIVE STUDENT','RESIGNED','TEMPORARY TERMINATED'); 
+        $result['studentstatus'] = array('ACTIVE STUDENT','RESIGNED','TEMPURARY TERMINATED'); 
         $result['specialcoching'] = array('Y','N',); 
         $result['billtype'] = array('M'=>'MONTHLY','Q'=>'QUARTERLY');
               
@@ -214,8 +214,8 @@ public function index()
                        );
                
                                  
-           
-                
+               //old data details
+                $old_details = $this->commondatamodel->getSingleRowByWhereCls('admission_register',$upd_where);
 
                 $Updatedata = $this->commondatamodel->updateSingleTableData('admission_register',$updata,$upd_where);
 
@@ -224,7 +224,7 @@ public function index()
               $method='registration_action'; 
               $master_id =$admissionId;
               $tablename = 'admission_register';
-              $description = $studtitle.$studname.' '.'date of birth-'.$dob.' '.'has father name-'.$father_title.$fathername.' '.'landlin No.\mobileno-'.$landline_no.'/'.$mobile_no.' '.'address-'.$address_one.$address_two.$address_three.' '.'city-'.$city.' '.'pin-'.$pincode.' '.'admission_dt-'.$admidt.' '.'discharge_dt-'.$exit_dt.' '.'monthly subscription-'.$monthly_sub.' '.'Billing Style-'.$bill_style.' '.'modify date-'.date('Y-m-d');
+              $description = 'Old-'.json_encode($old_details).' New-'.json_encode($updata);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
              
@@ -272,7 +272,8 @@ public function index()
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
-                        'description'=>$description
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

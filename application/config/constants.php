@@ -110,6 +110,13 @@ define ("MONTH_LIST", json_encode(array (
     '12' => 'December'
 ))); 
 
+define("GENDER_LIST", json_encode(array(
+
+     'M'=>'Male',
+     'F'=>'Female',
+     'O'=>'Other'
+
+)));
 
 
 

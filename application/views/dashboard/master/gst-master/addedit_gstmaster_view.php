@@ -22,7 +22,7 @@
                            
              <div class="row">
               
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label for="gstdescription">GST Description</label>
                 <div class="form-group">
                    <div class="input-group input-group-sm">
@@ -33,7 +33,7 @@
               </div>
              
            
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <label>Type</label>
               <div class="form-group">
                   <div class="input-group input-group-sm">
@@ -57,7 +57,7 @@
                
               </div>
            
-             <div class="col-md-4">
+             <div class="col-md-2">
               <label for="gstrate">Rate</label>
                 <div class="form-group">
                     <div class="input-group input-group-sm">
@@ -66,11 +66,9 @@
                 </div>
                
               </div>
-             </div>
-
-             <div class="row">
+            
               
-              <div class="col-md-4">
+              <div class="col-md-3">
                  <label>Account</label>
                 <div class="form-group">                 
                   <div class="input-group input-group-sm">
@@ -95,7 +93,7 @@
               </div>
 
              
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <label>Input/Output</label>
                 <div class="form-group">
                    <div class="input-group input-group-sm">

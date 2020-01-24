@@ -112,6 +112,9 @@ legend.scheduler-border {
                                                 <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="studdob" id="studdob" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->student_dob != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->student_dob)); } ?>" />
                                           </div>
                                       </div>
+                                      <div class="row error-row-block">
+                                      <div class="col-md-12"><p id="doberr"></p></div>
+                                    </div>
                                     </div>
                                     <div class="col-md-8">
                                         <label for="father_title" >Father's /Mother's Name*</label>
@@ -246,7 +249,7 @@ legend.scheduler-border {
                           <label for="address_three">Address 3</label>
                           <div class="form-group">
                               <div class="input-group input-group-sm">
-                                <input type="text" class="form-control "  name="address_two" id="address_two" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_three; } ?>" />
+                                <input type="text" class="form-control "  name="address_three" id="address_three" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['studentregisterEditdata']->address_three; } ?>" />
                               </div>
                           </div>
                         </div>
@@ -299,6 +302,9 @@ legend.scheduler-border {
                                 <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="admission_dt" id="admission_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->admission_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->admission_dt)); } ?>">
                               </div>
                           </div>
+                           <div class="row error-row-block">
+                        <div class="col-md-12"><p id="admissiondterr"></p></div>
+                      </div>
                         </div>
                         <div class="col-md-4">
                             <label for="category">Category*</label>
@@ -348,13 +354,18 @@ legend.scheduler-border {
 
                       <div class="row">
                         <div class="col-md-4">
-                          <label for="studdob" class="col-sm-3">Exit Date</label>
+                          <div class="form-group">
+                          <label for="studdob">Exit Date</label>
                           <div class="input-group input-group-sm">
                            <div class="input-group-prepend">
                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                            </div>
                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="exit_dt" id="exit_dt" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['studentregisterEditdata']->discharge_dt != ''){ echo date('d/m/Y',strtotime($bodycontent['studentregisterEditdata']->discharge_dt)); } ?>">
                          </div>
+                       </div>
+                         <div class="row error-row-block">
+                        <div class="col-md-12"><p id="exitdterr"></p></div>
+                      </div>
                         </div>
                       </div>
 

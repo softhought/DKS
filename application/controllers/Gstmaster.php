@@ -111,7 +111,7 @@ public function gstmaster_action(){
               $method='gstmaster_action'; 
               $master_id =$insertdata;
               $tablename = 'gstmaster';
-              $description = $gstdescription.' @'.$gstrate.'%';
+              $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
               if($insertdata){
 
@@ -132,14 +132,17 @@ public function gstmaster_action(){
 
                 $upd_where = array('gstmaster.id' => $gstId);
 
-                     $Updatedata = $this->commondatamodel->updateSingleTableData('gstmaster',$data,$upd_where);
+                //old details
+                 $old_detals = $this->commondatamodel->getSingleRowByWhereCls('gstmaster',$upd_where);
+
+                $Updatedata = $this->commondatamodel->updateSingleTableData('gstmaster',$data,$upd_where);
 
               $activity_module='data Update';
               $action = 'Update';
               $method='gstmaster_action'; 
               $master_id =$gstId;
               $tablename = 'gstmaster';
-              $description = $gstdescription.' @'.$gstrate.'%';
+              $description = 'Old-'.json_encode($old_detals).' New-'.json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
                   if($Updatedata){
@@ -179,13 +182,18 @@ public function gstmaster_action(){
             $gstid = $this->input->post('id');
             $where = array('id'=>$gstid);
 
+            //old delete details
+             $del_where = array('gstmaster.id' => $gstid);
+                
+             $del_details = $this->commondatamodel->getSingleRowByWhereCls('gstmaster',$del_where);
+
            $delete = $this->commondatamodel->deleteTableData('gstmaster',$where);
             $activity_module='data delete';
               $action = 'Delete';
               $method='deletegstmaster'; 
               $master_id =$gstid;
               $tablename = 'gstmaster';
-              $description = '';
+              $description = 'delid_details-'.$del_details;
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
                    
@@ -222,7 +230,8 @@ public function gstmaster_action(){
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
-                        'description'=>$description
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

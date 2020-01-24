@@ -131,12 +131,14 @@ function checkduplicatgroupname(){
             if($mode == 'ADD' && $groupId == 0){
 
               $insertdata = $this->commondatamodel->insertSingleTableData('account_group',$data);
+              
               $activity_module='data Insert';
               $action = 'Insert';
               $method='groupform_action'; 
               $master_id =$insertdata;
               $tablename = 'account_group';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename);
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
               if($insertdata){
 
                       $json_response = array(
@@ -155,15 +157,19 @@ function checkduplicatgroupname(){
             }else{
 
                 $upd_where = array('account_group.ac_grp_id' => $groupId);
+                //old data details
+               $old_details = $this->commondatamodel->getSingleRowByWhereCls('account_group',$upd_where);
 
-                     $Updatedata = $this->commondatamodel->updateSingleTableData('account_group',$data,$upd_where);
+                $Updatedata = $this->commondatamodel->updateSingleTableData('account_group',$data,$upd_where);
+                     
 
               $activity_module='data Update';
               $action = 'Update';
               $method='groupform_action'; 
               $master_id =$groupId;
               $tablename = 'account_group';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename);
+              $description = 'Old-'.json_encode($old_details).' New-'.json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
                   if($Updatedata){
 
@@ -194,7 +200,7 @@ function checkduplicatgroupname(){
   }
 
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename){
+  function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -209,7 +215,9 @@ function checkduplicatgroupname(){
                         "user_id" => $session['userid'],
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
-                        "user_platform" =>  getUserPlatform()
+                        "user_platform" =>  getUserPlatform(),
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

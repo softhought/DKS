@@ -139,7 +139,8 @@ public function paymentmode_action(){
               $method='paymentmode_action'; 
               $master_id =$insertdata;
               $tablename = 'payment_mode_details';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename);
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
               if($insertdata){
 
                       $json_response = array(
@@ -159,14 +160,18 @@ public function paymentmode_action(){
 
                 $upd_where = array('payment_mode_details.id' => $paymodeId);
 
-                     $Updatedata = $this->commondatamodel->updateSingleTableData('payment_mode_details',$data,$upd_where);
+               // old details
+              $old_details = $this->commondatamodel->getSingleRowByWhereCls('payment_mode_details',$upd_where);
+
+               $Updatedata = $this->commondatamodel->updateSingleTableData('payment_mode_details',$data,$upd_where);
 
               $activity_module='Data Update';
               $action = 'Update';
               $method='paymentmode_action'; 
               $master_id =$paymodeId;
               $tablename = 'payment_mode_details';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename);
+              $description='Old-'.json_encode($old_details).' New-'.json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
 
                   if($Updatedata){
 
@@ -196,7 +201,7 @@ public function paymentmode_action(){
 
   }
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename){
+  function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -211,7 +216,9 @@ public function paymentmode_action(){
                         "user_id" => $session['userid'],
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
-                        "user_platform" =>  getUserPlatform()
+                        "user_platform" =>  getUserPlatform(),
+                        'description'=>$description,
+                        "ip_address"=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{
