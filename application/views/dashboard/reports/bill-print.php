@@ -5,7 +5,7 @@
 <section class="layout-box-content-format1">
         <div class="card card-primary">
             <div class="card-header box-shdw">
-              <h3 class="card-title">Outstanding Payble</h3>
+              <h3 class="card-title">Bill Print</h3>
                <!-- <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
                   <a href="<?php echo base_url(); ?>billgeneratetennis/generatelistbill" class="btn btn-default btnpos">
                    <i class="fas fa-clipboard-list"></i> List </a>
