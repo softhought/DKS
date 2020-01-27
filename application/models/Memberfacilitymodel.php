@@ -196,9 +196,17 @@ public function getFixedHardCourtList($from_dt,$to_dt,$member_id)
             $where_member = array('fixed_hard_court_transaction.member_id' => $member_id ); 
         }
        
-                $this->db->select("fixed_hard_court_transaction.*,member_master.member_name,member_master.member_code")
+                $this->db->select("fixed_hard_court_transaction.*,
+                    member_master.member_name,member_master.member_code,
+                    day_master.day_name,
+                    day_master.day_code,
+                    fixed_hard_court_timeslot.from_time,
+                    fixed_hard_court_timeslot.to_time,
+                    ")
                 ->from('fixed_hard_court_transaction')
                 ->join('member_master','member_master.member_id = fixed_hard_court_transaction.member_id','INNER')
+                ->join('day_master','day_master.day_id = fixed_hard_court_transaction.day_id','INNER')
+                ->join('fixed_hard_court_timeslot','fixed_hard_court_timeslot.time_slot_id = fixed_hard_court_transaction.time_slot_id','INNER')
                 ->where('DATE_FORMAT(`fixed_hard_court_transaction`.`tran_dt`,"%Y-%m-%d") >= ', $from_dt)
                 ->where('DATE_FORMAT(`fixed_hard_court_transaction`.`tran_dt`,"%Y-%m-%d") <= ', $to_dt)
                 //->where($where_parameter)

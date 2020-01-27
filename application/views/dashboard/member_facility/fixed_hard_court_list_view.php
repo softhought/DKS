@@ -98,7 +98,7 @@
                    <img src="<?php echo base_url(); ?>assets/img/loader.gif" width="90" height="90" id="gear-loader" style="margin-left: auto;margin-right: auto;"/>
                    <span style="color: #bb6265;">Loading...</span>
                </div>
-               
+
               <div id="fixedhardcourt_list_data">
               <table class="table customTbl table-bordered table-striped dataTable">
                 <thead>
@@ -108,8 +108,10 @@
                     <th>Tran dt.</th>
                     <th>Member Code</th>
                     <th>Member Name</th>
-                    <th>Qty</th>
-                    <th>Rate</th>
+                    <th>Day</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>Time</th>
                     <th>Court No</th>
                     <th>Hr. Amt</th>
                     <th>CGST Amt</th>
@@ -136,8 +138,10 @@
                    <td><?php echo date("d-m-Y", strtotime($fixhrdcourtlist->tran_dt)); ?></td>
                    <td><?php echo $fixhrdcourtlist->member_code; ?></td>
                    <td><?php echo $fixhrdcourtlist->member_name; ?></td>
-                   <td><?php //echo $fixhrdcourtlist->quantity; ?></td>
-                   <td align="right" ><?php //echo $fixhrdcourtlist->rate; ?></td>
+                   <td><?php echo $fixhrdcourtlist->day_code; ?></td>
+                   <td ><?php echo $fixhrdcourtlist->day_night; ?></td>
+                   <td ><?php echo $fixhrdcourtlist->single_double; ?></td>
+                   <td ><?php echo date('h:i A', strtotime($fixhrdcourtlist->from_time))." - ".date('h:i A', strtotime($fixhrdcourtlist->to_time));?></td>
                    <td ><?php echo $fixhrdcourtlist->court_no; ?></td>
                    <td align="right"><?php echo $fixhrdcourtlist->taxable; ?></td>
                    <td align="right"><?php echo $fixhrdcourtlist->cgst_amt; ?></td>

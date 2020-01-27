@@ -229,7 +229,9 @@ public function facility_action(){
                                           'cgst_amt' => $cgst_amt,       
                                           'sgst_id' => $sgst_id,       
                                           'sgst_amt' => $sgst_amt,       
-                                          'total_amount' => $net_amt,       
+                                          'total_amount' => $net_amt, 
+                                          'year_id' => $year,       
+                                          'company_id' => $company,          
                                           'created_on' => date('Y-m-d'),       
                                          );
 
@@ -609,6 +611,8 @@ public function fixedhardcourt_action(){
                                           'sgst_id' => $sgst_id,       
                                           'sgst_amt' => $sgst_amt,       
                                           'total_amount' => $net_amt,       
+                                          'year_id' => $year,       
+                                          'company_id' => $company,       
                                           'created_on' => date('Y-m-d'),       
                                          );
 
