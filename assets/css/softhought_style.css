@@ -320,7 +320,17 @@ body {
 .layout-box-content-format1 .select2-container--default .select2-selection--single {
 	border: 1px solid #c7b7bf;
 }
-
+.bootstrap-select button {
+	border: 1px solid #c7b7bf;
+	font-size: 11px;
+	font-family: Sans-serif;
+	letter-spacing: 0.5px;
+}
+.bootstrap-select .btn-group button{
+	font-size: 9px;
+	font-family: Sans-serif;
+	letter-spacing: 0.5px;
+}
 .select2-results {
 	font-size: 11px !important;
 	font-family: Sans-serif;
