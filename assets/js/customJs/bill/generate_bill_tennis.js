@@ -108,8 +108,6 @@ $("#monthblock,#quarterblock").hide();
 
 
 $(document).on('click','#listshowbtn',function(){
-
-
   var from_dt = $('#from_dt').val();
   var to_date = $('#to_date').val();
   var billstyle = $('#billstyle').val();

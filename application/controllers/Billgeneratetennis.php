@@ -36,10 +36,6 @@ class Billgeneratetennis extends CI_Controller {
           $result['btnText'] = "Update";
           $result['btnTextLoader'] = "Updating...";
           $result['paymodeId'] = $this->uri->segment(3);
-
-        
-           
-
        }
 
         $result['billtype'] = array('M'=>'Monthly','Q'=>'Quarterly');
@@ -685,9 +681,6 @@ $session = $this->session->userdata('user_detail');
 
 
 }
-
-
-
 
 
 
