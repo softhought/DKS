@@ -5,32 +5,22 @@ var basepath =$("#basepath").val();
 var total_amt = $("#total_amt").val();
  $("#total_amount_value").html(total_amt);
 
- // var today = new Date();
-     
- //    //get current month
- //    var curMonth = today.getMonth();
+
+  
+// $('.datepicker').datepicker({
+//     format: 'dd/mm/yyyy',
+//     autoclose: true
     
- //    if (curMonth > 3) { //
- //        var end_dt = (today.getFullYear() + 1).toString();
- //        var start_dt = today.getFullYear().toString();
- //         var fullend_dt = '31'+'/'+'03'+'/'+end_dt;
- //         var fullstart_dt = '01'+'/'+'04'+'/'+start_dt; 
-       
- //    } else {
- //         var end_dt = today.getFullYear().toString();
- //         var start_dt = end_dt - 1; 
+// });
 
- //         var fullend_dt = '31'+'/'+'03'+'/'+end_dt;
- //         var fullstart_dt = '01'+'/'+'04'+'/'+start_dt; 
-       
- //    }
-
-  // alert(fullstart_dt); 
-  // alert(fullend_dt); 
+var startDate = new Date($("#acstartDate").val());
+var endDate = new Date($("#acendDate").val());
   
 $('.datepicker').datepicker({
     format: 'dd/mm/yyyy',
-    autoclose: true
+    autoclose: true,
+    startDate: startDate,
+    endDate: endDate
     
 });
 
@@ -198,7 +188,7 @@ function resetStudentDropdown(billing_style){
               
              $("#student_drp").html(result);
 
-            // $('.select2').select2();
+             $('.select2').select2();
           
          
             }, 

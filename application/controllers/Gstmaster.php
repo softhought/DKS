@@ -111,8 +111,9 @@ public function gstmaster_action(){
               $method='gstmaster_action'; 
               $master_id =$insertdata;
               $tablename = 'gstmaster';
+              $old_description = '';
               $description = json_encode($data);
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
               if($insertdata){
 
                       $json_response = array(
@@ -142,8 +143,9 @@ public function gstmaster_action(){
               $method='gstmaster_action'; 
               $master_id =$gstId;
               $tablename = 'gstmaster';
-              $description = 'Old-'.json_encode($old_detals).' New-'.json_encode($data);
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $old_description = json_encode($old_detals);
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
                   if($Updatedata){
 
@@ -214,7 +216,7 @@ public function gstmaster_action(){
 
   }
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+  function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -230,6 +232,7 @@ public function gstmaster_action(){
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
+                        'old_description'=>$old_description,
                         'description'=>$description,
                         'ip_address'=>getUserIPAddress()
                     );

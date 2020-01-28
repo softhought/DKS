@@ -233,6 +233,15 @@ public function index()
             
             
                     $insertData = $this->commondatamodel->insertSingleTableData('admission_register',$insert_array);
+
+              $activity_module='data Insert';
+              $action = 'Insert';
+              $method='admission_action'; 
+              $master_id =$insertData;
+              $tablename = 'admission_register';
+              $old_description = '';
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
                     
 
                     if($insertData)
@@ -630,7 +639,31 @@ public function getbillDetailsModelData()
         }
     } 
 
+function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
+  $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {
+
+        $user_activity = array(
+                        "activity_module_admin" =>$activity_module ,
+                        "activity_module" => $activity_module,
+                        "action" => $action,
+                        "from_method" => $method,
+                        "module_master_id" => $master_id,
+                        "user_id" => $session['userid'],
+                        "table_name" =>$tablename ,
+                        "user_browser" => getUserBrowserName(),
+                        "user_platform" =>  getUserPlatform(),
+                        'old_description'=>$old_description,
+                        "description"=>$description,
+                        "ip_address"=>getUserIPAddress()
+                    );
+        $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
+     }else{
+            redirect('login','refresh');
+        }                
+  }
 
 
 }//end of class

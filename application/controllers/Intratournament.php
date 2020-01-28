@@ -177,7 +177,8 @@ public function addFees(){
                               "ip_address" => getUserIPAddress(),
                               "user_browser" => getUserBrowserName(),
                               "user_platform" => getUserPlatform(),
-                              "description" =>  $activity_description
+                              "description" =>  $activity_description,
+                              'ip_address'=>getUserIPAddress()
                              );
                              
                 $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);

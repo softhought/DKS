@@ -224,8 +224,9 @@ public function index()
               $method='registration_action'; 
               $master_id =$admissionId;
               $tablename = 'admission_register';
-              $description = 'Old-'.json_encode($old_details).' New-'.json_encode($updata);
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $old_description=json_encode($old_details);
+              $description = json_encode($updata);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
              
                   if($Updatedata){
@@ -256,7 +257,7 @@ public function index()
 
   } 
 
- function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+ function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -272,6 +273,7 @@ public function index()
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
+                        'old_description'=>$old_description,
                         'description'=>$description,
                         'ip_address'=>getUserIPAddress()
                     );

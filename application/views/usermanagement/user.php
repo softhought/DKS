@@ -20,7 +20,7 @@
               <h3 class="card-title">User List</h3>
                  <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
               <a href="<?php echo base_url(); ?>user/create" class="btn btn-info btnpos link_tab">
-              <i class="fas fa-clipboard-list"></i> Add </a>
+              <i class="fas fa-plus"></i> Add </a>
                 </div>
              <!--  <a href="<?php echo base_url();?>user/create" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a> -->
             </div><!-- /.card-header -->
@@ -91,25 +91,27 @@
     </section>
 
 <!-- Modal -->
-
+<section class="layout-box-content-format1">
 <div class="modal fade" id="myModal" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Login & Logout Details</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header card-header box-shdw" style="color: white;">
+              <h5 class="modal-title">Login & Logout Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
-            <div id="ModalBody" style="max-height: 450px;overflow-y: scroll;
-" class="modal-body">
+           
+            <div id="ModalBody"  class="modal-body">
 
             </div>
+       
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-sm action-button" data-dismiss="modal">Close</button>
             </div>
           </div>
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
       </div>
+  </section>

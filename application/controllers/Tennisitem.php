@@ -103,8 +103,9 @@ public function tennisitem_action(){
               $method='tennisitem_action'; 
               $master_id =$insertdata;
               $tablename = 'tennis_item_master';
-              $description = $tennisitem.' @'.$rate.'%';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename, $description);
+              $old_description ='';
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
               if($insertdata){
 
                       $json_response = array(
@@ -124,14 +125,18 @@ public function tennisitem_action(){
 
                 $upd_where = array('tennis_item_master.item_id' => $itemId);
 
-                     $Updatedata = $this->commondatamodel->updateSingleTableData('tennis_item_master',$data,$upd_where);
+                //old_details
+                $old_details = $this->commondatamodel->getSingleRowByWhereCls('tennis_item_master',$upd_where);
+
+               $Updatedata = $this->commondatamodel->updateSingleTableData('tennis_item_master',$data,$upd_where);
               $activity_module='data Upadte';
               $action = 'Update';
               $method='tennisitem_action'; 
               $master_id =$itemId;
               $tablename = 'tennis_item_master';
-              $description = $tennisitem.' @'.$rate.'%';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $old_description = json_encode($old_details);
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
                   if($Updatedata){
 
@@ -194,7 +199,7 @@ public function tennisitem_action(){
     }
 
 
-   function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+   function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -210,7 +215,9 @@ public function tennisitem_action(){
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
-                        'description'=>$description
+                        'old_description'=>$old_description,
+                        'description'=>$description,
+                        "ip_address"=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

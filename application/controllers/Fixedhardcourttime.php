@@ -1,26 +1,25 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Paymentmode extends CI_Controller {
+class Fixedhardcourttime extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('commondatamodel','commondatamodel',TRUE);
-        $this->load->model('paymentmodemodel','paymentmodemodel',TRUE);
+        $this->load->model('fixedhardcourttimemodel','fixedhardcourttimemodel',TRUE);
          
        
-    }
+   }
 
 public function index()
 {
     $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
-        $page = "dashboard/master/payment-mode/payment_mode_list_view";
+        $page = "dashboard/fixed-hard-time/fixed_hard_court_time_list";
         $header="";  
 
-        $result['paymentmodelist'] = $this->paymentmodemodel->getallPaymentmodedtl();
-       // pre($result['paymentmodelist']);exit;
+        $result['fixedtimelist'] = $this->commondatamodel->getAllRecordWhereOrderBy('fixed_hard_court_timeslot',[],'time_slot_id');
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');
@@ -28,7 +27,7 @@ public function index()
     
 }
 
-public function addpaymentmodedtl(){
+public function addedittime(){
 
   $session = $this->session->userdata('user_detail');
     if($this->session->userdata('user_detail'))
@@ -39,78 +38,75 @@ public function addpaymentmodedtl(){
         $result['mode'] = "ADD";
         $result['btnText'] = "Save";
         $result['btnTextLoader'] = "Saving...";
-        $result['paymodeId'] = 0;
-        $result['paymentmodeEditdata'] = [];
+        $result['timeslotId'] = 0;
+        $result['timeEditdata'] = [];
 
        }else{
 
           $result['mode'] = "EDIT";
           $result['btnText'] = "Update";
           $result['btnTextLoader'] = "Updating...";
-          $result['paymodeId'] = $this->uri->segment(3);
+          $result['timeslotId'] = $this->uri->segment(3);
 
-          $where = array('id'=>$result['paymodeId']);
+          $where = array('time_slot_id'=>$result['timeslotId']);
 
-          $result['paymentmodeEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('payment_mode_details',$where);
+          $result['timeEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('fixed_hard_court_timeslot',$where);
            
 
        }
 
-        $page = "dashboard/master/payment-mode/addedit_paymentmode_view";
-        $header="";
- 
-        $result['accountmasterlist'] = $this->commondatamodel->getAllRecordWhereOrderBy('account_master',[],'account_name');
-       
-       // pre($result['accountmasterlist']);exit;
 
+
+        $page = "dashboard/fixed-hard-time/addedit_fixed_hard_court_time";
+        $header="";
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');
     }
 }
 
-function checkduplicatpaymentmode(){
+public function checkduplicatetime(){
 
    $session = $this->session->userdata('user_detail');
-    if($this->session->userdata('user_detail'))
-    {
-         $paymentmode = $this->input->post('paymentmode');
+        if($this->session->userdata('user_detail'))
+        {
+            $from_time = date('H:i s',strtotime($this->input->post('from_time')));
+            $to_time = date('H:i s',strtotime($this->input->post('to_time')));
 
-         $where = array('Payment_mode'=>$paymentmode);
-        
-         $getdata = $this->commondatamodel->getAllRecordWhere('payment_mode_details',$where);
-        
-  
-         if(!empty($getdata)){
 
-              $json_response = array(
+          $where = array('from_time'=>$from_time,'to_time'=>$to_time);
+
+          $existstime = $this->commondatamodel->getSingleRowByWhereCls('fixed_hard_court_timeslot',$where);
+
+         
+          if(!empty($existstime)){
+
+                   $json_response = array(
                             "msg_status" => 1,
-                            "msg_data" => "Payment Mode Already Exists",
-                            );
+                            
+                        );
+          }else{
 
-         }else{
-
-              $json_response = array(
+            $json_response = array(
                             "msg_status" => 0,
-                            "msg_data" => "",
-                            );
-         }
+                           
+                        );
+          }
 
-        
+
         header('Content-Type: application/json');
         echo json_encode( $json_response );
-        exit; 
+        exit;
 
-    }
-    else{
-           redirect('login','refresh');
-     
-    }
+
+        }else{
+            redirect('login','refresh');
+        }
+
 
 }
 
-
-public function paymentmode_action(){
+public function fixedhardtime_action(){
 
       $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -123,24 +119,31 @@ public function paymentmode_action(){
 
             
             $mode = trim(htmlspecialchars($dataArry['mode']));
-            $paymodeId = trim(htmlspecialchars($dataArry['paymodeId']));
-            $paymentmode = trim(htmlspecialchars($dataArry['paymentmode']));
-            $acccountid = trim($dataArry['acccountid']);
-            
+            $timeslotId = trim(htmlspecialchars($dataArry['timeslotId']));
+            $from_time = trim(htmlspecialchars($dataArry['from_time']));
+            $to_time = trim($dataArry['to_time']);
+            $in_hour = trim(htmlspecialchars($dataArry['in_hour']));
 
-            $data = array('payment_mode'=>$paymentmode,'account_id'=>$acccountid);
+            // $lastinsertid = $this->fixedhardcourttimemodel->getLastinsertid();
 
-            
-            if($mode == 'ADD' && $paymodeId == 0){
+           $wheretimeseril = array('moduleTag'=>'TIME'); 
+           $serialno = $this->commondatamodel->getSingleRowByWhereCls('serialmaster',$wheretimeseril)->serial;
 
-              $insertdata = $this->commondatamodel->insertSingleTableData('payment_mode_details',$data);
-              $activity_module='Data Insert';
+            $data = array('from_time'=>date('H:i s',strtotime($from_time)),'to_time'=>date('H:i s',strtotime($to_time)),'in_hour'=>$in_hour,'display_sl'=> $serialno,'is_active'=>'Y','cteated_on'=>date('Y-m-d'));
+           
+                       
+            if($mode == 'ADD' && $timeslotId == 0){
+
+              $insertdata = $this->commondatamodel->insertSingleTableData('fixed_hard_court_timeslot',$data);
+              
+              $activity_module='data Insert';
               $action = 'Insert';
-              $method='paymentmode_action'; 
+              $method='Fixedhardcourttime/fixedhardtime_action'; 
               $master_id =$insertdata;
-              $tablename = 'payment_mode_details';
+              $tablename = 'fixed_hard_court_timeslot';
+              $old_description ='';
               $description = json_encode($data);
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
               if($insertdata){
 
                       $json_response = array(
@@ -158,18 +161,20 @@ public function paymentmode_action(){
 
             }else{
 
-                $upd_where = array('payment_mode_details.id' => $paymodeId);
+               $updata = array('from_time'=>date('H:i s',strtotime($from_time)),'to_time'=>date('H:i s',strtotime($to_time)),'in_hour'=>$in_hour,'is_active'=>'Y','cteated_on'=>date('Y-m-d')); 
 
-               // old details
-              $old_details = $this->commondatamodel->getSingleRowByWhereCls('payment_mode_details',$upd_where);
+                $upd_where = array('fixed_hard_court_timeslot.time_slot_id' => $timeslotId);
+                //old data details
+               $old_details = $this->commondatamodel->getSingleRowByWhereCls('fixed_hard_court_timeslot',$upd_where);
 
-               $Updatedata = $this->commondatamodel->updateSingleTableData('payment_mode_details',$data,$upd_where);
+                $Updatedata = $this->commondatamodel->updateSingleTableData('fixed_hard_court_timeslot',$data,$upd_where);
+                     
 
-              $activity_module='Data Update';
+              $activity_module='data Update';
               $action = 'Update';
-              $method='paymentmode_action'; 
-              $master_id =$paymodeId;
-              $tablename = 'payment_mode_details';
+              $method='Fixedhardcourttime/fixedhardtime_action'; 
+              $master_id =$timeslotId;
+              $tablename = 'fixed_hard_court_timeslot';
               $old_description = json_encode($old_details);
               $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
@@ -191,6 +196,10 @@ public function paymentmode_action(){
                     }  
             }
 
+        $serialupdata = array('serial'=>$serialno+1,'lastnumber'=>$serialno+1);
+
+         $Upserial = $this->commondatamodel->updateSingleTableData('serialmaster',$serialupdata,$wheretimeseril);    
+
         header('Content-Type: application/json');
         echo json_encode( $json_response );
         exit; 
@@ -201,6 +210,8 @@ public function paymentmode_action(){
         }   
 
   }
+
+
 
   function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
@@ -218,14 +229,13 @@ public function paymentmode_action(){
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
-                        'old_description'=> $old_description,
+                        'old_description'=>$old_description,
                         'description'=>$description,
-                        "ip_address"=>getUserIPAddress()
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{
             redirect('login','refresh');
         }                
   }
-
 }

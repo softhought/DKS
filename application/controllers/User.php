@@ -74,7 +74,8 @@ class User extends CI_Controller {
                     "user_id" =>$session['userid'],
                     "table_name" => 'users',
                     "user_browser" => getUserBrowserName(),
-                    "user_platform" =>  getUserPlatform()
+                    "user_platform" =>  getUserPlatform(),
+                    'ip_address'=>getUserIPAddress()
                 );
 
                 $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
@@ -109,7 +110,8 @@ class User extends CI_Controller {
                 "user_id" =>$session['userid'],
                 "table_name" => 'users',
                 "user_browser" => getUserBrowserName(),
-                "user_platform" =>  getUserPlatform()
+                "user_platform" =>  getUserPlatform(),
+                'ip_address'=>getUserIPAddress()
             );
 
             $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
@@ -137,7 +139,8 @@ class User extends CI_Controller {
                 "user_id" =>$session['userid'],
                 "table_name" => 'users',
                 "user_browser" => getUserBrowserName(),
-                "user_platform" =>  getUserPlatform()
+                "user_platform" =>  getUserPlatform(),
+                'ip_address'=>getUserIPAddress()
             );
 
             redirect('user','refresh');
@@ -153,7 +156,7 @@ class User extends CI_Controller {
         
         $table="";
         $userActivity=$this->user->getUserAccountActivity($userid);
-        $table="<table id='loginLogoutTable' class='table table-bordered table-striped dataTables' style='border-collapse: collapse !important;'>
+        $table="<table id='loginLogoutTable' class='table customTbl table-bordered table-striped dataTables' style='border-collapse: collapse !important;'>
                     <thead>
                         <tr>
                             <th>Login Date & Time</th>

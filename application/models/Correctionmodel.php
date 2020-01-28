@@ -2,14 +2,17 @@
 
 class Correctionmodel extends CI_Model{
 
- public function getAllCorrectionData()
+ public function getAllCorrectionData($from_dt,$to_dt)
 	{
 		$data = array();
 		$query = $this->db->select("corrections.*,admission_register.title_one,admission_register.student_name,admission_register.bill_style")
 				->from('corrections')
 				->join('admission_register','corrections.student_id = admission_register.admission_id','INNER')
+        ->where('DATE_FORMAT(`corrections`.`date_of_correction`,"%Y-%m-%d") >= ', $from_dt)
+        ->where('DATE_FORMAT(`corrections`.`date_of_correction`,"%Y-%m-%d") <= ', $to_dt)
 				->order_by('corrections.id','desc')
-		        ->get();
+		    ->get();
+        #echo $this->db->last_query();
 		if($query->num_rows()> 0)
 		{
             foreach ($query->result() as $rows)

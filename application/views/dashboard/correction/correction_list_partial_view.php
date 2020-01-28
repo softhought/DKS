@@ -42,8 +42,8 @@
                      <a href="<?php echo base_url(); ?>correction/addeditcorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
                   <i class="fas fa-edit"></i> 
                    </a>
-                   <a href="<?php echo base_url(); ?>correction/deletecorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
-                  <i class="fas fa-trash"></i>  
+                  <!--  <a href="<?php echo base_url(); ?>correction/deletecorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
+                  <i class="fas fa-trash"></i></a>  --> 
                   </td>
 
 

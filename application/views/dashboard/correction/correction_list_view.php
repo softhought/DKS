@@ -23,7 +23,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                               </div>
-                              <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="from_dt" id="from_dt" im-insert="false" value="">
+                              <input type="text" class="form-control datepicker" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="from_dt" id="from_dt" im-insert="false" value="<?php echo date('d/m/Y',strtotime($bodycontent['accountingyear']->start_date)); ?>" readonly>
                             </div>
                           </div>
                           <p id="fromdaterr" style="font-size: 12px;"></p>
@@ -35,7 +35,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                               </div>
-                              <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="to_date" id="to_date" im-insert="false" value="">
+                              <input type="text" class="form-control datepicker" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" name="to_date" id="to_date" im-insert="false" value="<?php echo date('d/m/Y',strtotime($bodycontent['accountingyear']->end_date)); ?>" readonly>
                             </div>
                           </div>
                            <p id="todateerr" style="font-size: 12px;"></p>
@@ -114,7 +114,7 @@
                      <a href="<?php echo base_url(); ?>correction/addeditcorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
                   <i class="fas fa-edit"></i> 
                    </a>
-                   <button class="btn tbl-del-action-btn padbtn" onclick="deletetennisopening(<?php echo $correctiondtl->id; ?>)"><i class="fas fa-trash"></i></button>
+                   <!-- <button class="btn tbl-del-action-btn padbtn" onclick="deletetennisopening(<?php echo $correctiondtl->id; ?>)"><i class="fas fa-trash"></i></button> -->
                   <!--  <a href="<?php echo base_url(); ?>correction/deletecorrection/<?php echo $correctiondtl->id; ?>" class="btn btn-sm action-button padbtn">
                   <i class="fas fa-trash"></i>  --> 
                   </td>

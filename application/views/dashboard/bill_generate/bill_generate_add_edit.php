@@ -55,7 +55,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="bill_dt" id="bill_dt" value="<?php echo date('d/m/Y');?>">
+                            <input type="text" class="form-control datepicker" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="bill_dt" id="bill_dt" value="<?php echo date('d/m/Y');?>">
                           </div>
                         </div>
                  </div>

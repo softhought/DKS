@@ -18,8 +18,15 @@ public function index()
     {  
         $page = "dashboard/correction/correction_list_view";
         $header=""; 
+         $company=$session['companyid'];
+         $year=$session['yearid'];
+         $where = array('year_id' => $year);
+
+         $result['accountingyear'] = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where);
+         $from_dt=$result['accountingyear']->start_date;
+         $to_dt=$result['accountingyear']->end_date;
         $result['studentcodelist'] = $this->correctionmodel->getAllstudentcode();
-        $result['correctiondtl'] = $this->correctionmodel->getAllCorrectionData();
+        $result['correctiondtl'] = $this->correctionmodel->getAllCorrectionData($from_dt,$to_dt);
 
         //pre($result['studentregisterdtl']); exit;      
                     
@@ -154,8 +161,9 @@ public function correction_action() {
               $method='correction_action'; 
               $master_id =$insertData;
               $tablename = 'corrections';
+              $old_description ='';
               $description = 'date of correction-'.$dataArry['correction_dt'].' '.'student code-'.$dataArry['student'].' '.'bill style-'.$dataArry['bill_style'].' amount-'.$dataArry['correction_acc_id'].' correction-No= '.$insertData;
-              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
                if($insertData)
                     {
@@ -198,6 +206,9 @@ public function correction_action() {
            
            $upd_where = array('id'=>$correctionId);
 
+           //old details
+           $old_details = $this->correctionmodel->getSingleCorrectionData($correctionId);
+
            $Updatedata = $this->commondatamodel->updateSingleTableData('corrections',$data,$upd_where);
 
              $activity_module='Data Updated';
@@ -205,8 +216,9 @@ public function correction_action() {
              $method='correction_action'; 
               $master_id =$correctionId;
               $tablename = 'corrections';
+              $old_description = json_encode( $old_details);
               $description = 'date of correction-'.$dataArry['correction_dt'].' '.'student code-'.$dataArry['student'].' '.'bill style-'.$dataArry['bill_style'].' amount-'.$dataArry['correction_acc_id'];
-              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
                
                 if($Updatedata)
                     {
@@ -252,6 +264,8 @@ public function deletecorrection(){
 
             $correctionId = $this->input->post('id');
             $where = array('id'=>$correctionId);
+            //old details
+            $old_details = $this->correctionmodel->getSingleCorrectionData($correctionId);
 
            $delete = $this->commondatamodel->deleteTableData('corrections',$where);
             $activity_module='data delete';
@@ -259,8 +273,9 @@ public function deletecorrection(){
               $method='deletecorrection'; 
               $master_id =$correctionId;
               $tablename = 'corrections';
-              $description = '';
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $old_description ='';
+              $description = json_encode($old_details);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
           $json_response = array(
                                     "msg_status" => 1,
@@ -338,7 +353,7 @@ public function getallcorrectionbydate(){
 
 
 
-function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -354,7 +369,9 @@ function activity_log($activity_module,$action,$method,$master_id,$tablename,$de
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
-                        'description'=>$description
+                        'old_description'=>$old_description,
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

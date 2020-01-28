@@ -137,8 +137,9 @@ function checkduplicatgroupname(){
               $method='groupform_action'; 
               $master_id =$insertdata;
               $tablename = 'account_group';
+              $old_description ='';
               $description = json_encode($data);
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
               if($insertdata){
 
                       $json_response = array(
@@ -168,8 +169,9 @@ function checkduplicatgroupname(){
               $method='groupform_action'; 
               $master_id =$groupId;
               $tablename = 'account_group';
-              $description = 'Old-'.json_encode($old_details).' New-'.json_encode($data);
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $old_description = json_encode($old_details);
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
                   if($Updatedata){
 
@@ -200,7 +202,7 @@ function checkduplicatgroupname(){
   }
 
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+  function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -216,6 +218,7 @@ function checkduplicatgroupname(){
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
+                        'old_description'=>$old_description,
                         'description'=>$description,
                         'ip_address'=>getUserIPAddress()
                     );

@@ -279,19 +279,23 @@ public function registration_action(){
 
      //pre($updata);exit;
        $upd_where = array('member_id'=>$memberId);
+       
+        // old details for auditral
+        $olddetails = $this->commondatamodel->getSingleRowByWhereCls('member_master',$upd_where);
 
         $Updatedata = $this->commondatamodel->updateSingleTableData('member_master',$updata,$upd_where);
-        // old details for auditral
        
-          $olddetails = $this->commondatamodel->getSingleRowByWhereCls('member_master',$upd_where);
+       
+         
 
               $activity_module='data Upadte';
               $action = 'Update';
               $method='registration_action'; 
               $master_id =$memberId;
               $tablename = 'member_master';
-              $description = 'New-'.json_encode($updata).' Old-'.json_encode($olddetails);
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $old_description = json_encode($olddetails);
+              $description = json_encode($updata);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
 
 //Member Children Details 
@@ -405,7 +409,7 @@ if($this->input->post('delIds') != ''){
   }
 
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+  function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -421,6 +425,7 @@ if($this->input->post('delIds') != ''){
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
+                        'old_description'=>$old_description,
                         'description'=>$description,
                         'ip_address'=>getUserIPAddress()
                     );

@@ -106,6 +106,9 @@ public function facilityrate_action(){
 
             
             $upd_where = array('parameter_master.parameter_id' => $parameterId);
+
+            //old details
+             $old_details = $this->commondatamodel->getSingleRowByWhereCls('parameter_master',$upd_where);
             
             $Updatedata = $this->commondatamodel->updateSingleTableData('parameter_master',$data,$upd_where);
 
@@ -114,8 +117,9 @@ public function facilityrate_action(){
               $method='facilityrate_action'; 
               $master_id =$parameterId;
               $tablename = 'parameter_master';
-              $description = 'rate-'.$rate.' cgst_id-'.$cgst.' sgst_id-'.$sgst;
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $old_description = json_encode($old_details);
+              $description = json_encode($data);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
                   if($Updatedata){
 
@@ -146,7 +150,7 @@ public function facilityrate_action(){
   }
 
 
-function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -162,8 +166,10 @@ function activity_log($activity_module,$action,$method,$master_id,$tablename,$de
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
+                        'old_description'=>$old_description,
                         'description'=>$description,
                         'ip_address'=>getUserIPAddress()
+
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

@@ -97,8 +97,9 @@ public function addhardcourt(){
               $method='hardcourt_action'; 
               $master_id =$insertData;
               $tablename = 'hardcourt';
+              $old_description = '';
               $description = 'tran date-'.$dataArry['hardcourt_date'].' '.'Quantity-'.$dataArry['quntity'].' '.'rate-'.$dataArry['rate'];
-              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
 
                if($insertData)
                     {
@@ -147,6 +148,9 @@ public function addhardcourt(){
            
            $upd_where = array('id'=>$hardcourtId);
 
+          //old details
+           $old_details = $this->commondatamodel->getSingleRowByWhereCls('hardcourt',$upd_where);
+
            $Updatedata = $this->commondatamodel->updateSingleTableData('hardcourt',$data,$upd_where);
 
              $activity_module='Data Updated';
@@ -154,8 +158,9 @@ public function addhardcourt(){
               $method='hardcourt_action'; 
               $master_id =$hardcourtId;
               $tablename = 'hardcourt';
+              $old_description = json_encode($data);
               $description = 'tran date-'.$dataArry['hardcourt_date'].' '.'Quantity-'.$dataArry['quntity'].' '.'rate-'.$dataArry['rate'];
-              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+              $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
                
                 if($Updatedata)
                     {
@@ -191,7 +196,7 @@ public function addhardcourt(){
 
     }
 
-function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -207,7 +212,9 @@ function activity_log($activity_module,$action,$method,$master_id,$tablename,$de
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
-                        'description'=>$description
+                        'old_description'=>$old_description,
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{

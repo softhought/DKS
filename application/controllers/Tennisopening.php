@@ -110,8 +110,9 @@ public function tennisopeningbalance_action(){
               $method='tennisopeningbalance_action'; 
               $master_id =$insupdata;
               $tablename = 'tennis_student_opening';
+              $old_description ='';
               $description = 'studentid-'.$admission_id.' '.'student code-'.$studcode.' '.'billing style-'.$bill_style.' '.'opening balance-'.$opening_bal.' '.'monthid-'.$month_id.' '.'quarterid-'.$quter_id.' '.'yearid-'.$session['yearid'].' '.'companyid-'.$session['companyid'];
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
                               
 
             }else{
@@ -128,6 +129,10 @@ public function tennisopeningbalance_action(){
 
             $upd_where = array('tennis_student_opening.opening_id' => $opening_id);
 
+            //old details 
+
+             $old_details = $this->commondatamodel->getSingleRowByWhereCls('tennis_student_opening',$upd_where);
+
                 $insupdata = $this->commondatamodel->updateSingleTableData('tennis_student_opening',$updata,$upd_where);
 
                 $insertId = $opening_id;
@@ -136,8 +141,9 @@ public function tennisopeningbalance_action(){
               $method='tennisopeningbalance_action'; 
               $master_id =$opening_id;
               $tablename = 'tennis_student_opening';
-              $description = 'studentid-'.$admission_id.' '.'student code-'.$studcode.' '.'billing style-'.$bill_style.' '.'opening balance-'.$opening_bal.' '.'monthid-'.$month_id.' '.'quarterid-'.$quter_id.' '.'yearid-'.$session['yearid'].' '.'companyid-'.$session['companyid'];
-            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$description); 
+              $old_description = json_encode($old_details);
+              $description = json_encode($updata);
+            $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description); 
  
             }
 
@@ -198,7 +204,7 @@ public function tennisopeningbalist(){
 
 
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename,$description){
+  function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -214,7 +220,9 @@ public function tennisopeningbalist(){
                         "table_name" =>$tablename ,
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
-                        'description'=>$description
+                        'old_description'=> $old_description,
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{
