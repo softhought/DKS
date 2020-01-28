@@ -164,7 +164,7 @@ $("#monthblock,#quarterblock").hide();
 
 
 
-  // update stock Release
+  
     $(document).on('click', "#intraturnamentfeeApplybtn", function(e) {
 
     	  e.preventDefault();

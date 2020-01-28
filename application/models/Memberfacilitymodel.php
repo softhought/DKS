@@ -256,6 +256,226 @@ public function getFixedHardCourtList($from_dt,$to_dt,$member_id)
     }
 
 
+public function getAllBenvolentFundList($yearid,$companyid)
+  {
+    $data = array();
+
+    $where = array(
+                    'benvolent_fund_transaction.year_id' => $yearid,
+                    'benvolent_fund_transaction.company_id' => $companyid
+                  );
+    
+    $this->db->select("
+                        benvolent_fund_transaction.*,
+                        member_master.member_code,
+                        member_master.title_one,
+                        member_master.member_name,
+                        month_master.month_name,
+                        member_catogary_master.category_name
+                       
+                        ")
+        ->from('benvolent_fund_transaction')
+        ->join('member_master','member_master.member_id=benvolent_fund_transaction.member_id','INNER')
+        ->join('month_master','month_master.id=benvolent_fund_transaction.month_id','INNER')
+        ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
+        ->order_by('benvolent_fund_transaction.btran_id')
+        ->where($where);
+         $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+  }
+
+
+
+  public function getAllMemberListByCategory($category)
+  {
+    $data = array();
+      $where = array(
+                            'member_master.category' => $category
+                        );
+    
+    $this->db->select("
+                        member_master.*,
+                        member_catogary_master.category_name
+                    
+                        ")
+        ->from('member_master')
+        ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
+        
+        ->where($where);
+         $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+  }
+
+
+  public function getAllDevelopmentFeeList($yearid,$companyid)
+  {
+    $data = array();
+
+    $where = array(
+                    'development_fees_transaction.year_id' => $yearid,
+                    'development_fees_transaction.company_id' => $companyid
+                  );
+    
+    $this->db->select("
+                        development_fees_transaction.*,
+                        member_master.member_code,
+                        member_master.title_one,
+                        member_master.member_name,
+                        month_master.month_name,
+                        member_catogary_master.category_name
+                       
+                        ")
+        ->from('development_fees_transaction')
+        ->join('member_master','member_master.member_id=development_fees_transaction.member_id','INNER')
+        ->join('month_master','month_master.id=development_fees_transaction.month_id','INNER')
+        ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
+        ->order_by('development_fees_transaction.dev_tran_id')
+        ->where($where);
+         $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+  }
+
+
+
+
+
+  /**/
+
+
+public function getMemberListForCopyBenvolentFund($category,$month,$yearid,$companyid)
+  {
+    $data = array();
+
+    $where = array(
+                    'benvolent_fund_transaction.year_id' => $yearid,
+                    'benvolent_fund_transaction.company_id' => $companyid,
+                    'member_master.category' => $category,
+                    'benvolent_fund_transaction.month_id' => $month,
+                  );
+    
+    $this->db->select("
+                        benvolent_fund_transaction.*,
+                        member_master.member_code,
+                        member_master.title_one,
+                        member_master.member_name,
+                        month_master.month_name,
+                        member_catogary_master.category_name
+                       
+                        ")
+        ->from('benvolent_fund_transaction')
+        ->join('member_master','member_master.member_id=benvolent_fund_transaction.member_id','INNER')
+        ->join('month_master','month_master.id=benvolent_fund_transaction.month_id','INNER')
+        ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
+        ->order_by('benvolent_fund_transaction.btran_id')
+        ->where($where);
+         $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+  }
+
+
+
+  public function getMemberListForCopyDevelopmentFees($category,$month,$yearid,$companyid)
+  {
+    $data = array();
+
+    $where = array(
+                    'development_fees_transaction.year_id' => $yearid,
+                    'development_fees_transaction.company_id' => $companyid,
+                    'member_master.category' => $category,
+                    'development_fees_transaction.month_id' => $month,
+                  );
+    
+    $this->db->select("
+                        development_fees_transaction.*,
+                        member_master.member_code,
+                        member_master.title_one,
+                        member_master.member_name,
+                        month_master.month_name,
+                        member_catogary_master.category_name
+                       
+                        ")
+        ->from('development_fees_transaction')
+        ->join('member_master','member_master.member_id=development_fees_transaction.member_id','INNER')
+        ->join('month_master','month_master.id=development_fees_transaction.month_id','INNER')
+        ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
+        ->order_by('development_fees_transaction.dev_tran_id')
+        ->where($where);
+         $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+  }
+
+
+
 
 
 

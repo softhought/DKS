@@ -77,8 +77,7 @@
 					              <td><?php echo $i; ?></td>
                         <td><?php echo $value->member_code; ?></td>
                         <td><?php echo $value->title_one." ".$value->member_name; ?></td>
-                        <td><?php 
-                         ?></td>
+                         <td><?php echo $value->category_name; ?></td>
                       
                            <td align="center">
 
