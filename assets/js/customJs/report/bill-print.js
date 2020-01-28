@@ -32,8 +32,6 @@ $(document).ready(function(){
 
         //    $("#response_msg").html("");
        if (validateBillGenerate()) { 
-            var formDataserialize = $("#billprint").serialize();            
-            formDataserialize = encodeURIComponent(formDataserialize);
             var billing_style =$("#billing_style").val();
             var QM="";
             if(billing_style=='M')
@@ -41,17 +39,12 @@ $(document).ready(function(){
                 QM =$("#month").val();
             }else if(billing_style=='Q'){
                 QM =$("#quarter_month").val();
-            }
-            
+            }            
             var student_id =$("#student_id").val();
            
-
-            // var URL= basepath+'billprint/billPrintPdf/'+formDataserialize;
             var URL= basepath+'billprint/billPrintPdf/'+billing_style+'/'+QM+'/'+encodeURIComponent(student_id);
             var w=window.open(URL,'_blank');
             $(w.document).find('html').append('<head><title>Bill Print</title></head>');
-
-            // console.log("formData");
     }
 
       
@@ -65,7 +58,7 @@ function validateBillGenerate(){
     var billing_style =$("#billing_style").val();
     var bill_dt =$("#bill_dt").val();
     var studentId =$("#student_id option:selected").val();
-    console.log(billing_style);
+    console.log(studentId);
 
     $("#errormsg").text("");
     $("#billing_styleerr,#bill_dterr,#student_id,#montheerr,#quarter_montherr").removeClass("form_error");
@@ -94,8 +87,8 @@ function validateBillGenerate(){
           return false;
          }        
      }
-     if (studentId=='') {
-        $("#student_id").addClass("form_error");
+     if (studentId==0 || studentId==null ) {
+        $("#student_drp").css({"border": "1px solid red"});
            return false;
     }
 
@@ -109,7 +102,7 @@ function resetStudentDropdown(billing_style){
 
     $.ajax({
             type: "POST",
-            url: basepath+'billgeneratetennis/resetStudentList',
+            url: basepath+'billprint/getStudentList',
             dataType: "html",
             data: {billing_style:billing_style},
             success: function (result) {

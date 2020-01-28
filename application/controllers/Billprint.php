@@ -84,12 +84,13 @@ class Billprint extends CI_Controller {
                            
             $dateRange='('.$fromdate.' To '.$todate.')';
             $printDate=date("d-m-Y");
+            $Date=date("Ymd_His");
 
             // $jasperphp->debugsql=true;
             $jasperphp->arrayParameter =  $arrayParameter;
             $jasperphp->load_xml_file($file); 
             $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
-            $jasperphp->outpage('I');   
+            $jasperphp->outpage('I','BillPrint-'.$Date.'.pdf');   
             // pre($jasperphp);     
                
         }else{
@@ -97,5 +98,29 @@ class Billprint extends CI_Controller {
         }
     }
 
+    public function getStudentList()
+  {
+      if($this->session->userdata('user_detail'))
+      {
+        
+       $billing_style = $this->input->post('billing_style');     
+       $result['studentList'] = $this->billgenmodel->studentListbyBillStyle($billing_style);
+
+        ?>
+           <select data-live-search="true" data-actions-box="true" class="form-control selectpicker" name="student_id" multiple id="student_id" >
+                          <?php 
+                         foreach ($result['studentList'] as $studentlist) {  ?>
+                         <option value="<?php echo $studentlist->admission_id;?>"  
+                          ><?php echo $studentlist->student_code;?></option>
+                          <?php     } ?>                              
+          </select> 
+        <?php
+
+      }
+      else
+      {
+          redirect('login','refresh');
+      }
+  } 
 
 }// end of class
