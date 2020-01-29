@@ -23,8 +23,20 @@ class Benvolentfund extends CI_Controller {
      
         $page = "dashboard/benvolent_fund/benvolent_fund_list_view.php";
         $header="";  
+       
+       
+        $member_code = '';
+        $cat_id = '';
+        $month_id = '';
 
-        $result['benvolentfundList'] = $this->memberfacilitymodel->getAllBenvolentFundList($year,$company);
+        $result['benvolentfundList'] = $this->memberfacilitymodel->getAllBenvolentFundList($year,$company,$member_code,$cat_id,$month_id);
+
+        $result['allmembercodelist'] = $this->memberfacilitymodel->getallmebercode(); 
+        $result['allmembercatlist'] = $this->memberfacilitymodel->getallcategorylist(); 
+        $result['allmembermonthlist'] = $this->memberfacilitymodel->getallmonthlist(); 
+        
+            
+       
        // pre($result['benvolentfundList']);exit;
         createbody_method($result, $page, $header, $session);
     }else{
@@ -374,7 +386,32 @@ class Benvolentfund extends CI_Controller {
 
     }
 
+public function benvolentFundpartiallist(){
 
+   $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {
+
+          $company=$session['companyid'];
+          $year=$session['yearid'];
+
+          $member_code = $this->input->post('member_code');
+          $category_id = $this->input->post('category_id');
+          $month_id = $this->input->post('month_id');
+
+
+          $result['benvolentfundList'] = $this->memberfacilitymodel->getAllBenvolentFundList($year,$company,$member_code,$category_id,$month_id);
+
+         // pre($result['benvolentfundList']);exit;
+
+      $page = "dashboard/benvolent_fund/benvolent_fund_partial_list_view";
+      $this->load->view($page,$result);
+
+        }
+        else{
+            redirect('login','refresh');
+        }
+}
 
 
 

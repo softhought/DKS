@@ -256,7 +256,7 @@ public function getFixedHardCourtList($from_dt,$to_dt,$member_id)
     }
 
 
-public function getAllBenvolentFundList($yearid,$companyid)
+public function getAllBenvolentFundList($yearid,$companyid,$member_code,$cat_id,$month_id)
   {
     $data = array();
 
@@ -264,6 +264,27 @@ public function getAllBenvolentFundList($yearid,$companyid)
                     'benvolent_fund_transaction.year_id' => $yearid,
                     'benvolent_fund_transaction.company_id' => $companyid
                   );
+ 
+   if($member_code != ''){
+
+      $where2 = array('member_master.member_code'=>$member_code);
+   }else{
+     $where2 = array();
+   }
+   if($cat_id != ''){
+
+      $where3 = array('member_catogary_master.cat_id'=>$cat_id);
+   }else{
+     $where3 = array();
+   }
+   if($month_id != ''){
+
+      $where4 = array('month_master.id'=>$month_id);
+   }else{
+     $where4 = array();
+   }
+
+
     
     $this->db->select("
                         benvolent_fund_transaction.*,
@@ -279,9 +300,13 @@ public function getAllBenvolentFundList($yearid,$companyid)
         ->join('month_master','month_master.id=benvolent_fund_transaction.month_id','INNER')
         ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
         ->order_by('benvolent_fund_transaction.btran_id')
-        ->where($where);
+        ->where($where)
+        ->where($where2)
+        ->where($where3)
+        ->where($where4);
+        
          $query = $this->db->get();
-    #echo $this->db->last_query();
+    #echo $this->db->last_query();exit;
 
     if($query->num_rows()> 0)
     {
@@ -335,7 +360,7 @@ public function getAllBenvolentFundList($yearid,$companyid)
   }
 
 
-  public function getAllDevelopmentFeeList($yearid,$companyid)
+  public function getAllDevelopmentFeeList($yearid,$companyid,$member_code,$cat_id,$month_id)
   {
     $data = array();
 
@@ -343,6 +368,25 @@ public function getAllBenvolentFundList($yearid,$companyid)
                     'development_fees_transaction.year_id' => $yearid,
                     'development_fees_transaction.company_id' => $companyid
                   );
+
+    if($member_code != ''){
+
+      $where2 = array('member_master.member_code'=>$member_code);
+   }else{
+     $where2 = array();
+   }
+   if($cat_id != ''){
+
+      $where3 = array('member_catogary_master.cat_id'=>$cat_id);
+   }else{
+     $where3 = array();
+   }
+   if($month_id != ''){
+
+      $where4 = array('month_master.id'=>$month_id);
+   }else{
+     $where4 = array();
+   }
     
     $this->db->select("
                         development_fees_transaction.*,
@@ -358,7 +402,10 @@ public function getAllBenvolentFundList($yearid,$companyid)
         ->join('month_master','month_master.id=development_fees_transaction.month_id','INNER')
         ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
         ->order_by('development_fees_transaction.dev_tran_id')
-        ->where($where);
+        ->where($where)
+        ->where($where2)
+        ->where($where3)
+        ->where($where4);
          $query = $this->db->get();
     #echo $this->db->last_query();
 
@@ -476,7 +523,83 @@ public function getMemberListForCopyBenvolentFund($category,$month,$yearid,$comp
 
 
 
+public function getallmebercode(){
 
+        $data = array();
+        
+        $this->db->select("member_master.member_code")
+                ->from('member_master')
+                ->order_by("member_code");
+        $query = $this->db->get();
+        #echo $this->db->last_query();
+
+        if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+            return $data;
+             
+        }
+        else
+        {
+             return $data;
+         }
+
+}
+
+public function getallcategorylist(){
+
+        $data = array();
+        
+        $this->db->select("*")
+                ->from('member_catogary_master')
+                ->order_by("category_name", "asc");
+        $query = $this->db->get();
+        #echo $this->db->last_query();
+
+        if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+            return $data;
+             
+        }
+        else
+        {
+             return $data;
+         }
+
+}
+
+public function getallmonthlist(){
+
+        $data = array();
+        
+        $this->db->select("*")
+                ->from('month_master')
+                ->order_by("id", "asc");
+        $query = $this->db->get();
+        #echo $this->db->last_query();
+
+        if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+            return $data;
+             
+        }
+        else
+        {
+             return $data;
+         }
+
+}
 
 
 } //  end of class

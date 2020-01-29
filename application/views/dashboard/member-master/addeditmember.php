@@ -383,6 +383,16 @@
                          </div>
                           
                         </div>
+
+                        <div class="col-md-4">
+
+                          <label for="ceiling">Card Serial No.</label>
+                          <div class="input-group input-group-sm">
+                          
+                           <input type="text" class="form-control"  name="card_serial_no" id="card_serial_no" im-insert="false" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['memberEditdata']->card_serial_no; } ?>">
+                         </div>
+                          
+                        </div>
                       </div>
 
                   </div>

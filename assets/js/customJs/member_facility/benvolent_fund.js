@@ -308,9 +308,32 @@ $ ('#benvolentfundList').DataTable({
     });
 
 
+//added by anil on 28-01-2020
 
+$("#total_amount_value").text($("#total_amt").val());
 
+$(document).on("change",".searchdata",function(){
 
+  var member_code = $("#member_code").val();
+  var category = $("#category").val();
+  var month_id = $("#month_id").val();
+
+     
+        $.ajax({
+           type: "POST",
+           url: basepath+'benvolentfund/benvolentFundpartiallist',
+           dataType: "html",
+           data: {member_code:member_code,category_id:category,month_id:month_id},
+            success: function(data) { 
+             
+             $("#benvoalllist").html(data);
+              $('.dataTable').DataTable();
+              $("#total_amount_value").text($("#total_amt").val());
+
+            },
+
+          });
+})
 
 
 }); // end of document ready

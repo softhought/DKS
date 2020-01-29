@@ -241,6 +241,8 @@ public function registration_action(){
          $spouse_gender = trim(htmlspecialchars($this->input->post('spouse_gender')));
          $spouse_mobile = trim(htmlspecialchars($this->input->post('spouse_mobile')));
          $spouse_email = trim(htmlspecialchars($this->input->post('spouse_email')));
+
+         $card_serial_no = trim(htmlspecialchars($this->input->post('card_serial_no')));
        
        
 
@@ -274,7 +276,8 @@ public function registration_action(){
                        'spouse_gender'=>$spouse_gender,
                        'spouse_mobile'=>$spouse_mobile,
                        'spouse_email'=>$spouse_email,
-                       'modify_date'=>date('Y-m-d')
+                       'modify_date'=>date('Y-m-d'),
+                       'card_serial_no'=>$card_serial_no
                        );
 
      //pre($updata);exit;
