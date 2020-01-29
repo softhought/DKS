@@ -157,7 +157,8 @@ function calculate() {
 
            }else if(hours1 > hours2){
 
-              var hours = hours1 + hours2;
+            
+              var hours = timefor[hours2] - hours1;
            }
            else {
            
@@ -175,7 +176,7 @@ function calculate() {
 
            }else if(hours1 > hours2){
 
-            var hours = hours1 + hours2;
+            var hours = (24 - timefor[hours1]) +  hours2;
 
            }
            else{
@@ -217,12 +218,19 @@ function calculate() {
             		var hours = hours2 - hours1;
             	}
 
+              }else if(hours1 > hours2){
 
+                if(hours1 == 12){
+
+                  var hours =  (12 - hours1) + hours2;
+                }else{
+
+                   var hours = (24 - hours1) + hours2;
+                }
+              	  
               }else{
-
-              	var hours = (12 - timefor[hours1]) + timefor[hours2];
+                var hours = (24 - hours1) + hours2;
               }
-
                        
 
             }
