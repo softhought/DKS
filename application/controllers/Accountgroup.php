@@ -18,7 +18,7 @@ public function index()
         $page = "dashboard/master/account-group/account_group_view";
         $header="";  
 
-        $result['accountgrouplist'] = $this->commondatamodel->getAllRecordWhereOrderBy('account_group',[],'group_name');
+        $result['accountgrouplist'] = $this->commondatamodel->getAllRecordWhereOrderBy('group_master',[],'group_description');
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');
@@ -49,7 +49,7 @@ public function addaccgroup(){
 
           $where = array('ac_grp_id'=>$result['groupId']);
 
-          $result['accountgroupEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('account_group',$where);
+          $result['accountgroupEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('group_master',$where);
            
 
        }
@@ -74,9 +74,9 @@ function checkduplicatgroupname(){
     {
          $groupname = $this->input->post('groupname');
 
-         $where = array('group_name'=>$groupname);
+         $where = array('group_description'=>$groupname);
         
-         $getdata = $this->commondatamodel->getAllRecordWhere('account_group',$where);
+         $getdata = $this->commondatamodel->getAllRecordWhere('group_master',$where);
         
   
          if(!empty($getdata)){
@@ -125,18 +125,18 @@ function checkduplicatgroupname(){
             $gropcat = trim($dataArry['gropcat']);
             $subgropucat = trim(htmlspecialchars($dataArry['subgropucat']));
 
-            $data = array('group_name'=>strtoupper($groupname),'group_category'=>$gropcat,'bal_pl_item'=>$subgropucat);
+            $data = array('group_description'=>strtoupper($groupname),'main_category'=>$gropcat,'sub_category'=>$subgropucat);
 
             
             if($mode == 'ADD' && $groupId == 0){
 
-              $insertdata = $this->commondatamodel->insertSingleTableData('account_group',$data);
+              $insertdata = $this->commondatamodel->insertSingleTableData('group_master',$data);
               
               $activity_module='data Insert';
               $action = 'Insert';
               $method='groupform_action'; 
               $master_id =$insertdata;
-              $tablename = 'account_group';
+              $tablename = 'group_master';
               $old_description ='';
               $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
@@ -157,18 +157,18 @@ function checkduplicatgroupname(){
 
             }else{
 
-                $upd_where = array('account_group.ac_grp_id' => $groupId);
+                $upd_where = array('group_master.ac_grp_id' => $groupId);
                 //old data details
-               $old_details = $this->commondatamodel->getSingleRowByWhereCls('account_group',$upd_where);
+               $old_details = $this->commondatamodel->getSingleRowByWhereCls('group_master',$upd_where);
 
-                $Updatedata = $this->commondatamodel->updateSingleTableData('account_group',$data,$upd_where);
+                $Updatedata = $this->commondatamodel->updateSingleTableData('group_master',$data,$upd_where);
                      
 
               $activity_module='data Update';
               $action = 'Update';
               $method='groupform_action'; 
               $master_id =$groupId;
-              $tablename = 'account_group';
+              $tablename = 'group_master';
               $old_description = json_encode($old_details);
               $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);

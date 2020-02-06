@@ -17,9 +17,9 @@
                 <thead>
                     <tr>
                     <th>Sl.No</th>
-                    <th>Group Name</th>
+                    <th>Group Description</th>
                     <th>Group Category</th>
-                    <th>Sub Category Name</th>
+                    <th>Sub Group Category</th>
                     <th>Action</th>
                                         
                     </tr>
@@ -30,11 +30,11 @@
                 foreach ($bodycontent['accountgrouplist'] as $accountgrouplist) { ?>
                    <tr>
                    <td><?php echo $i++; ?></td>
-                   <td><?php echo $accountgrouplist->group_name; ?></td>
-                   <td><?php echo $accountgrouplist->group_category; ?></td>
-                   <td><?php echo $accountgrouplist->bal_pl_item; ?></td>
+                   <td><?php echo $accountgrouplist->group_description; ?></td>
+                   <td><?php echo $accountgrouplist->main_category; ?></td>
+                   <td><?php echo $accountgrouplist->sub_category; ?></td>
                    <td>
-                     <a href="<?php echo base_url(); ?>accountgroup/addaccgroup/<?php echo $accountgrouplist->ac_grp_id; ?>" class="btn tbl-action-btn padbtn">
+                     <a href="<?php echo base_url(); ?>accountgroup/addaccgroup/<?php echo $accountgrouplist->id; ?>" class="btn tbl-action-btn padbtn">
                   <i class="fas fa-edit"></i> 
                 </a>
                     

@@ -57,7 +57,7 @@ public function addaccountMaster(){
         $page = "dashboard/master/account-master/addedit_accountmaster";
         $header="";
 
-        $result['groupnamelist'] =  $this->commondatamodel->getAllRecordWhereOrderBy('account_group',[],'group_name');
+        $result['groupnamelist'] =  $this->commondatamodel->getAllRecordWhereOrderBy('group_master',[],'group_description');
  
         
        // pre($result['accountgroupEditdata']);exit;
@@ -121,7 +121,7 @@ public function addaccountMaster(){
            
            
 
-            $data = array('account_name'=>$accountname,'group_name'=>$groupname,'ac_grp_id'=>$acccountgrpid,'is_active'=>'Y','company_id'=>$session['companyid']);
+            $data = array('account_name'=>$accountname,'group_name'=>$groupname,'group_id'=>$acccountgrpid,'is_active'=>'Y','company_id'=>$session['companyid']);
 
             
             if($mode == 'ADD' && $accId == 0){

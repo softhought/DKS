@@ -42,13 +42,13 @@
                                   <option value=''>&nbsp;</option>
                                   <?php foreach ($bodycontent['groupnamelist'] as $groupnamelist) { ?>
 
-                                    <option value="<?php echo $groupnamelist->ac_grp_id; ?>"
+                                    <option value="<?php echo $groupnamelist->id; ?>"
 
-                                    <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountmasterEditdata']->ac_grp_id == $groupnamelist->ac_grp_id){
+                                    <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountmasterEditdata']->group_id == $groupnamelist->id){
                                      echo 'selected';
                                     } ?>
 
-                                      ><?php echo $groupnamelist->group_name; ?></option>
+                                      ><?php echo $groupnamelist->group_description; ?></option>
                                    
                                 <?php   } ?>
                                  
