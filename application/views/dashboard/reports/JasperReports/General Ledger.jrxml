@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="General Ledger" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a21cb3c6-3ea1-4ca5-b24f-5f6e851cdec2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[CALL usp_generalLedgerStyleJasper('2019-04-01','2020-01-28',1,2,'2,3')]]>
+	</queryString>
+	<field name="srl" class="java.lang.Integer"/>
+	<field name="voucherDate" class="java.sql.Date"/>
+	<field name="vouchermasterid" class="java.lang.Integer"/>
+	<field name="payto" class="java.lang.Integer"/>
+	<field name="isdebit" class="java.lang.String"/>
+	<field name="detailid" class="java.lang.Integer"/>
+	<field name="accountname" class="java.lang.String"/>
+	<field name="accountid" class="java.lang.Integer"/>
+	<field name="trantype" class="java.lang.String"/>
+	<field name="narration" class="java.lang.String"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="voucherNumber" class="java.lang.String"/>
+	<field name="chequeNumber" class="java.lang.String"/>
+	<field name="chequeDate" class="java.sql.Timestamp"/>
+	<field name="MainAccountId" class="java.lang.Integer"/>
+	<field name="MainAccountName" class="java.lang.String"/>
+	<group name="MainAccountId" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{MainAccountId}]]></groupExpression>
+		<groupHeader>
+			<band height="96">
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20" uuid="a3b67b82-5833-436d-a7cd-94deeefe221c"/>
+					<text><![CDATA[Main AccountId]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="100" y="0" width="278" height="20" isPrintWhenDetailOverflows="true" uuid="93c559cd-c522-48c3-9699-d5cd9651fbee"/>
+					<textFieldExpression><![CDATA[$F{MainAccountId}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="20" width="100" height="20" uuid="696166e7-351f-4374-927a-e6019cd7fb58"/>
+					<text><![CDATA[Main AccountName]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="100" y="20" width="100" height="20" uuid="d7e727fc-ecd1-4a64-991a-6ba23019598c"/>
+					<textFieldExpression><![CDATA[$F{MainAccountName}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="52" width="555" height="1" uuid="be56c5f3-ee8f-4b41-aab7-089a33ebf221"/>
+				</line>
+				<line>
+					<reportElement x="0" y="79" width="555" height="1" uuid="4ab89887-fdd1-4398-bef8-03d431ed3f6f"/>
+				</line>
+				<staticText>
+					<reportElement x="0" y="55" width="77" height="20" uuid="0d8f33e2-9c23-4e21-bd87-9ccbd17d0709"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Date a]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="300" y="55" width="118" height="20" uuid="aac60ce3-c795-4139-bdd1-7035764c2ffc"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Particulars]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="423" y="55" width="65" height="20" uuid="8428245f-c0bd-45b6-8954-27392792d85b"/>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Debit]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="492" y="55" width="63" height="20" uuid="f7e15ae9-b2a9-4e5d-a71a-5cc77fe3b9d8"/>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Credit]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="221" y="55" width="73" height="20" uuid="777e90d4-b536-4c58-88c1-534d1239deed"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Voucher.Type]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="83" y="55" width="128" height="20" uuid="7a2dd1a7-66bd-4121-a8bb-6c00c8b7a365"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Voucher Number]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="voucherNumber">
+		<groupExpression><![CDATA[$F{voucherNumber}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50">
+			<staticText>
+				<reportElement x="236" y="11" width="100" height="20" uuid="483b6e80-2d28-4024-8e2a-b2234d7d4ef4"/>
+				<text><![CDATA[General Ledger]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50"/>
+	</pageHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" pattern="dd/MM/yyyy">
+				<reportElement x="0" y="3" width="77" height="20" printWhenGroupChanges="voucherNumber" uuid="c6bd74d8-07bf-49ac-a2ec-3a6f80a7f44b"/>
+				<textFieldExpression><![CDATA[$F{voucherDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="3" width="118" height="20" uuid="5387e253-d6bc-4cbd-9f9f-b092192c869b"/>
+				<textFieldExpression><![CDATA[$F{isdebit}+". "+$F{accountname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="423" y="3" width="65" height="20" uuid="6c639e79-3cc4-4803-9be3-69454722349b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="492" y="3" width="63" height="20" uuid="1d7eb509-bcc0-4648-9a05-b137d8f34c8d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="83" y="3" width="100" height="20" printWhenGroupChanges="voucherNumber" uuid="075e24e6-2dc6-4ea2-b77f-af8354c941be"/>
+				<textFieldExpression><![CDATA[$F{voucherNumber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+</jasperReport>

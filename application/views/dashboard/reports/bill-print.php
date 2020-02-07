@@ -93,7 +93,7 @@
                             <label for="specialcoching">Student(Opt.)</label>
                             <div class="input-group input-group-sm" id="student_drp">
                                <select data-live-search="true" data-actions-box="true" class="form-control selectpicker" name="student_id" multiple id="student_id" >
-                              <option value="">Select</option>   
+                              <!-- <option value="">Select</option>    -->
                             </select>
                             </div>
 

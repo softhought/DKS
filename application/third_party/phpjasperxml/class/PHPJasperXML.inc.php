@@ -142,9 +142,11 @@ class PHPJasperXML {
     public function xml_dismantle($xml) {	
         $this->page_setting($xml);
         $i=0;
+        // print_r($xml) ; //sandipan
        // echo $i++."<br/>";
         foreach ($xml as $k=>$out) {
             // echo $i++."$k<br/>"; // sandipan
+            // print_r($out) ;echo "<br/>"; //sandipan
             switch($k) {
                 case "parameter":
                     $this->parameter_handler($out);
@@ -173,10 +175,14 @@ class PHPJasperXML {
                     
                     foreach ($out as $b=>$object) {
 
-                      //  eval("\$this->pointer=&"."\$this->array$k".";");
+                    //    eval("\$this->pointer=&"."\$this->array$k".";");
+                        // print_r($object) ;echo "<br/>"; //sandipan
+
+
                         $this->arrayband[]=array("name"=>$k);
                         
                         if($k=='detail'){
+                           
                         
                         $this->pointer=&$this->arraydetail[$this->detailbandqty];
                         $this->detailbandheight[$this->detailbandqty]=$object["height"]+0;
@@ -215,7 +221,7 @@ class PHPJasperXML {
                             $this->group_handler($out);                                     
                         }
                         
-                        $this->pointer[]=array("type"=>"band","printWhenExpression"=>$out->band->printWhenExpression."","height"=>$object["height"],"splitType"=>$object["splitType"],"y_axis"=>$this->y_axis);                        
+                        $this->pointer[]=array("type"=>"band","evaluationTime"=>$out->band->evaluationTime."","printWhenExpression"=>$out->band->printWhenExpression."","height"=>$object["height"],"splitType"=>$object["splitType"],"y_axis"=>$this->y_axis);                        
                         $this->default_handler($object);
                     }
                     
@@ -273,6 +279,8 @@ class PHPJasperXML {
     }
 
     public function field_handler($xml_path) {
+
+        // print_r($xml_path) ; //sandipan
         $this->arrayfield[]=$xml_path["name"];
     }
 
@@ -366,8 +374,9 @@ class PHPJasperXML {
     }
 
   public function default_handler($xml_path) {
+    //   print_r($xml_path) ;echo "<br/>"; //sandipan
         foreach($xml_path as $k=>$out) {
-
+          
             switch($k) {
                 case "staticText":
                     $this->element_staticText($out);
@@ -1180,6 +1189,7 @@ $data->hyperlinkReferenceExpression=trim(str_replace(array(" ",'"'),"",$data->hy
     }
     
     public function element_textField($data) {
+         
         $align="L";
         $fill=0;
         $border=0;
@@ -1197,7 +1207,7 @@ $data->hyperlinkReferenceExpression=trim(str_replace(array(" ",'"'),"",$data->hy
         
         //SimpleXML object (1 item) [0] // ->codeExpression[0] ->attributes('xsi', true) ->schemaLocation ->attributes('', true) ->type ->drawText ->checksumRequired barbecue: 
         //SimpleXMLElement Object ( [@attributes] => Array ( [hyperlinkType] => Reference [hyperlinkTarget] => Blank ) [reportElement] => SimpleX
-        //print_r( $data["@attributes"]);
+        // print_r( $data["@attributes"]);
         
         if(isset($data->reportElement["forecolor"])) {
             $textcolor = array("r"=>hexdec(substr($data->reportElement["forecolor"],1,2)),"g"=>hexdec(substr($data->reportElement["forecolor"],3,2)),"b"=>hexdec(substr($data->reportElement["forecolor"],5,2)));
@@ -1303,17 +1313,17 @@ $font=$data->textElement->font["fontName"];
         $this->pointer[]=array("type"=>"SetFont","font"=>$font."",
             "pdfFontName"=>$data->textElement->font["pdfFontName"]."","fontstyle"=>$fontstyle."","fontsize"=>$fontsize+0,"hidden_type"=>"font");
          //$data->hyperlinkReferenceExpression=$this->analyse_expression($data->hyperlinkReferenceExpression);
-        //if( $data->hyperlinkReferenceExpression!=''){echo "$data->hyperlinkReferenceExpression";die;}
+        // if( $data->hyperlinkReferenceExpression!=''){echo "$data->hyperlinkReferenceExpression";die;}
 
-//echo '$V{'.$this->grouplist[0]["name"].'_COUNT}';
-//echo '$V{'.$this->grouplist[1]["name"].'_COUNT}';
-//echo '$V{'.$this->grouplist[2]["name"].'_COUNT}';
-//echo '$V{'.$this->grouplist[3]["name"].'_COUNT}';
+// echo '$V{'.$this->grouplist[0]["name"].'_COUNT}';
+// echo '$V{'.$this->grouplist[1]["name"].'_COUNT}';
+// echo '$V{'.$this->grouplist[2]["name"].'_COUNT}';
+// echo '$V{'.$this->grouplist[3]["name"].'_COUNT}';
 //        
 //        echo $data->textFieldExpression."<br/>";//
-//echo $data->textFieldExpression."///////".var_dump($this->grouplist)."<br/>";
-//echo $this->grouplist[2]["name"];
-
+// echo $data->textFieldExpression."///////".var_dump($this->grouplist)."<br/>";
+// echo $this->grouplist[2]["name"];
+// print_r($data['evaluationTime']) ;echo "<br/>"; //sandipan
 
         switch ($data->textFieldExpression) {
             case 'new java.util.Date()':
@@ -3724,7 +3734,7 @@ foreach($this->arrayVariable as $name=>$value){
         
          $rr=$this->analyse_expression($footercontent[0]["printWhenExpression"]);
          
-         //echo $this->analyse_expression('$F{classtype}').",".$footercontent[0]["printWhenExpression"]."hard code result:".($this->analyse_expression('$F{classtype}')!='5A').",result:$rr<br/><br/>";
+        //  echo $this->analyse_expression('$F{classtype}').",".$footercontent[0]["printWhenExpression"]."hard code result:".($this->analyse_expression('$F{classtype}')!='5A').",result:$rr<br/><br/>";
          if($footercontent[0]["printWhenExpression"]!=""){
                 if(!$rr){
                     $yplusbandheight-=$y;

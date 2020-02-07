@@ -56,13 +56,20 @@ class Billprint extends CI_Controller {
         if($this->session->userdata('user_detail'))
         {            
            
-            // $companyId = $session['companyid'];
+            $companyId = $session['companyid'];
             $yearid = $session['yearid'];
+
+            $where = array('company_master.company_id' => $companyId);
+            $company = $this->commondatamodel->getSingleRowByWhereCls('company_master',$where);  
            $arrayParameter=[
                 'BillingStyle'=>"'".$this->uri->segment(3)."'",
                 'QuarterMonth'=>$this->uri->segment(4),
                 'StudentId'=>'"'.urldecode($this->uri->segment(5)).'"',
-                'YearId'=>$yearid 
+                'YearId'=>$yearid ,
+                'CompanyName'=>strtoupper($company->full_name),
+                'CompanyAddress'=>$company->address,
+                'CompanyPhone'=>$company->phone,
+                'ofc_time'=>$company->ofc_time
             ];
             //    pre($arrayParameter);exit;
 
@@ -123,4 +130,62 @@ class Billprint extends CI_Controller {
       }
   } 
 
+
+  public function test()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {            
+           
+        //     $companyId = $session['companyid'];
+        //     $yearid = $session['yearid'];
+
+        //     $where = array('company_master.company_id' => $companyId);
+        //     $company = $this->commondatamodel->getSingleRowByWhereCls('company_master',$where);  
+        //    $arrayParameter=[
+        //         'BillingStyle'=>"'".$this->uri->segment(3)."'",
+        //         'QuarterMonth'=>$this->uri->segment(4),
+        //         'StudentId'=>'"'.urldecode($this->uri->segment(5)).'"',
+        //         'YearId'=>$yearid ,
+        //         'CompanyName'=>strtoupper($company->full_name),
+        //         'CompanyAddress'=>$company->address,
+        //         'CompanyPhone'=>$company->phone,
+        //         'ofc_time'=>$company->ofc_time
+        //     ];
+            //    pre($arrayParameter);exit;
+
+            $file= APPPATH."views/dashboard/reports/JasperReports/General Ledger.jrxml";
+            
+            $jasperphp = $this->jasperphp->jasper();
+           
+            $dbdriver="mysql";
+            // $server="localhost";
+            // $db="dks";
+            // $user="root";
+            // $pass="";
+            
+            $this->load->database();
+            $server=$this->db->hostname;
+            $user=$this->db->username;
+            $pass=$this->db->password;
+            $db=$this->db->database;
+                           
+            $dateRange='('.$fromdate.' To '.$todate.')';
+            $printDate=date("d-m-Y");
+            $Date=date("Ymd_His");
+
+            // $jasperphp->debugsql=true;
+            $jasperphp->arrayParameter =  $arrayParameter;
+            $jasperphp->load_xml_file($file); 
+            $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+            $jasperphp->outpage('I','BillPrint-'.$Date.'.pdf');   
+            // pre($jasperphp);     
+               
+        }else{
+            redirect('login','refresh');
+        }
+    }
+
 }// end of class
+
+
