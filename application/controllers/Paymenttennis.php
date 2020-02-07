@@ -240,7 +240,7 @@ public function index()
               $master_id =$insertData;
               $tablename = 'admission_register';
               $old_description = '';
-              $description = json_encode($data);
+              $description = json_encode($insert_array);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
                     
 

@@ -37,7 +37,7 @@
                    <tr>
                    <td><?php echo $i++; ?></td>
                    <td><?php echo $accountmasterlist->account_name; ?></td>
-                   <td><?php echo $accountmasterlist->group_name; ?></td>
+                   <td><?php echo $accountmasterlist->group_description; ?></td>
                     <td>
                     	<?php  if ($accountmasterlist->is_active=='Y') { ?>
                                 <a href="<?php echo base_url();?>accountmaster/InactiveAcc/<?php echo $accountmasterlist->account_id; ?>">

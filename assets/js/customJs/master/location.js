@@ -1,51 +1,21 @@
 $(document).ready(function() {
 
-    var basepath = $('#basepath').val();
+    var basepath = $("#basepath").val();
 
-
-    $(document).on("change", "#gropcat", function() {
-
-
-        var value = $(this).val();
-
-        $("#subcat").css('display', 'block');
-        $("#balancesheetcat").css('display', 'none');
-        $("#profitlosscat").css('display', 'none');
-        if (value == 'B') {
-            $("#balancesheetcat").css('display', 'block');
-        } else {
-            $("#profitlosscat").css('display', 'block');
-        }
-
-    });
-
-    $('.inputcheck').click(function() {
-
-        if ($(this).prop('checked')) {
-            $(this).val('Y');
-        } else {
-            $(this).val('N');
-        }
-
-
-    })
-
-
-
-    $(document).on('keyup', '#groupname', function(e) {
+    $(document).on('keyup', '#location_name', function(e) {
 
         e.preventDefault();
-        $("#accgroupsavebtn").attr('disabled', false);
+        $("#locationsavebtn").attr('disabled', false);
         $("#errormsg").text('');
-        var groupname = $(this).val();
-        var validgroupname = $('#validgroupname').val();
+        var location_name = $.trim($(this).val());
+        var validlocation = $.trim($('#validlocation').val());
         var mode = $('#mode').val();
 
 
         $.ajax({
             type: "POST",
-            url: basepath + 'accountgroup/checkduplicatgroupname',
-            data: { groupname: groupname },
+            url: basepath + 'locationmaster/checkexistance',
+            data: { location_name: location_name },
             dataType: 'json',
             success: function(result) {
 
@@ -54,12 +24,12 @@ $(document).ready(function() {
                     if (mode == 'ADD') {
 
                         $("#errormsg").text(result.msg_data);
-                        $("#accgroupsavebtn").attr('disabled', true);
+                        $("#locationsavebtn").attr('disabled', true);
                     } else {
-                        if (groupname.toUpperCase() != validgroupname) {
+                        if (location_name.toUpperCase() != validlocation.toUpperCase()) {
 
                             $("#errormsg").text(result.msg_data);
-                            $("#accgroupsavebtn").attr('disabled', true);
+                            $("#locationsavebtn").attr('disabled', true);
 
                         }
                     }
@@ -94,66 +64,52 @@ $(document).ready(function() {
 
     });
 
-    $("#resetgrpform").click(function() {
-
-        $("#gropcat").val('').change();
-        $("#subgropucat").val('').change();
-
-    });
 
 
     //form submit
 
-    $(document).on('submit', '#groupnameFrom', function(event) {
+    $(document).on('submit', '#locationmasterFrom', function(event) {
         event.preventDefault();
         $("#errormsg").text('');
         var mode = $("#mode").val();
-        if (valiadtegroupinfo()) {
+        var location_name = $("#location_name").val();
+        if (location_name != '') {
 
-            var formDataserialize = $("#groupnameFrom").serialize();
+            var formDataserialize = $("#locationmasterFrom").serialize();
             formDataserialize = decodeURI(formDataserialize);
 
             var formData = { formDatas: formDataserialize };
 
-            $("#accgroupsavebtn").css('display', 'none');
+            $("#locationsavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'inline-block');
 
 
             $.ajax({
                 type: "POST",
-                url: basepath + 'accountgroup/groupform_action',
+                url: basepath + 'locationmaster/addedit_action',
                 dataType: "json",
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 data: formData,
-
                 success: function(result) {
-
-
                     if (result.msg_status == 1) {
 
                         if (mode == 'EDIT') {
-
-
-                            $("#accgroupsavebtn").css('display', 'inline-block');
+                            $("#locationsavebtn").css('display', 'inline-block');
                             $("#loaderbtn").css('display', 'none');
-                            window.location.href = basepath + 'accountgroup';
-                            //showMsg();
+                            window.location.href = basepath + 'locationmaster';
+
 
                         } else {
 
                             $("#errormsg").removeClass('errormsgcolor');
                             $("#errormsg").text(result.msg_data).addClass('succmsg');
-                            $("#accgroupsavebtn").css('display', 'inline-block');
+                            $("#locationsavebtn").css('display', 'inline-block');
                             $("#loaderbtn").css('display', 'none');
-                            $('#groupname').val('');
-                            $('#gropcat').val('').change();
-                            $('#subgropucat').val('').change();
+                            $('#location_name').val('');
+
 
                         }
 
-
-
-                    } else {
 
                     }
 
@@ -183,62 +139,18 @@ $(document).ready(function() {
 
 
 
-        } // end master validation
+        } else {
+            $("#errormsg").removeClass('succmsg');
+            $("#errormsg").addClass('errormsgcolor');
+            $("#errormsg").text('Error: Enter Location Name');
+            $("#location_name").focus();
+
+        }
 
 
 
     });
 
 
-});
 
-
-function showMsg() {
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 5000
-    });
-    Toast.fire({
-        type: 'success',
-        title: 'Update Successfully'
-    })
-
-
-
-}
-
-function valiadtegroupinfo() {
-
-    var groupname = $('#groupname').val();
-    var gropcat = $('#gropcat').val();
-    var subgropucat = $('#subgropucat').val();
-
-    $("#errormsg").removeClass('succmsg');
-    $("#errormsg").addClass('errormsgcolor');
-    $('#errormsg').text();
-
-    if (groupname == '') {
-
-        $('#errormsg').text('Enter Group Name');
-        $("#groupname").focus();
-        return false;
-
-
-    } else if (gropcat == '') {
-
-        $('#errormsg').text('Select Group Category');
-        $("#gropcat").focus();
-        return false;
-
-    } else if (subgropucat == '') {
-        $('#errormsg').text('Select Sub Category Name');
-        $("#subgropucat").focus();
-        return false;
-
-    }
-
-    return true;
-}
+})

@@ -31,7 +31,7 @@ $(document).on('submit','#gstFrom',function(event)
             var formData = { formDatas: formDataserialize };
                     
              $("#gstsavebtn").css('display', 'none');
-            $("#loaderbtn").css('display', 'block');
+            $("#loaderbtn").css('display', 'inline-block');
         
                
         $.ajax({
@@ -49,7 +49,7 @@ $(document).on('submit','#gstFrom',function(event)
                     	if(mode == 'EDIT'){
 
 
-                    	 $("#gstsavebtn").css('display', 'block');
+                    	 $("#gstsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          window.location.href=basepath+'gstmaster';
                          //showMsg();
@@ -58,7 +58,7 @@ $(document).on('submit','#gstFrom',function(event)
 
                     	 $("#errormsg").removeClass('errormsgcolor');
                          $("#errormsg").text(result.msg_data).addClass('succmsg'); 
-                         $("#gstsavebtn").css('display', 'block');
+                         $("#gstsavebtn").css('display', 'inline-block');
                          $("#loaderbtn").css('display', 'none');
                          $('#gstrate').val('');                    
                          $('#gstdescription').val('');                    

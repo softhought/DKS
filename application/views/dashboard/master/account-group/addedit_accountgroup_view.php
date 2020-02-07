@@ -22,66 +22,106 @@
                            
                          <div class="row">
                            
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <label for="groupname">Group Name</label>
                                   <div class="form-group">
                                    <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" name="groupname" id="groupname" placeholder="Enter Group Name" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['accountgroupEditdata']->group_name; } ?>">
+                                    <input type="text" class="form-control" name="groupname" id="groupname" placeholder="Enter Group Name" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['accountgroupEditdata']->group_description; } ?>">
                                 </div>
                               </div>
                            
                               </div>
                           
-                <div class="col-md-4">
+                <div class="col-md-3">
                    <label>Group Category</label>
                    <div class="form-group">
-                        <div class="input-group input-group-sm">
+                        <div class="input-group input-group-sm" >
                         <select class="form-control select2" id="gropcat" name="gropcat" style="width: 100%;">
                           <option value=''>Select</option>
-                          <?php foreach ($bodycontent['groupcategory'] as $groupcategory) { ?>
+                          <?php foreach ($bodycontent['groupcategory'] as $key => $value) { ?>
 
-                            <option value="<?php echo $groupcategory; ?>"
+                            <option value="<?php echo $key; ?>"
 
-                            <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->group_category == $groupcategory){
+                            <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->main_category == $key){
                              echo 'selected';
                             } ?>
 
-                              ><?php echo $groupcategory; ?></option>
+                              ><?php echo $value; ?></option>
                            
                         <?php   } ?>
                          
                         </select>
-                        <input type="hidden" name="validgroupname" id="validgroupname" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['accountgroupEditdata']->group_name; } ?>">
+                        <input type="hidden" name="validgroupname" id="validgroupname" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['accountgroupEditdata']->group_description; } ?>">
                         </div>
                       </div>
                
                     </div>
-                 
+                 <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->main_category == 'B'){
+                      
+                      $coldisp = "display:block;";
+                      $balcatdisp = "display:block;";
+                      $procatdisp = "display:none;";
+
+                 }else if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->main_category == 'P'){
+                      $balcatdisp = "display:none;";
+                      $procatdisp = "display:block;";
+                      $coldisp = "display:block;";
+                 }else{
+                  $balcatdisp = "display:none;";
+                  $procatdisp = "display:none;";
+                  $coldisp = "display:none;";
+                 } ?>
               
-              <div class="col-md-4">
+              <div class="col-md-3" id ="subcat" style="<?php  echo $coldisp;?>">
                   <label>Sub Category Name</label>
                     <div class="form-group">
-                      <div class="input-group input-group-sm">
-                        <select class="form-control select2" id="subgropucat" name="subgropucat" style="width: 100%;">
+                      <div class="input-group input-group-sm" id="balancesheetcat" style="<?php  echo $balcatdisp;?>">
+                        <select class="form-control select2" id="subgropucatbal" name="subgropucatbal" style="width: 100%;">
                           <option value=''>Select</option>
-                          <?php foreach ($bodycontent['groupsubcategory'] as $groupsubcategory) { ?>
+                          <?php foreach ($bodycontent['groupsubcategory1'] as $key => $value) { ?>
 
-                            <option value="<?php echo $groupsubcategory; ?>"
+                            <option value="<?php echo $key; ?>"
 
-                            <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->bal_pl_item == $groupsubcategory){
+                            <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->sub_category == $key){
                              echo 'selected';
                             } ?>
 
-                              ><?php echo $groupsubcategory; ?></option>
+                              ><?php echo $value; ?></option>
                            
                         <?php   } ?>
                          
                         </select>
+                        </div>
+                        <div class="input-group input-group-sm" id="profitlosscat" style="<?php  echo $procatdisp;?>">
+                          <select class="form-control select2" id="subgropucatpro" name="subgropucatpro" style="width: 100%;">
+                            <option value=''>Select</option>
+                            <?php foreach ($bodycontent['groupsubcategory2'] as $key => $value) { ?>
+
+                              <option value="<?php echo $key; ?>"
+
+                              <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->sub_category == $key){
+                              echo 'selected';
+                              } ?>
+
+                                ><?php echo $value; ?></option>
+                            
+                          <?php   } ?>
+                          
+                          </select>
                       </div>
                        
                     </div>
                      
                   </div>
+                    
+                             <div class="col-md-2">
+                             <label for="is_bank" >Is Bank</label>                                                                
+                                  <div class="form-group" style="margin-left: 12px;margin-top: 6px;">
+                                        <div class="input-group input-group-sm">                                           
+                                           <input type="checkbox" class="rowCheck inputcheck" name="is_bank" id="is_bank"  <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->is_bank == 'Y'){ echo 'checked'; } ?> value=" <?php if($bodycontent['mode'] == 'EDIT'  && $bodycontent['accountgroupEditdata']->is_bank == 'Y'){ echo 'Y'; }else{ echo 'N'; } ?>" >
+                                        </div>
+                                  </div>       
+                             </div>
                 </div>
 
                

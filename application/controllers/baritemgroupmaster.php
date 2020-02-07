@@ -1,33 +1,32 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Accountmaster extends CI_Controller {
+class Baritemgroupmaster extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('commondatamodel','commondatamodel',TRUE);
-        $this->load->model('accountmastermodel','accountmastermodel',TRUE);
+         
        
     }
 
 public function index()
 {
     $session = $this->session->userdata('user_detail');
-    if($this->session->userdata('user_detail'))
-    {  
-        $page = "dashboard/master/account-master/account_master_view";
+	if($this->session->userdata('user_detail'))
+	{  
+        $page = "dashboard/master/bar-items-group/bar_items_group_list";
         $header="";  
 
-        $result['accountmasterlist'] = $this->accountmastermodel->getallacountmasterdtl();
-        //pre( $result['accountmasterlist']);exit;
+        $result['Allbaritemslist'] = $this->commondatamodel->getAllRecordOrderBy('bar_item_group','bar_item_group_id','desc');
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');
     }
     
- }
+}
 
-public function addaccountMaster(){
+public function addeditbaritems(){
 
   $session = $this->session->userdata('user_detail');
     if($this->session->userdata('user_detail'))
@@ -38,27 +37,25 @@ public function addaccountMaster(){
         $result['mode'] = "ADD";
         $result['btnText'] = "Save";
         $result['btnTextLoader'] = "Saving...";
-        $result['accId'] = 0;
-        $result['accountmasterEditdata'] = [];
+        $result['baritemId'] = 0;
+        $result['baritemsEditdata'] = [];
 
        }else{
 
           $result['mode'] = "EDIT";
           $result['btnText'] = "Update";
           $result['btnTextLoader'] = "Updating...";
-          $result['accId'] = $this->uri->segment(3);
+          $result['baritemId'] = $this->uri->segment(3);
 
-          $where = array('account_id'=>$result['accId']);
+          $where = array('bar_item_group_id'=>$result['baritemId']);
 
-          $result['accountmasterEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('account_master',$where);
+          $result['baritemsEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('bar_item_group',$where);
            
 
        }
 
-        $page = "dashboard/master/account-master/addedit_accountmaster";
+        $page = "dashboard/master/bar-items-group/addedit_bar_items_group";
         $header="";
-
-        $result['groupnamelist'] =  $this->commondatamodel->getAllRecordWhereOrderBy('group_master',[],'group_description');
  
         
        // pre($result['accountgroupEditdata']);exit;
@@ -69,40 +66,48 @@ public function addaccountMaster(){
     }
 }
 
- public function ActiveAcc()
-    {
-        $session = $this->session->userdata('user_detail');
-        if($this->session->userdata('user_detail'))
-        {   
 
-            $accId=$this->uri->segment(3);            
-            $this->accountmastermodel->ActiveInactiveAccountMaster($accId,'Y');
-           
+function checkduplicat(){
 
-            redirect('accountmaster','refresh');
-
-        }else{
+    $session = $this->session->userdata('user_detail');
+     if($this->session->userdata('user_detail'))
+     {
+          $item_name = $this->input->post('item_name');
+ 
+          $where = array('item_name'=>$item_name);
+         
+          $getdata = $this->commondatamodel->getAllRecordWhere('bar_item_group',$where);
+         
+   
+          if(!empty($getdata)){
+ 
+               $json_response = array(
+                             "msg_status" => 1,
+                             "msg_data" => "This Bar Item Already Exists",
+                             );
+ 
+          }else{
+ 
+               $json_response = array(
+                             "msg_status" => 0,
+                             "msg_data" => "",
+                             );
+          }
+ 
+         
+         header('Content-Type: application/json');
+         echo json_encode( $json_response );
+         exit; 
+ 
+     }
+     else{
             redirect('login','refresh');
-        }
-    }
-    public function InactiveAcc()
-    {
-        $session = $this->session->userdata('user_detail');
-        if($this->session->userdata('user_detail'))
-        {   
-            $accId=$this->uri->segment(3);
-            $this->accountmastermodel->ActiveInactiveAccountMaster($accId,'N');
-            
+      
+     }
+ 
+ }
 
-            redirect('accountmaster','refresh');
-
-        }else{
-            redirect('login','refresh');
-        }
-    }
-
-
- public function accountmaster_action(){
+ public function baritems_action(){
 
       $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -115,25 +120,23 @@ public function addaccountMaster(){
 
             
             $mode = trim(htmlspecialchars($dataArry['mode']));
-            $accId = trim(htmlspecialchars($dataArry['accId']));
-            $accountname = trim(htmlspecialchars($dataArry['accountname']));
-            $groupname = trim(htmlspecialchars($dataArry['groupname']));
-            $acccountgrpid = trim(htmlspecialchars($dataArry['acccountgrpid']));
-           
+            $baritemId = trim(htmlspecialchars($dataArry['baritemId']));
+            $item_name = trim(htmlspecialchars($dataArry['item_name']));           
            
 
-            $data = array('account_name'=>$accountname,'group_name'=>$groupname,'group_id'=>$acccountgrpid,'is_active'=>'Y','company_id'=>$session['companyid']);
-
+            $data = array('item_name'=>strtoupper($item_name));
+           
             
-            if($mode == 'ADD' && $accId == 0){
+            if($mode == 'ADD' && $baritemId == 0){
 
-              $insertdata = $this->commondatamodel->insertSingleTableData('account_master',$data);
+              $insertdata = $this->commondatamodel->insertSingleTableData('bar_item_group',$data);
+              
               $activity_module='data Insert';
               $action = 'Insert';
-              $method='accountmaster_action'; 
+              $method='baritems_action'; 
               $master_id =$insertdata;
-              $tablename = 'account_master';
-              $old_description = '';
+              $tablename = 'bar_item_group';
+              $old_description ='';
               $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
               if($insertdata){
@@ -153,17 +156,18 @@ public function addaccountMaster(){
 
             }else{
 
-                $upd_where = array('account_master.account_id' => $accId);
-                //old details
-                $old_details = $this->commondatamodel->getSingleRowByWhereCls('account_master',$upd_where);
+              $upd_where = array('bar_item_group.bar_item_group_id' => $baritemId);
+                //old data details
+               $old_details = $this->commondatamodel->getSingleRowByWhereCls('bar_item_group',$upd_where);
 
-                $Updatedata = $this->commondatamodel->updateSingleTableData('account_master',$data,$upd_where);
+                $Updatedata = $this->commondatamodel->updateSingleTableData('bar_item_group',$data,$upd_where);
+                     
 
-              $activity_module='data Upadte';
+              $activity_module='data Update';
               $action = 'Update';
-              $method='accountmaster_action'; 
-              $master_id =$accId;
-              $tablename = 'account_master';
+              $method='baritems_action'; 
+              $master_id =$baritemId;
+              $tablename = 'bar_item_group';
               $old_description = json_encode($old_details);
               $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
@@ -194,9 +198,43 @@ public function addaccountMaster(){
             redirect('login','refresh');
         }   
 
-  } 
+  }
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
+  public function Active()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {   
+
+            $Id=$this->uri->segment(3); 
+            $data = array('is_active'=>'Y');
+            $where = array('bar_item_group_id'=>$Id);           
+            $this->commondatamodel->ActiveInactive('bar_item_group',$data,$where);
+           
+            redirect('baritemgroupmaster','refresh');
+
+        }else{
+            redirect('login','refresh');
+        }
+    }
+    public function Inactive()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {   
+            $Id=$this->uri->segment(3); 
+            $data = array('is_active'=>'N');
+            $where = array('bar_item_group_id'=>$Id);           
+            $this->commondatamodel->ActiveInactive('bar_item_group',$data,$where);
+            
+            redirect('baritemgroupmaster','refresh');
+
+        }else{
+            redirect('login','refresh');
+        }
+    }
+
+function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -213,15 +251,14 @@ public function addaccountMaster(){
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
                         'old_description'=>$old_description,
-                        "description"=>$description,
-                        "ip_address"=>getUserIPAddress()
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{
             redirect('login','refresh');
         }                
   }
-  
 
 
 }

@@ -583,7 +583,29 @@ class Commondatamodel extends CI_Model{
 			}
 		}
 
-
+		public function ActiveInactive($table,$data,$where)
+		{
+			
+			try {
+				$this->db->trans_begin();
+				//$this->db->where($where);
+				$this->db->update($table, $data,$where);
+				$this->db->last_query();
+				
+				//$affectedRow = $this->db->affected_rows();
+				if ($this->db->trans_status() === FALSE) {
+					$this->db->trans_rollback();
+					
+					return FALSE;
+				} else {
+					$this->db->trans_commit();
+					
+					return TRUE;
+				}
+			} catch (Exception $exc) {
+				 return FALSE;
+			}
+		}
 	
 	
 }

@@ -18,7 +18,7 @@ public function index()
         $page = "dashboard/master/account-group/account_group_view";
         $header="";  
 
-        $result['accountgrouplist'] = $this->commondatamodel->getAllRecordWhereOrderBy('group_master',[],'group_description');
+        $result['accountgrouplist'] = $this->commondatamodel->getAllRecordOrderBy('group_master','id','desc');
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');
@@ -47,7 +47,7 @@ public function addaccgroup(){
           $result['btnTextLoader'] = "Updating...";
           $result['groupId'] = $this->uri->segment(3);
 
-          $where = array('ac_grp_id'=>$result['groupId']);
+          $where = array('id'=>$result['groupId']);
 
           $result['accountgroupEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('group_master',$where);
            
@@ -57,8 +57,9 @@ public function addaccgroup(){
         $page = "dashboard/master/account-group/addedit_accountgroup_view";
         $header="";
  
-        $result['groupcategory'] = array('PROFIT & LOSS','BALANCE SHEET');
-        $result['groupsubcategory'] = array('INCOME','ASSET');
+        $result['groupcategory'] = array('B'=>'BALANCE SHEET','P'=>'PROFIT & LOSS');
+        $result['groupsubcategory1'] = array('A'=>'ASSETS','L'=>'LIABILITY');
+        $result['groupsubcategory2'] = array('I'=>'INCOME','E'=>'EXPENDITURE');
        // pre($result['accountgroupEditdata']);exit;
 
         createbody_method($result, $page, $header, $session);
@@ -123,16 +124,25 @@ function checkduplicatgroupname(){
             $groupId = trim(htmlspecialchars($dataArry['groupId']));
             $groupname = trim(htmlspecialchars($dataArry['groupname']));
             $gropcat = trim($dataArry['gropcat']);
-            $subgropucat = trim(htmlspecialchars($dataArry['subgropucat']));
+            $subgropucatbal = trim(htmlspecialchars($dataArry['subgropucatbal']));
+            $subgropucatpro = trim(htmlspecialchars($dataArry['subgropucatpro']));
+            $is_bank = isset($dataArry['is_bank']) == true ?'Y':'N';
 
-            $data = array('group_description'=>strtoupper($groupname),'main_category'=>$gropcat,'sub_category'=>$subgropucat);
+            if($gropcat == 'B'){
 
-            
+                $subgropucat = $subgropucatbal;
+            }else{
+                $subgropucat = $subgropucatpro;
+            }
+
+            $data = array('group_description'=>strtoupper($groupname),'main_category'=>$gropcat,'sub_category'=>$subgropucat,'is_bank'=>$is_bank,'is_special'=>'N','is_active'=>'Y');
+
+            //pre($data);exit;
             if($mode == 'ADD' && $groupId == 0){
 
               $insertdata = $this->commondatamodel->insertSingleTableData('group_master',$data);
               
-              $activity_module='data Insert';
+              $activity_module='Insert Account Group';
               $action = 'Insert';
               $method='groupform_action'; 
               $master_id =$insertdata;
@@ -157,14 +167,14 @@ function checkduplicatgroupname(){
 
             }else{
 
-                $upd_where = array('group_master.ac_grp_id' => $groupId);
+                $upd_where = array('group_master.id' => $groupId);
                 //old data details
                $old_details = $this->commondatamodel->getSingleRowByWhereCls('group_master',$upd_where);
 
                 $Updatedata = $this->commondatamodel->updateSingleTableData('group_master',$data,$upd_where);
                      
 
-              $activity_module='data Update';
+              $activity_module='Update Account Group';
               $action = 'Update';
               $method='groupform_action'; 
               $master_id =$groupId;

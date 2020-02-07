@@ -1,33 +1,32 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Accountmaster extends CI_Controller {
+class Waitermaster extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('commondatamodel','commondatamodel',TRUE);
-        $this->load->model('accountmastermodel','accountmastermodel',TRUE);
+         
        
     }
 
 public function index()
 {
     $session = $this->session->userdata('user_detail');
-    if($this->session->userdata('user_detail'))
-    {  
-        $page = "dashboard/master/account-master/account_master_view";
+	if($this->session->userdata('user_detail'))
+	{  
+        $page = "dashboard/master/waiter-master/waiter_list_view";
         $header="";  
 
-        $result['accountmasterlist'] = $this->accountmastermodel->getallacountmasterdtl();
-        //pre( $result['accountmasterlist']);exit;
+        $result['Allwaiterlist'] = $this->commondatamodel->getAllRecordOrderBy('waiter_master','id','desc');
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');
     }
     
- }
+}
 
-public function addaccountMaster(){
+public function addeditwaiter(){
 
   $session = $this->session->userdata('user_detail');
     if($this->session->userdata('user_detail'))
@@ -38,27 +37,25 @@ public function addaccountMaster(){
         $result['mode'] = "ADD";
         $result['btnText'] = "Save";
         $result['btnTextLoader'] = "Saving...";
-        $result['accId'] = 0;
-        $result['accountmasterEditdata'] = [];
+        $result['waiterId'] = 0;
+        $result['waiterEditdata'] = [];
 
        }else{
 
           $result['mode'] = "EDIT";
           $result['btnText'] = "Update";
           $result['btnTextLoader'] = "Updating...";
-          $result['accId'] = $this->uri->segment(3);
+          $result['waiterId'] = $this->uri->segment(3);
 
-          $where = array('account_id'=>$result['accId']);
+          $where = array('id'=>$result['waiterId']);
 
-          $result['accountmasterEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('account_master',$where);
+          $result['waiterEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('waiter_master',$where);
            
 
        }
 
-        $page = "dashboard/master/account-master/addedit_accountmaster";
+        $page = "dashboard/master/waiter-master/addedit_waiter_view";
         $header="";
-
-        $result['groupnamelist'] =  $this->commondatamodel->getAllRecordWhereOrderBy('group_master',[],'group_description');
  
         
        // pre($result['accountgroupEditdata']);exit;
@@ -69,40 +66,9 @@ public function addaccountMaster(){
     }
 }
 
- public function ActiveAcc()
-    {
-        $session = $this->session->userdata('user_detail');
-        if($this->session->userdata('user_detail'))
-        {   
-
-            $accId=$this->uri->segment(3);            
-            $this->accountmastermodel->ActiveInactiveAccountMaster($accId,'Y');
-           
-
-            redirect('accountmaster','refresh');
-
-        }else{
-            redirect('login','refresh');
-        }
-    }
-    public function InactiveAcc()
-    {
-        $session = $this->session->userdata('user_detail');
-        if($this->session->userdata('user_detail'))
-        {   
-            $accId=$this->uri->segment(3);
-            $this->accountmastermodel->ActiveInactiveAccountMaster($accId,'N');
-            
-
-            redirect('accountmaster','refresh');
-
-        }else{
-            redirect('login','refresh');
-        }
-    }
 
 
- public function accountmaster_action(){
+ public function waitermaster_action(){
 
       $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -115,25 +81,26 @@ public function addaccountMaster(){
 
             
             $mode = trim(htmlspecialchars($dataArry['mode']));
-            $accId = trim(htmlspecialchars($dataArry['accId']));
-            $accountname = trim(htmlspecialchars($dataArry['accountname']));
-            $groupname = trim(htmlspecialchars($dataArry['groupname']));
-            $acccountgrpid = trim(htmlspecialchars($dataArry['acccountgrpid']));
-           
-           
+            $waiterId = trim(htmlspecialchars($dataArry['waiterId']));
+            $waiter_name = trim(htmlspecialchars($dataArry['waiter_name']));           
+            $address_one = trim(htmlspecialchars($dataArry['address_one']));
+            $address_two = trim(htmlspecialchars($dataArry['address_two']));
+            $address_three = trim(htmlspecialchars($dataArry['address_three']));
+            $mobile_no = trim(htmlspecialchars($dataArry['mobile_no']));
 
-            $data = array('account_name'=>$accountname,'group_name'=>$groupname,'group_id'=>$acccountgrpid,'is_active'=>'Y','company_id'=>$session['companyid']);
-
+            $data = array('waiter_name'=>strtoupper($waiter_name),'address_one'=>$address_one,'address_two'=>$address_two,'address_three'=>$address_three,'mobile_no'=>$mobile_no);
+           
             
-            if($mode == 'ADD' && $accId == 0){
+            if($mode == 'ADD' && $waiterId == 0){
 
-              $insertdata = $this->commondatamodel->insertSingleTableData('account_master',$data);
+              $insertdata = $this->commondatamodel->insertSingleTableData('waiter_master',$data);
+              
               $activity_module='data Insert';
               $action = 'Insert';
-              $method='accountmaster_action'; 
+              $method='waitermaster_action'; 
               $master_id =$insertdata;
-              $tablename = 'account_master';
-              $old_description = '';
+              $tablename = 'waiter_master';
+              $old_description ='';
               $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
               if($insertdata){
@@ -153,17 +120,18 @@ public function addaccountMaster(){
 
             }else{
 
-                $upd_where = array('account_master.account_id' => $accId);
-                //old details
-                $old_details = $this->commondatamodel->getSingleRowByWhereCls('account_master',$upd_where);
+              $upd_where = array('waiter_master.id' => $waiterId);
+                //old data details
+               $old_details = $this->commondatamodel->getSingleRowByWhereCls('waiter_master',$upd_where);
 
-                $Updatedata = $this->commondatamodel->updateSingleTableData('account_master',$data,$upd_where);
+                $Updatedata = $this->commondatamodel->updateSingleTableData('waiter_master',$data,$upd_where);
+                     
 
-              $activity_module='data Upadte';
+              $activity_module='data Update';
               $action = 'Update';
-              $method='accountmaster_action'; 
-              $master_id =$accId;
-              $tablename = 'account_master';
+              $method='waitermaster_action'; 
+              $master_id =$waiterId;
+              $tablename = 'waiter_master';
               $old_description = json_encode($old_details);
               $description = json_encode($data);
             $this->activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description);
@@ -194,9 +162,43 @@ public function addaccountMaster(){
             redirect('login','refresh');
         }   
 
-  } 
+  }
 
-  function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
+  public function Active()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {   
+
+            $Id=$this->uri->segment(3); 
+            $data = array('is_active'=>'Y');
+            $where = array('id'=>$Id);           
+            $this->commondatamodel->ActiveInactive('waiter_master',$data,$where);
+           
+            redirect('waitermaster','refresh');
+
+        }else{
+            redirect('login','refresh');
+        }
+    }
+    public function Inactive()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {   
+            $Id=$this->uri->segment(3); 
+            $data = array('is_active'=>'N');
+            $where = array('id'=>$Id);           
+            $this->commondatamodel->ActiveInactive('waiter_master',$data,$where);
+            
+            redirect('waitermaster','refresh');
+
+        }else{
+            redirect('login','refresh');
+        }
+    }
+
+function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -213,15 +215,14 @@ public function addaccountMaster(){
                         "user_browser" => getUserBrowserName(),
                         "user_platform" =>  getUserPlatform(),
                         'old_description'=>$old_description,
-                        "description"=>$description,
-                        "ip_address"=>getUserIPAddress()
+                        'description'=>$description,
+                        'ip_address'=>getUserIPAddress()
                     );
         $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
      }else{
             redirect('login','refresh');
         }                
   }
-  
 
 
 }

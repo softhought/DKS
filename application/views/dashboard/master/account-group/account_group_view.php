@@ -31,8 +31,25 @@
                    <tr>
                    <td><?php echo $i++; ?></td>
                    <td><?php echo $accountgrouplist->group_description; ?></td>
-                   <td><?php echo $accountgrouplist->main_category; ?></td>
-                   <td><?php echo $accountgrouplist->sub_category; ?></td>
+                   <td><?php if($accountgrouplist->main_category == 'B'){
+
+                      echo 'BALANCE SHEET';
+
+                   }else if($accountgrouplist->main_category == 'P'){
+
+                      echo 'PROFIT & LOSS';
+                   } 
+                   
+                   ?></td>
+                   <td><?php if($accountgrouplist->sub_category == 'A'){
+                       echo 'ASSETS';
+                   }else if($accountgrouplist->sub_category == 'L'){
+                         echo 'LIABILITY';
+                   }else if($accountgrouplist->sub_category == 'I'){
+                         echo 'INCOME';
+                   }else if($accountgrouplist->sub_category == 'E'){
+                         echo 'EXPENDITURE';
+                } ?></td>
                    <td>
                      <a href="<?php echo base_url(); ?>accountgroup/addaccgroup/<?php echo $accountgrouplist->id; ?>" class="btn tbl-action-btn padbtn">
                   <i class="fas fa-edit"></i> 

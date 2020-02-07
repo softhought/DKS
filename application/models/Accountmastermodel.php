@@ -31,6 +31,31 @@ public function ActiveInactiveAccountMaster($accId,$is_active)
         }
     }
 
+    public function getallacountmasterdtl()
+    {
+        $data = array();
+		$this->db->select("account_master.*,group_master.group_description")
+                ->from('account_master')
+                ->join('group_master','account_master.group_id = group_master.id','INNER')
+                ->order_by('account_id','desc');
+		$query = $this->db->get();
+		#echo $this->db->last_query();
+
+		if($query->num_rows()> 0)
+		{
+            foreach ($query->result() as $rows)
+			{
+				$data[] = $rows;
+            }
+            return $data;
+             
+        }
+		else
+		{
+             return $data;
+         }
+    }
+
 
 
 }

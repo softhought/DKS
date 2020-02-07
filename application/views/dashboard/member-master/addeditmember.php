@@ -531,7 +531,7 @@
                           </div>
                         </div>
                       </div>
-                       <div class="col-md-4">
+                       <div class="col-md-2">
                         <label for="spouse_gender">Gender</label>
                           <div class="form-group">
                             <div class="input-group input-group-sm">
@@ -552,7 +552,7 @@
                           </div>
                         </div>
                       </div>
-                       <div class="col-md-4">
+                       <div class="col-md-3">
                         <label for="spouse_mobile" >Mobile No.</label>
                           <div class="form-group">
                             <div class="input-group input-group-sm">
@@ -564,9 +564,8 @@
                       </div>
 
                      
-                   </div> 
-                   <div class="row">
-                     <div class="col-md-4">
+                  
+                     <div class="col-md-3">
                       <label for="spouse_email" >Email</label>
                           <div class="form-group">
                             <div class="input-group input-group-sm">
@@ -585,7 +584,7 @@
 
                             </div>
 
-                            <div class="col-md-3 memblock">
+                            <div class="col-md-3 memblock ">
                                <span class="spansty">Details</span>
                                <div class="formblock-box">
                                
