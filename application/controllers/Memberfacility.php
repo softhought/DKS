@@ -111,7 +111,7 @@ public function facilitylist()
                 
         $result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
         
-       // pre($result['transactionEditdata']);exit;
+       // pre($result['memberCodeList']);exit;
 
         createbody_method($result, $page, $header, $session);
     }else{

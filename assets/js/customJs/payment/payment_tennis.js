@@ -624,7 +624,7 @@ function resetStudentCodeDropdown(studentcode){
 
 function validateAdmData(){
 
-     var student_code = $("#student_code").val();
+   var student_code = $("#student_code").val();
 	 var student_name = $("#student_name").val();
 	  $("#student_code,#student_name").removeClass("form_error");
 
@@ -648,7 +648,7 @@ function validateAdmData(){
 
 function validateTennisPaymentData(){
 
-  var studentcode = $("#sel_student_code").val();
+   var studentcode = $("#sel_student_code").val();
 	 var studentname = $("#studentname").val();
 	 var payment_dt = $("#payment_dt").val();
 	 var tran_type = $("#tran_type").val();
@@ -660,10 +660,10 @@ function validateTennisPaymentData(){
 	 var oth_rec_cgst_rate = $("#oth_rec_cgst_rate").val();
 	 var oth_rec_sgst_rate = $("#oth_rec_sgst_rate").val();
 
-  var receivable_student_amt = $("#receivable_student_amt").val();
-  var receivable_student_cgst_rate = $("#receivable_student_cgst_rate").val();
-  var receivable_student_sgst_rate = $("#receivable_student_sgst_rate").val();
-  var receivable_student_paymentamt = $("#receivable_student_paymentamt").val();
+   var receivable_student_amt = $("#receivable_student_amt").val();
+   var receivable_student_cgst_rate = $("#receivable_student_cgst_rate").val();
+   var receivable_student_sgst_rate = $("#receivable_student_sgst_rate").val();
+   var receivable_student_paymentamt = $("#receivable_student_paymentamt").val();
 
 	 $("#error_msg").text('');
 
