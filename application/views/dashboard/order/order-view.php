@@ -271,7 +271,10 @@
     <div class="right-order-panel ordersummery-panel">
         <div class="card card-primary">
             <div class="card-header box-shdw">
-              <h3 class="card-title">Order Summary</h3>
+              <div data-toggle="modal" data-target="#orderSummeryModal" id="orderSumeryBtn">
+              <h3 class="card-title">Order Summary</h3> <h2 class="card-title" id="noofitem">Selected Items:<span id="itemtotalcount"></span></h2>
+              </div>
+
               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons">
                 <!-- <button type="button" class="btn btn-default"><i class="fas fa-plus"></i> Add </button> -->
                 <!-- <button type="button" class="btn btn-default"><i class="fas fa-clipboard-list"></i>Order List</button> -->
@@ -311,7 +314,7 @@
                                     <div class="col-md-4 detail-row1">
                                         <div class="form-group">
                                             <div class="input-group input-group-sm">
-                                                 <input type="text" name="manualkot[]" class="form-control bottom-border h25 manualkot" placeholder="Manual KOT" value="<?php echo $detailsrowdata->menual_kot; ?>" />
+                                                 <input type="text" name="manualkot[]" class="form-control bottom-border h25 manualkot" placeholder="Manual KOT" value="<?php echo $detailsrowdata->menual_kot; ?>" id="mankotRow_<?php echo $rowno; ?>"  />
                                             </div>
                                         </div>
                                     </div>
@@ -379,8 +382,12 @@
                                     </div>
                                    
                                    <input type="hidden" name="isFree[]" id="isFree_<?php echo $rowno; ?>" value="<?php echo $detailsrowdata->is_free;?>">
-                                    <label for="freeCheck_<?php echo $rowno; ?>" id="freeChecklb">Free&nbsp;</label>
+
+                                    <div class="freelebel">
+                                    <label  for="freeCheck_<?php echo $rowno; ?>" id="freeChecklb">Free&nbsp;</label>
                                    <input type="checkbox" id="freeCheck_<?php echo $rowno; ?>"  class="freecheckbox" <?php if ($detailsrowdata->is_free=='Y') {echo "checked";}?>>
+
+                                   </div>
 
                         
                                 </div>
@@ -508,6 +515,15 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                              <span class="input-group-text" id="hist_edit">
+
+                  <a href="<?php echo base_url(); ?>order/addOrder/<?php echo $bodycontent['lastOrder']->order_id;?>" id="hist_edit_link">
+                      <i class="fas fa-edit"></i> 
+                  </a> 
+
+                    </span>
+                            </div>
                                     <input type="text" class="form-control" id="orederpn_kotnumber" placeholder="KOT No" value="<?php echo $bodycontent['lastOrder']->order_no;?>" readonly >
                                 </div>
                             </div>
@@ -602,3 +618,10 @@
       </div>
       <!-- /.modal -->
       </div>
+
+
+
+
+
+
+

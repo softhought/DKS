@@ -10,7 +10,7 @@
                                     <div class="col-md-4 detail-row1">
                                         <div class="form-group">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" name="manualkot[]" class="form-control bottom-border h25 manualkot" placeholder="Manual KOT" />
+                                                <input type="text" id="mankotRow_<?php echo $rowno; ?>" name="manualkot[]" class="form-control bottom-border h25 manualkot" placeholder="Manual KOT" value="<?php if($lastmanualkot!=''){echo $lastmanualkot;}?>" />
                                             </div>
                                         </div>
                                     </div>
@@ -69,14 +69,18 @@
                                     </div>
                                    
                                    <input type="hidden" name="isFree[]" id="isFree_<?php echo $rowno; ?>" value="N">
+
+                                   <?php if ($item_category!='CAT') {
+                                     ?>
                                    	<label for="freeCheck_<?php echo $rowno; ?>" id="freeChecklb">Free&nbsp;</label>
                                    <input type="checkbox" id="freeCheck_<?php echo $rowno; ?>"  class="freecheckbox">
+                                     <?php } ?>
 
 
 
 
 
-                        
+                                <div class="sl_div"  id="sldiv_<?php echo $rowno; ?>"></div>
                                 </div>
 
                      

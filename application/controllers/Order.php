@@ -33,6 +33,9 @@ class Order extends CI_Controller {
          $entry_module="";
          $member_id="All";
 
+          $from_dt=date('Y-m-d');
+          $to_dt=date('Y-m-d');
+
           $result['orderList'] = $this->ordermodel->getOrderList($from_dt,$to_dt,$entry_module,$member_id);
 
 			//pre($result['orderList']); exit;      
@@ -166,19 +169,16 @@ public function addItemOrderDetail()
         {
             $session = $this->session->userdata('user_detail');
         
-
             $data['rowno'] = $this->input->post('rowNo');
             $data['itemid'] = $this->input->post('itemid');
-           
+            $data['lastmanualkot'] = $this->input->post('lastmanualkot');
+            $data['item_category'] = $this->input->post('item_category');
+
             $data['itemdetails'] = $this->ordermodel->getItemDetailsByitemid($data['itemid']);
 
+            //  pre($result['itemdetails']);
 
-
-          //  pre($result['itemdetails']);
-
-
-           
-             $page = 'dashboard/order/item_add_order_partial_view';
+            $page = 'dashboard/order/item_add_order_partial_view';
             
             $viewTemp = $this->load->view($page,$data,TRUE);
             echo $viewTemp;

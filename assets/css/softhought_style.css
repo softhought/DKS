@@ -621,7 +621,7 @@ border: 1px solid
 	letter-spacing: 1px;
 	font-weight: 600;
 	position: relative; */
-	font-size: 11px;
+	font-size: 9.5px;
 	border: 0px solid
 	#e6e6e680;
 	padding: 12px 2px;
@@ -957,5 +957,28 @@ margin-top: 7px;
 
 .kotbotorderdate{
 	font-size: 12px !important;
+}
+
+#noofitem{
+	float: right;
+}
+
+#hist_edit_link{
+	color: #E10F85;
+}
+.sl_div{
+
+	background-color: #77258e;
+	color: #fff;
+	#border-radius: -2px 34px 30px 5px;
+	width: 13px;
+
+	font-size: 10px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: 999;
+	text-align: center;
+
 }
 

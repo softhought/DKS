@@ -40,7 +40,7 @@ class Paymenttennismodel extends CI_Model{
                  );
     $this->db->select("*")
         ->from('account_master')
-        ->join('account_group','account_group.ac_grp_id=account_master.ac_grp_id','INNER')
+        ->join('group_master','group_master.id=account_master.group_id','INNER')
         ->where($where);
     $query = $this->db->get();
     #echo $this->db->last_query();
@@ -498,7 +498,7 @@ class Paymenttennismodel extends CI_Model{
 
     public function deleteVoucherDetailData($voucherId){
         
-         $this->db->where('account_master_id', $voucherId);
+         $this->db->where('voucher_master_id', $voucherId);
          $this->db->delete('voucher_detail');
     }
 

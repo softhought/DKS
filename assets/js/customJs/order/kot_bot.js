@@ -14,13 +14,37 @@ var basepath = $("#basepath").val();
     
 });
 
+  resetOrderItemSerial();
+
  var mode = $("#mode").val();
 
  if (mode=='ADD') {
     $("#blank_order_summery").show();
  }else{
      $("#blank_order_summery").hide();
+
  }
+
+
+ var item_category=  $("#item_category").val();
+
+ if (item_category=='CAT') {
+    $(".freelebel").hide();
+ }else{
+   $(".freelebel").show();
+
+ }
+
+
+
+  var totalDetailsOrder=0;
+    $(".manualkot").each(function(){
+          totalDetailsOrder+=1;
+    });
+
+   $("#itemtotalcount").text(totalDetailsOrder); 
+
+
 
  var total_amt = $("#total_amt").val();
  $("#total_amount_value").html(total_amt);
@@ -165,11 +189,26 @@ getItemListByCategory(item_category);
                e.preventDefault();
     	  // rowNoUpload++;
 
-          var itemid = $(this).data('itemid');
+            var itemid = $(this).data('itemid');
+            var kotflag=1
+            var itemCount=0;
+            var lastmanualkot="";
+
+           $(".manualkot").each(function(){
+               //var currRowID = $(this).attr('id');
+               if (kotflag==1) {
+                  lastmanualkot=$(this).val();
+                  kotflag++;
+               }
+               itemCount=itemCount+1;   
+            });
+
+           
 
     
        if (1) {
           var rowno=  $("#rowno").val();
+          var item_category=  $("#item_category").val();
         //console.log(rowno);
         $("#blank_order_summery").hide();
         rowno++;
@@ -177,14 +216,19 @@ getItemListByCategory(item_category);
             type: "POST",
             url: basepath+'order/addItemOrderDetail',
             dataType: "html",
-            data: {rowNo:rowno,itemid:itemid},
+            data: {rowNo:rowno,itemid:itemid,lastmanualkot:lastmanualkot,item_category:item_category},
             success: function (result) {
             	//console.log(result);
+                 itemCount=itemCount+1;
                 $("#rowno").val(rowno);
+                $("#itemtotalcount").text(itemCount);
                 $("#detail_orderitem ").css("display","block"); 
-                $("#detail_orderitem ").append(result);    
+                $("#detail_orderitem ").prepend(result);    
              
                     calculateTotalOrderAmount();
+
+                    resetOrderItemSerial();
+
   
          
             }, 
@@ -239,6 +283,10 @@ getItemListByCategory(item_category);
      }else{
         $("#blank_order_summery").hide(); 
      }
+
+       $("#itemtotalcount").text(totalDetails);
+
+       resetOrderItemSerial();
 
     });
 
@@ -444,6 +492,8 @@ $(document).on('click','#close_btn_ordersave',function(){
   }
 
 });
+
+
 
 
 
@@ -808,6 +858,8 @@ function getOrderHistory(view_category,type){
                 $("#orederpn_member").val(data.orderdata.title_one+" "+data.orderdata.member_name);
                 $("#orederpn_member_code").val(data.orderdata.member_code);
                 $("#orederpn_price").val(data.orderdata.total_to_be_paid);
+
+                $("a#hist_edit_link").attr('href', basepath+'order/addOrder/'+data.orderdata.order_id);
              
              }else{
                
@@ -863,6 +915,20 @@ function getOrderHistoryByCategory(view_category){
                // console.log(e.message);
             }
         });
+}
+
+
+
+function resetOrderItemSerial(){
+          var newsl=1;
+
+           $($(".manualkot").get().reverse()).each(function(){
+                var currRowID = $(this).attr('id');
+                var rowDtlNo = currRowID.split('_');
+                $("#sldiv_"+rowDtlNo[1]).text(newsl++);
+               console.log("-> "+currRowID); 
+            });
+
 }
 
 
