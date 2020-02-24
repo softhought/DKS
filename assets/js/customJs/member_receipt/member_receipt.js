@@ -7,6 +7,41 @@ $(document).on('change','#sel_member_code',function(){
   var selectedCode = $('#sel_member_code').find('option:selected');
   $("#member_name").val(selectedCode.data('name'));
   console.log(selectedCode);
+  resetNewMember();
+  
+
+});
+
+ var total_amt = $("#total_amt").val();
+ $("#total_amount_value").html(total_amt);
+
+ var ac_deb =$('select[name="actobedebited"] option:selected').text();
+
+ if (ac_deb=="CHEQUE IN HAND") {
+    $('#cheque_bank_dtl').show();
+ }
+
+
+
+
+  $(document).on('change','#tran_type',function(){
+   
+        var tran_type = $(this).val();
+
+        if (tran_type=="ORADM") {
+
+         $('#adm_block').css({backgroundColor: '#f7eeee'});
+          $('#other_block').css({backgroundColor: '#fff'});
+
+
+        }else if(tran_type=="ORITM" || tran_type=="RCFM"){
+           $('#other_block').css({backgroundColor: '#f7eeee'});
+            $('#adm_block').css({backgroundColor: '#fff'});
+
+        }else{
+            $('#adm_block').css({backgroundColor: '#fff'});
+            $('#other_block').css({backgroundColor: '#fff'});
+        }
   
 
 });
@@ -17,10 +52,21 @@ $(document).on('change','#actobedebited',function(){
 		  if (selectedMode=='CHEQUE IN HAND') {
 		  	$('#cheque_bank_dtl').show();
 		  }else{
-		  	$('#cheque_bank_dtl').hide();
+		  	
+        $('#bank,#branch,#cheque_no,#cheque_dt').val('');
+        $('#cheque_bank_dtl').hide();
+
+
 		  }
 
 });
+
+
+$(document).on('input keyup','#adm_fees,#sub_coach_fees,#service_tax',function(){
+
+      CalculateAdmissionTotal();
+});
+
 
 
 $(document).on('input keyup','#receipt_dt',function(){
@@ -71,8 +117,9 @@ $(document).on('input keyup','#receipt_dt',function(){
                 success: function(result) {
 				
 				
-					 resetMemberCodeDropdown(result.member_id);
+					// resetMemberCodeDropdown(result.member_id);
 					 $("#new_member_code").val(result.new_code);
+           //resetRegularMember();
 					
                      //  $("#create_code").attr('disabled',false);
                       
@@ -95,11 +142,10 @@ $(document).on('input keyup','#receipt_dt',function(){
     $(document).on('submit','#memberreceiptForm',function(e){
 		e.preventDefault();
 
-      $("#error_msg").html('');
+    $("#error_msg").html('');
 		if(validateMemberReceipt())
 		{
-       
-          
+
             var formDataserialize = $("#memberreceiptForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
@@ -107,7 +153,7 @@ $(document).on('input keyup','#receipt_dt',function(){
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
             var urlpath = basepath + 'memberreceipt/saveMemberReceiptData';
-            $("#tennispaymentsavebtn").css('display', 'none');
+            $("#memberreceiptsavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'inline-table');
 
             $.ajax({
@@ -118,23 +164,16 @@ $(document).on('input keyup','#receipt_dt',function(){
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 success: function(result) {
 					if (result.msg_status == 1) {
-						resetStudentCodeDropdown(result.student_code);
-						  $('#tennisPaymentForm').trigger("reset");
+					
+						  $('#memberreceiptForm').trigger("reset");
               
-						   $("#tennispaymentaftersavemodel").modal({
-                            "backdrop": "static",
-                            "keyboard": true,
-                            "show": true
-                        });
-             
-                        $('#codegeneration_modal').modal('hide');
-
+						
                     } 
 					else {
-                      //  $("#album_response_msg").text(result.msg_data);
+                     
                     }
 					
-                  //  $("#loaderbtn").css('display', 'none');
+              window.location.replace(basepath+'memberreceipt');    
 					
                    
                 },
@@ -149,6 +188,63 @@ $(document).on('input keyup','#receipt_dt',function(){
 		}
 
     });
+
+
+/* ------------------------------------------------- */
+
+
+  $(document).on('click', "#receiptlistshowbtn", function(e) {
+        e.preventDefault();
+
+
+     var from_dt = $("#from_dt").val();
+     var to_date = $("#to_date").val();
+     var sel_member = $("#sel_member").val();
+     
+
+  if(1){
+           $('#receipt_list_data').html('');
+         $("#loader").show();
+
+   $.ajax({
+                type: "POST",
+                url: basepath+'memberreceipt/getMemberReceiptListByDate',
+                dataType: "html",
+                data: {from_dt:from_dt,to_date:to_date,sel_member:sel_member},
+                
+                success: function (result) {
+                   $("#loader").hide();
+                     $("#receipt_list_data").html(result);
+                     $(".dataTable").DataTable();
+                   var total_amt = $("#total_amt").val();
+                   $("#total_amount_value").html(total_amt);
+                }, 
+                error: function (jqXHR, exception) {
+                  var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                   // alert(msg);  
+                }
+            }); /*end ajax call*/ 
+
+  }
+
+});
+
+
 
 
    
@@ -166,7 +262,7 @@ function validateCreateCode(){
 	 var sel_member_category = $("#sel_member_category").val();
 	 var first_name = $("#first_name").val();
 	 var last_name = $("#last_name").val();
-	 $("#sel_member_categoryerr,#first_name,#last_name").removeClass("form_error");
+	 $("#new_member_code,#sel_member_categoryerr,#first_name,#last_name").removeClass("form_error");
 
 
 	 console.log(first_name);
@@ -251,14 +347,20 @@ function validateMemberReceipt(){
 	 var receipt_dt = $("#receipt_dt").val();
 	 var tran_type = $("#tran_type").val();
 	 var sel_member_code = $("#sel_member_code").val();
-	 var adm_fees = $("#adm_fees").val();
-	 var total = $("#total").val();
-	 var amount = $("#amount").val();
+   var amount = $("#amount").val();
+
+   var adm_fees = $("#adm_fees").val();
+   var new_member_code = $("#new_member_code").val();
+	 var sel_member_category = $("#sel_member_category").val();
+   var total_amount = $("#total_amount").val();
+	
+	 
 	 var actobedebited = $("#actobedebited").val();
 	 var actobecredited = $("#actobecredited").val();
 	 
-	 $("#first_name").removeClass("form_error");
+	 $("#receipt_dt,#tran_typeerr,#sel_member_codeerr,#amount,#adm_fees,#sel_member_categoryerr,#actobedebitederr,#actobecreditederr").removeClass("form_error");
 	 $('#error_msg').text('');
+
 
 
 	  if (receipt_dt=='') {
@@ -278,33 +380,65 @@ function validateMemberReceipt(){
          return false;
 	 }
 
-	 if (sel_member_code=='') {
-	 	 $("#sel_member_codeerr").addClass("form_error");   
-         return false;
-	 }
-
-	 if (adm_fees=='') {
-	 	 $("#adm_fees").addClass("form_error");  
-	 	 $("#adm_fees").focus(); 
-         return false;
-	 }
-
-	 if (total=='') {
-	 	 $("#total").addClass("form_error");  
-	 	 $("#total").focus(); 
-         return false;
-	 }
 
 
-	 if (amount=='') {
-	 	 $("#amount").addClass("form_error");  
-	 	 $("#amount").focus(); 
-         return false;
-	 }
+   if (tran_type!='ORADM') {
+
+         if (sel_member_code=='') {
+           $("#sel_member_codeerr").addClass("form_error");   
+               return false;
+         }
+
+     
+
+        if (amount=='') {
+             $("#amount").addClass("form_error");  
+             $("#amount").focus(); 
+                 return false;
+        }
+
+
+
+
+   }else{
+
+          if (sel_member_category=='') {
+           $("#sel_member_categoryerr").addClass("form_error");   
+               return false;
+           }
+
+          if (new_member_code=='') { 
+             $("#new_member_code").addClass("form_error");  
+             $("#new_member_code").focus(); 
+                 return false;
+          }
+
+
+           if (adm_fees=='') {
+             $("#adm_fees").addClass("form_error");  
+             $("#adm_fees").focus(); 
+                 return false;
+           }
+
+         
+
+
+
+
+   }
+
+
+
+	 // if (total=='') {
+	 // 	 $("#total").addClass("form_error");  
+	 // 	 $("#total").focus(); 
+  //        return false;
+	 // }
+
+
 
 	 if (actobedebited=='') {
 	 	 $("#actobedebitederr").addClass("form_error");  
-	 	
          return false;
 	 }
 
@@ -318,7 +452,37 @@ function validateMemberReceipt(){
 
 
 
-
-
 	 return true;
 }
+
+
+function resetRegularMember(){
+
+    $('#sel_member_code').val('').change();
+    $('#member_name').val('');
+
+}
+
+
+function resetNewMember(){
+
+     $('#sel_member_category').val('').change();
+     $('#first_name,#last_name,#new_member_code').val('');
+     $('#adm_fees,#sub_coach_fees,#service_tax,#total_amount').val('');
+
+}
+
+
+function CalculateAdmissionTotal(){
+
+  var adm_fees=parseFloat($("#adm_fees").val() || 0);
+  var sub_coach_fees=parseFloat($("#sub_coach_fees").val() || 0);
+  var service_tax=parseFloat($("#service_tax").val() || 0);
+  var total_amt =(service_tax+sub_coach_fees+adm_fees);
+  $("#total_amount").val(total_amt.toFixed(2));
+
+}
+
+
+
+

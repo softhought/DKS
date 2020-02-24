@@ -1,17 +1,54 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class memberreceiptmodel extends CI_Model{
+class Partyreceiptmodel extends CI_Model{
 
 
-	public function getallemployeelist()
+	public function getActobecredited()
 	{
 		$data = array();
-		$this->db->select("employee_master.*,designation_master.designation_name,department_master.dept_name")
-                ->from('employee_master')
-                ->join('department_master','employee_master.dept_master_id = department_master.dept_id','LEFT')
-                ->join('designation_master','employee_master.designation_id = designation_master.id','LEFT')
-				->order_by('empl_id','desc');
-				$query = $this->db->get();
+		$where = array('party_accounting.tag' =>'Cr');
+		$this->db->select("party_accounting.*,account_master.account_name")
+				->from('party_accounting')
+				->join('account_master','account_master.account_id = party_accounting.account_id','INNER')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		#echo "<br>".$this->db->last_query();
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+	}
+
+
+
+	public function getPartyBookingmembere($company,$year)
+	{
+		$data = array();
+		$where = array(
+						'party_booking_master.is_cancel' => 'N', 
+						'party_booking_master.year_id' => $year, 
+						'party_booking_master.company_id' => $company, 
+						);
+		$this->db->select("
+							party_booking_master.*,
+							member_master.member_code,
+							member_master.title_one,
+							member_master.member_name,
+							member_master.member_id,
+							")
+				->from('party_booking_master')
+				->join('member_master','member_master.member_id = party_booking_master.member_master_id','INNER')
+				->where($where);
+		$query = $this->db->get();
+		#echo $this->db->last_query();
+
 		if($query->num_rows()> 0)
 		{
             foreach ($query->result() as $rows)
@@ -25,39 +62,35 @@ class memberreceiptmodel extends CI_Model{
 		{
              return $data;
          }
-    }
+	}
 
 
-
-  public function getNewCodeSerial($startLetters,$category)
-  {
-    $data = array();
-    $where = array('member_master.category' => $category);
-    $this->db->select("SUBSTRING(member_code, 4) as last_serial")
-        ->from('member_master')
-        ->where("member_code LIKE '$startLetters%'")
-        ->where($where)
-        ->order_by('last_serial', 'desc')
-        ->limit(1);
-    $query = $this->db->get();
-    
-    #echo $this->db->last_query();
-    
-    if($query->num_rows()> 0)
-    {
+public function getPartyBookingDetails($member_master_id)
+	{
+		$data = array();
+		$where = array('party_booking_master.member_master_id' => $member_master_id);
+		$this->db->select("party_booking_master.*,party_location_master.location_name")
+				->from('party_booking_master')
+				->join('party_location_master','party_location_master.id = party_booking_master.party_location_id','LEFT')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
            $row = $query->row();
            return $data = $row;
              
         }
-    else
-    {
+		else
+		{
             return $data;
         }
-  }
+	}
 
-
-
-    public function getSerialNumber($company,$year,$module){
+public function getSerialNumber($company,$year,$module){
         $lastnumber = (int)(0);
         $tag = "";
         $noofpaddingdigit = (int)(0);
@@ -110,7 +143,7 @@ class memberreceiptmodel extends CI_Model{
     }
 
 
-  public function getMemberReceiptData($party_master_id)
+  public function getPartyReceiptData($party_master_id)
   {
     $data = array();
 
@@ -141,16 +174,18 @@ class memberreceiptmodel extends CI_Model{
   }
 
 
-
-    public function getMemberReceiptList($from_dt,$to_dt,$member_id)
+    public function getPartyrReceiptList($from_dt,$to_dt,$member_id)
     {
         $data = array();
 
 
         if ($member_id=='All') {
-            $where_member = [];
+            $where_member = array('member_receipt.tran_type' => 'PRTREC'); 
         }else{
-            $where_member = array('member_receipt.member_id' => $member_id ); 
+            $where_member = array(
+            						'member_receipt.member_id' => $member_id, 
+            						'member_receipt.tran_type' => 'PRTREC'
+            						); 
         }
        
                 $this->db->select("member_receipt.*,member_master.member_name,member_master.member_code")
@@ -180,5 +215,8 @@ class memberreceiptmodel extends CI_Model{
 
 
 
-    
 } // end of class
+
+
+
+

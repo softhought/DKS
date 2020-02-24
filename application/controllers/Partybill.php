@@ -216,6 +216,7 @@ public function partybill_action(){
             $json_response = array();
             $formData = $this->input->post('formDatas');
             parse_str($formData, $dataArry);
+            $insert_arrayData=[];
 
 
 
@@ -292,11 +293,12 @@ public function partybill_action(){
                                   'electric_ac_id'=>$dataArry['select_electric_ac'],
                                   'other_ac_id'=>$dataArry['select_other_ac'],
 
-
+                                  'company_id' => $company,
+                                  'year_id' => $year,  
                                   'user_id'=>$session['userid'],   
                          );
 
-            
+            $insert_arrayData[]=$insert_master;
 
               $insertdata = $this->commondatamodel->insertSingleTableData('party_bill_master',$insert_master);
 
@@ -336,6 +338,8 @@ public function partybill_action(){
 
                 $insert_dtl_1= $this->commondatamodel->insertSingleTableData('party_bill_details',$insert_dtl_cat);
 
+                $insert_arrayData[]=$insert_dtl_1;
+
 
                      }
                  
@@ -373,10 +377,10 @@ public function partybill_action(){
                                                 'mrp' => $mrp_bot[$i]
                                              );
 
-                $insert_dtl_1= $this->commondatamodel->insertSingleTableData('party_bill_details',$insert_dtl_cat);
+                $insert_dtl_2= $this->commondatamodel->insertSingleTableData('party_bill_details',$insert_dtl_cat);
 
 
-
+                $insert_arrayData[]=$insert_dtl_2;
 
 
                     }
@@ -384,7 +388,8 @@ public function partybill_action(){
                 }
 
 
-
+                 $activity_description = json_encode($insert_arrayData);
+                $this->insertPartyBillActivity($activity_description,NULL,$insertdata,"Insert");
 
 
 
@@ -407,6 +412,14 @@ public function partybill_action(){
                     }     
 
             }else{
+
+                  $party_array_before_upd=[];
+                  $upd_array_party=[];
+
+                 $party_array_before_upd[] = $this->partybillmodel->getPartyMasterData($partybillId); 
+                 $party_array_before_upd[]  = $this->partybillmodel->getPartyBillDetails($partybillId,'CAT');
+                 $party_array_before_upd[]  = $this->partybillmodel->getPartyBillDetails($partybillId,'BAR');
+
 
 
                 /* update master data */
@@ -451,6 +464,8 @@ public function partybill_action(){
                                   'other_ac_id'=>$dataArry['select_other_ac'],
                                   'user_id'=>$session['userid'],   
                          );
+
+             $upd_array_party[]=$update_master;
 
              $upd_where = array('party_bill_master.id' => $partybillId);
              $update = $this->commondatamodel->updateSingleTableData('party_bill_master',$update_master,$upd_where);
@@ -497,6 +512,7 @@ public function partybill_action(){
                 $insert_dtl_1= $this->commondatamodel->insertSingleTableData('party_bill_details',$insert_dtl_cat);
 
 
+                $upd_array_party[]=$insert_dtl_1;
                      }
                  
 
@@ -533,10 +549,10 @@ public function partybill_action(){
                                                 'mrp' => $mrp_bot[$i]
                                              );
 
-                $insert_dtl_1= $this->commondatamodel->insertSingleTableData('party_bill_details',$insert_dtl_cat);
+                $insert_dtl_2= $this->commondatamodel->insertSingleTableData('party_bill_details',$insert_dtl_cat);
 
 
-
+                 $upd_array_party[]=$insert_dtl_2;
 
 
                     }
@@ -545,7 +561,10 @@ public function partybill_action(){
 
 
 
-               
+                    $activity_description = json_encode($upd_array_party);
+                    $old_description = json_encode($party_array_before_upd);
+                    $this->insertPartyBillActivity($activity_description,$old_description,$partybillId,"Update");
+
 
 
                     $party_where = array('party_bill_master.id' => $partybillId);
@@ -640,6 +659,29 @@ public function partybill_action(){
 
     }
 
+
+
+function insertPartyBillActivity($description,$old_description,$table_id,$action){
+     $session = $this->session->userdata('user_detail');
+    $user_activity = array(
+                              "activity_module" => 'Party Bill ',
+                              "action" => $action,
+                              "from_method" => 'partybill/partybill_action',
+                              "table_name" => 'party_bill_master',
+                              "module_master_id" => $table_id,
+                              "user_id" => $session['userid'],
+                              "ip_address" => getUserIPAddress(),
+                              "user_browser" => getUserBrowserName(),
+                              "user_platform" => getUserPlatform(),
+                              "description" =>  $description,
+                              "old_description" =>  $old_description
+                             );
+                             
+                $this->commondatamodel->insertSingleTableData('activity_log',$user_activity);
+
+
+
+}
 
 
 

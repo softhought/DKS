@@ -62,8 +62,7 @@
 
 
 
-
-              <?php 
+ <?php 
               $attr = array("id"=>"memberreceiptForm","name"=>"memberreceiptForm");
               echo form_open('',$attr); ?>
 <section class="content layout-box-content-format1">
@@ -76,6 +75,9 @@
         <div class="card card-primary">
             <div class="card-header box-shdw">
               <h3 class="card-title">Member Receipt</h3>
+              <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+                 <a href="<?php echo base_url(); ?>memberreceipt" class="btn btn-info btnpos"><i class="fas fa-clipboard-list"></i> List </a>
+              </div> 
 
            
             </div><!-- /.card-header -->
@@ -99,7 +101,7 @@
                           <div class="form-group">
                             <label for="firstname">Receipt No</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="receipt_no" name="receipt_no" placeholder="" autocomplete="off" value=""   readonly >
+                            <input type="text" class="form-control forminputs " id="receipt_no" name="receipt_no" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['receiptEditdata']->mem_receipt_no;} ?>"   readonly >
                             </div>
 
                           </div>
@@ -113,7 +115,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="receipt_dt" id="receipt_dt" value="<?php echo date('d/m/Y');?>">
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="receipt_dt" id="receipt_dt" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo date("d/m/Y", strtotime($bodycontent['receiptEditdata']->receipt_date));}else{echo date('d/m/Y');}?>">
                           </div>
                         </div>
                  </div>
@@ -135,7 +137,14 @@
                               <?php
                               foreach ($tran_type as $key => $tran_type) {
                               ?>
-                              <option value="<?php echo $key;?>"><?php echo $tran_type?></option>
+                              <option value="<?php echo $key;?>"
+
+                              <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->tran_type==$key){echo "selected";}
+                              }
+                              ?>
+                              ><?php echo $tran_type?></option>
                               <?php } ?>
                             </select>
                             </div>
@@ -150,7 +159,7 @@
               <fieldset class="scheduler-border formblock-box"> 
                <div class="row">
                 <div class="col-md-1"></div>
-                 <div class="col-md-4">
+                 <div class="col-md-4" id="other_block">
                     <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Regular</h3>
 
              
@@ -165,6 +174,15 @@
                               ?>
                               <option value="<?php echo $membercode->member_id;?>"
                                data-name="<?php echo $membercode->title_one." ".$membercode->member_name; ?>"
+
+                               <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->tran_type!='ORADM'){
+                                   if($bodycontent['receiptEditdata']->member_id == $membercode->member_id){echo "selected";}
+                                }
+                               
+                              }
+                              ?>
                               
                               ><?php echo $membercode->member_code;?></option>
                               <?php } ?>
@@ -178,50 +196,31 @@
                           <div class="form-group">
                             <label for="firstname">Name</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="member_name" name="member_name" placeholder="" autocomplete="off" value="" readonly    >
+                            <input type="text" class="form-control forminputs " id="member_name" name="member_name" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->tran_type!='ORADM'){
+                                  echo $bodycontent['receiptEditdata']->title_one." ".$bodycontent['receiptEditdata']->member_name;
+                                }
+                               
+                              }
+                              ?>" readonly    >
                             </div>
 
                           </div>
 
 
-                           <div class="form-group">
-                            <label for="firstname">Adm Fees</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="adm_fees" name="adm_fees" placeholder="" autocomplete="off" value=""    >
-                            </div>
-
-                          </div>
-
-
-                             <div class="form-group">
-                            <label for="firstname">Sub/Coach Fees</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="sub_coach_fees" name="sub_coach_fees" placeholder="" autocomplete="off" value=""    >
-                            </div>
-
-                          </div>
-
-
-                           <div class="form-group">
-                            <label for="firstname">Serv. Tax</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="service_tax" name="service_tax" placeholder="" autocomplete="off" value=""    >
-                            </div>
-
-                          </div>
-
-                           <div class="form-group">
-                            <label for="firstname">Total</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="total" name="total" placeholder="" autocomplete="off" value=""    >
-                            </div>
-
-                          </div>
 
                           <div class="form-group">
                             <label for="firstname">Amount</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="amount" name="amount" placeholder="" autocomplete="off" value=""    >
+                            <input type="text" class="form-control forminputs " id="amount" name="amount" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->tran_type!='ORADM'){
+                                  echo $bodycontent['receiptEditdata']->total_amount;
+                                }
+                               
+                              }
+                              ?>"    >
                             </div>
 
                           </div>
@@ -238,62 +237,181 @@
               
                  </div>
                   <div class="col-md-2"></div>
-                 <div class="col-md-4">
+                 <div class="col-md-4" id="adm_block">
                   <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> New membership</h3>
 
-                            <div class="form-group ">
-                            <label for="code">Member Category</label>
-                            
-                             <div class="input-group input-group-sm" id="sel_member_categoryerr">
-                              <select class="form-control select2" name="sel_member_category" id="sel_member_category" >
-                              <option value="">Select</option>
-                              <?php 
-                              foreach ($bodycontent['categoryList'] as  $categorylist) {
-                                
+                   <div class="row">
+                               <div class="col-md-12">
+                                      <div class="form-group ">
+                                      <label for="code">Member Category</label>
+                                       <div class="input-group input-group-sm" id="sel_member_categoryerr">
+                                        <select class="form-control select2" name="sel_member_category" id="sel_member_category" >
+                                        <option value="">Select</option>
+                                        <?php 
+                                        foreach ($bodycontent['categoryList'] as  $categorylist) { 
+                                        ?>
+                                        <option value="<?php echo $categorylist->cat_id;?>"
+                                        <?php 
+                                     if($bodycontent['mode'] == 'EDIT'){ 
+                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                       if($bodycontent['receiptEditdata']->member_category==$categorylist->cat_id){echo "selected";}
+                                      }
+                                     
+                                    }
                               ?>
-                              <option value="<?php echo $categorylist->cat_id;?>"
-                             
-                              
-                              ><?php echo $categorylist->category_name;?></option>
-                              <?php } ?>
-                             
-                            </select>
-                            </div>
 
-                          </div>
+
+
+                                        ><?php echo $categorylist->category_name;?></option>
+                                        <?php } ?>   
+                                      </select>
+                                      </div>
+                                    </div>
+                              </div>
+                  </div>
+
+                  <?php
+
+                    $firstname="";
+                    $lastname="";
+
+                     if($bodycontent['mode'] == 'EDIT'){
+
+                      $name = $bodycontent['receiptEditdata']->member_name;
+                      $parts = explode(' ', $name);
+                      $firstname = $parts[0];
+                      $lastname = $parts[1];
+
+
+                      }
+
+
+
+                  ?>
               
-
-
-                          <div class="form-group">
-                            <label for="firstname">First Name</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="first_name" name="first_name" placeholder="" autocomplete="off" value=""   
-                             >
-                            </div>
-
+                          <div class="row">
+                           <div class="col-md-6">
+                             <div class="form-group">
+                                    <label for="firstname">First Name</label>
+                                    <div class="input-group input-group-sm">
+                               <input type="text" class="form-control forminputs " id="first_name" name="first_name" placeholder="" autocomplete="off" value="<?php echo $firstname;?>" <?php if($bodycontent['mode'] == 'EDIT'){echo "readonly";}?>   
+                                     >
+                                    </div>
+                                  </div>
+                           </div>
+                           <div class="col-md-6">
+                             <div class="form-group">
+                                <label for="firstname">Last Name</label>
+                                <div class="input-group input-group-sm">
+                                <input type="text" class="form-control forminputs " id="last_name" name="last_name" placeholder="" autocomplete="off" value="<?php echo $lastname;?>"  <?php if($bodycontent['mode'] == 'EDIT'){echo "readonly";}?>  >
+                                </div>
+                              </div>   
+                           </div> 
                           </div>
 
-                           <div class="form-group">
-                            <label for="firstname">Last Name</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="last_name" name="last_name" placeholder="" autocomplete="off" value=""    >
-                            </div>
+                         
+                           <div class="row">
+                               <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label for="firstname">Code</label>
+                                        <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control forminputs " id="new_member_code" name="new_member_code" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode'] == 'EDIT'){ 
+                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                       echo $bodycontent['receiptEditdata']->member_code;
+                                      }
+                                     
+                                    }
+                              ?>"   readonly >
+                                        </div>
+                                      </div> 
 
-                          </div>
-                            <div class="form-group">
-                            <label for="firstname">Code</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="new_member_code" name="new_member_code" placeholder="" autocomplete="off" value=""   readonly >
-                            </div>
+                               </div>
+                               <div class="col-md-6">
+                                     <div class="form-group">
+                                        <label for="eqpname">&nbsp;</label>
+                                       <button type="button" class="btn btn-block btn-sm action-button" id="create_code"> <i class="fas fa-cog"></i> Create </button>
 
-                          </div>
+                                    </div>
+                                 
+                               </div>
+                           </div>
+
+                           <div class="row">
+                               <div class="col-md-6">
+                                   <div class="form-group">
+                                      <label for="firstname">Adm Fees</label>
+                                      <div class="input-group input-group-sm">
+                                      <input type="text" class="form-control forminputs " id="adm_fees" name="adm_fees" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode'] == 'EDIT'){ 
+                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                       echo $bodycontent['receiptEditdata']->adm_fees;
+                                      }
+                                    }
+                              ?>" onKeyUp="numericFilter(this);"   >
+                                      </div>
+                                  </div>
+                                 
+                               </div>
+                               <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label for="firstname">Sub/Coach Fees</label>
+                                    <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control forminputs " id="sub_coach_fees" name="sub_coach_fees" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode'] == 'EDIT'){ 
+                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                       echo $bodycontent['receiptEditdata']->sub_coach_fees;
+                                      }
+                                     
+                                    }
+                              ?>" onKeyUp="numericFilter(this);" >
+                                    </div>
+                                </div>
+                                 
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label for="firstname">Serv. Tax</label>
+                                      <div class="input-group input-group-sm">
+                                      <input type="text" class="form-control forminputs " id="service_tax" name="service_tax" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode'] == 'EDIT'){ 
+                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                       echo $bodycontent['receiptEditdata']->service_tax;
+                                      }
+                                     
+                                    }
+                              ?>"  onKeyUp="numericFilter(this);" >
+                                      </div>
+                                 </div>
+                                 
+                               </div>
+                               <div class="col-md-6">
+                                       <div class="form-group">
+                                          <label for="firstname">Total</label>
+                                          <div class="input-group input-group-sm">
+                                          <input type="text" class="form-control forminputs " id="total_amount" name="total_amount" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode'] == 'EDIT'){ 
+                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                       echo $bodycontent['receiptEditdata']->total_amount;
+                                      }
+                                     
+                                    }
+                              ?>"  onKeyUp="numericFilter(this);" readonly  >
+                                          </div>
+                                    </div>
+                                 
+                               </div>
+                           </div>
+
+
+
+
+                          
+                        
                              
-                          <div class="form-group">
-                            <label for="eqpname">&nbsp;</label>
-             
-                           <button type="button" class="btn btn-block btn-sm action-button" id="create_code"> <i class="fas fa-cog"></i> Create </button>
-
-                          </div>
+                         
                
                  </div>
                </div>
@@ -304,7 +422,7 @@
 
      
   <fieldset class="scheduler-border formblock-box"> 
-  <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Payment Details</h3>
+  <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Accounting Treatment </h3>
     <!-- <legend class="scheduler-border">Payment Details</legend> -->
               <!--    <span class="frm_header"></span> -->
                  <div class="row">
@@ -321,8 +439,8 @@
                   ?>
 
               
-             
-                  <div class="col-md-2">
+             <div class="col-md-2"></div>
+                  <div class="col-md-3">
                           <div class="form-group">
                             <label for="code">(A/C to be debited)</label>
                             <div class="input-group input-group-sm" id="actobedebitederr">
@@ -332,7 +450,13 @@
                               foreach ($bodycontent['acTobeDebited'] as $actobedebited) {
                               
                                ?>
-                               <option value="<?php echo $actobedebited->id;?>"><?php echo $actobedebited->payment_mode;?></option>
+                               <option value="<?php echo $actobedebited->id;?>"
+                                <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->dr_ac_id==$actobedebited->id){echo "selected";}
+                              }
+                              ?>
+                               ><?php echo $actobedebited->payment_mode;?></option>
 
                               <?php } ?>
                             
@@ -342,7 +466,7 @@
                   </div>
 
 
-                       <div class="col-md-2">
+                       <div class="col-md-3">
                           <div class="form-group">
                             <label for="code">A/C to be credited</label>
                             <div class="input-group input-group-sm" id="actobecreditederr">
@@ -352,7 +476,13 @@
                               foreach ($bodycontent['actobeCreditedList'] as $actobecredited) {
                               
                                ?>
-                               <option value="<?php echo $actobecredited->account_id;?>"><?php echo $actobecredited->account_name;?></option>
+                               <option value="<?php echo $actobecredited->account_id;?>"
+                                <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->dr_ac_id==$actobecredited->id){echo "selected";}
+                              }
+                              ?>
+                               ><?php echo $actobecredited->account_name;?></option>
 
                               <?php } ?>
                             
@@ -378,7 +508,11 @@
                           <div class="form-group">
                             <label for="firstname">Bank</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="bank" name="bank" placeholder="" autocomplete="off" value="" >
+                            <input type="text" class="form-control forminputs " id="bank" name="bank" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                echo $bodycontent['receiptEditdata']->bank;
+                              }
+                              ?>" >
                             </div>
 
                           </div>
@@ -387,7 +521,11 @@
                           <div class="form-group">
                             <label for="firstname">Branch</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="branch" name="branch" placeholder="" autocomplete="off" value=""  >
+                            <input type="text" class="form-control forminputs " id="branch" name="branch" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                echo $bodycontent['receiptEditdata']->branch;
+                              }
+                              ?>"  >
                             </div>
 
                           </div>
@@ -396,7 +534,11 @@
                           <div class="form-group">
                             <label for="firstname">Cheque No.</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="cheque_no" name="cheque_no" placeholder="" autocomplete="off" value="">
+                            <input type="text" class="form-control forminputs " id="cheque_no" name="cheque_no" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                echo $bodycontent['receiptEditdata']->cheque_no;
+                              }
+                              ?>">
                             </div>
 
                           </div>
@@ -409,7 +551,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="cheque_dt" id="cheque_dt">
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="cheque_dt" id="cheque_dt" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo date("d/m/Y", strtotime($bodycontent['receiptEditdata']->cheque_dt));}?>">
                           </div>
 
                           </div>
@@ -427,7 +569,11 @@
                                   <div class="form-group">
                                     <label for="firstname">Narration</label>
                                     <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control forminputs " id="narration" name="narration" placeholder="" autocomplete="off" value="" style="text-transform:uppercase"  >
+                                    <input type="text" class="form-control forminputs " id="narration" name="narration" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                echo $bodycontent['receiptEditdata']->narration;
+                              }
+                              ?>" style="text-transform:uppercase"  >
                                     </div>
 
                                   </div>
@@ -450,7 +596,7 @@
                        </div>
                        <div class="col-md-4 text-right">
                               <div class="btnDiv">
-                                    <button type="submit" class="btn action-button btn-sm" id="tennispaymentsavebtn"><i class="fas fa-save"></i> &nbsp; <?php echo $bodycontent['btnText']; ?></button>
+                                    <button type="submit" class="btn action-button btn-sm" id="memberreceiptsavebtn"><i class="fas fa-save"></i> &nbsp; <?php echo $bodycontent['btnText']; ?></button>
                                   
                                     <span class="btn btn-sm action-button formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i> <?php echo $bodycontent['btnTextLoader']; ?></span>
                               </div>
@@ -523,68 +669,8 @@
 
                  </div>
 
-                <div id="student_adminfo" style="display: none">
-                   <div class="frm_header form-block-subtitle">Admission Details</div>
-                   <input type="hidden" name="admissionID" id="admissionID" value="0" />
-                  <input type="hidden" name="mode" id="mode" value="ADD" />
-                 <div class="row">
-                  <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="firstname">Student Code</label>
-                            <input type="text" class="form-control forminputs " id="student_code" name="student_code" placeholder="" autocomplete="off" value=""  readonly >
-
-                          </div>
-                 </div><!-- end of col-md-3 -->
-
-                   <div class="col-md-2">
-                          <div class="form-group">
-                            <label for="firstname">&nbsp;</label>
-                               <select class="form-control select" name="title_one" id="title_one" style="width: 100%;">
-                              <option value="">Select</option>
-                              <option value="MR">MR</option>
-                              <option value="MR.">MR.</option>
-                              <option value="MS">MS</option>
-                              <option value="MS.">MS.</option>
-                              <option value="MRS.">MRS.</option>
-                              <option value="DR">DR</option>
-                              <option value="DR.">DR.</option>
-                              
-                            </select>
-
-                          </div>
-                   </div><!-- end of col-md-2 -->
-                     <div class="col-md-4">
-                          <div class="form-group">
-                            <label for="firstname">Student Name</label>
-                            <input type="text" class="form-control forminputs " id="student_name" name="student_name" placeholder="" autocomplete="off" value="" style="text-transform:uppercase"  readonly >
-
-                          </div>
-                     </div><!-- end of col-md-3 -->
-                 <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="eqpname">&nbsp;</label>
-             
-                         <!--   <button type="button" class="btn btn-block btn-primary" id="create_code">Continue</button> -->
-                         
-
-                  <div class="btnDiv">
-                      <button type="submit" class="btn formBtn btn-block btn-sm action-button" id="admissionsavebtn">Continue <i class="fas fa-long-arrow-alt-right"></i></button>
-                    
-                      <span class="btn action-button formBtn loaderbtn btn-sm" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i> Saving...</span>
-                  </div>
-                          </div>
-                 </div><!-- end of col-md-2 -->
-
-
-                  
-                </div>
-             
-
-
-            </div>
-            <!-- <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div> -->
+          
+         
 
              <?php echo form_close(); ?>
           </div>

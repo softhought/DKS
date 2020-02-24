@@ -12,7 +12,7 @@ class Accountgroup extends CI_Controller {
 
 public function index()
 {
-    $session = $this->session->userdata('user_detail');
+  $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
         $page = "dashboard/master/account-group/account_group_view";
@@ -25,6 +25,8 @@ public function index()
     }
     
 }
+
+
 
 public function addaccgroup(){
 
