@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class jasperphp { 
+class Jasperphp { 
 	function jasperphp() { 
 		$CI = & get_instance(); 
 		log_message('Debug', 'jasper class is loaded.');

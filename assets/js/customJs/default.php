@@ -68,8 +68,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- input date checker jquery -->
 <script src="<?php echo base_url(); ?>assets/js/customJs/datecheck.js"></script>
-<!-- comman js by anil on 08-02-2020 -->
-<script src="<?php echo base_url(); ?>assets/js/customJs/comman.js"></script>
 
 
 

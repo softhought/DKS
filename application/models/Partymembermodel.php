@@ -58,7 +58,7 @@ class Partymembermodel extends CI_Model{
 
     public function getlastcode($startLetters)
   {
-    $data = array();
+    $data = 0;
     $this->db->select("SUBSTRING(member_code, 4) as last_serial")
         ->from('member_master')
         ->where("member_code LIKE '$startLetters%'")
@@ -71,7 +71,7 @@ class Partymembermodel extends CI_Model{
     if($query->num_rows()> 0)
     {
            $row = $query->row();
-           return $data = $row;
+           return $data = $row->last_serial;
              
         }
     else
