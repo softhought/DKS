@@ -177,7 +177,7 @@
 
                                <?php 
                                if($bodycontent['mode'] == 'EDIT'){ 
-                                if($bodycontent['receiptEditdata']->tran_type!='ORADM'){
+                                if($bodycontent['receiptEditdata']->tran_type=='RCFM'){
                                    if($bodycontent['receiptEditdata']->member_id == $membercode->member_id){echo "selected";}
                                 }
                                
@@ -200,12 +200,10 @@
                                if($bodycontent['mode'] == 'EDIT'){ 
                                 if($bodycontent['receiptEditdata']->tran_type!='ORADM'){
                                   echo $bodycontent['receiptEditdata']->title_one." ".$bodycontent['receiptEditdata']->member_name;
-                                }
-                               
+                                }  
                               }
                               ?>" readonly    >
                             </div>
-
                           </div>
 
 
@@ -238,7 +236,7 @@
                  </div>
                   <div class="col-md-2"></div>
                  <div class="col-md-4" id="adm_block">
-                  <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> New membership</h3>
+                  <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> New membership & Items</h3>
 
                    <div class="row">
                                <div class="col-md-12">
@@ -340,7 +338,7 @@
                            <div class="row">
                                <div class="col-md-6">
                                    <div class="form-group">
-                                      <label for="firstname">Adm Fees</label>
+                                      <label for="firstname">Adm Fees/Item Fees</label>
                                       <div class="input-group input-group-sm">
                                       <input type="text" class="form-control forminputs " id="adm_fees" name="adm_fees" placeholder="" autocomplete="off" value="<?php 
                                      if($bodycontent['mode'] == 'EDIT'){ 
@@ -353,6 +351,9 @@
                                   </div>
                                  
                                </div>
+
+
+
                                <div class="col-md-6">
                                   <div class="form-group">
                                     <label for="firstname">Sub/Coach Fees</label>
@@ -371,7 +372,51 @@
                                </div>
                            </div>
                            <div class="row">
-                               <div class="col-md-6">
+
+
+                           <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="firstname">CGST%</label>
+                                  <div class="input-group input-group-sm">
+                                <input type="text" class="form-control forminputs " id="cgst_rate" name="cgst_rate" placeholder="" autocomplete="off" value="<?php echo $bodycontent['parameterData']->cgst_rate; ?>"  readonly  >
+                                </div>
+
+                              </div>
+                          </div><!-- end of col-md-1 -->
+
+                              <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="firstname">CGST Amt</label>
+                              <div class="input-group input-group-sm">
+                            <input type="text" class="form-control forminputs " id="cgst_amt" name="cgst_amt" placeholder="" autocomplete="off"  readonly value="<?php if($bodycontent['mode'] == 'EDIT'){echo $bodycontent['transactionEditdata']->cgst_amt;}?>"  >
+                            </div>
+
+                          </div>
+                      </div><!-- end of col-md-1 -->
+
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="firstname">SGST%</label>
+                              <div class="input-group input-group-sm">
+                            <input type="text" class="form-control forminputs " id="sgst_rate" name="sgst_rate" placeholder="" autocomplete="off" value="<?php echo $bodycontent['parameterData']->sgst_rate; ?>"  readonly  >
+                            </div>
+
+                          </div>
+                      </div><!-- end of col-md-1 -->
+
+                       <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="firstname">SGST Amt</label>
+                              <div class="input-group input-group-sm">
+                            <input type="text" class="form-control forminputs " id="sgst_amt" name="sgst_amt" placeholder="" autocomplete="off"  readonly value="<?php if($bodycontent['mode'] == 'EDIT'){echo $bodycontent['transactionEditdata']->sgst_amt;}?>">
+                            </div>
+
+                          </div>
+                      </div><!-- end of col-md-1 -->
+
+
+
+                               <!-- <div class="col-md-6">
                                   <div class="form-group">
                                       <label for="firstname">Serv. Tax</label>
                                       <div class="input-group input-group-sm">
@@ -386,7 +431,9 @@
                                       </div>
                                  </div>
                                  
-                               </div>
+                               </div> -->
+
+
                                <div class="col-md-6">
                                        <div class="form-group">
                                           <label for="firstname">Total</label>

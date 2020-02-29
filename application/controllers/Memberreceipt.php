@@ -94,6 +94,11 @@ public function index()
               $result['acTobeDebited'] = $this->commondatamodel->getAllRecordWhere('payment_mode_details',[]);
               $result['actobeCreditedList'] = $this->payment_tennis_model->getAcToBeCredited($company);
 
+              $entry_module = 'MEMBEROTHERREC';
+              $result['parameterData'] = $this->memberreceiptmodel->getFacilityDataByEntryModule($entry_module);
+
+              //pre($result['parameterData']);exit;
+
             $header = "";
             $page = 'dashboard/member_receipt/member_receipt_add_edit.php';
             createbody_method($result, $page, $header,$session);
@@ -259,7 +264,12 @@ public function index()
         $amount = $searcharray['amount'];
         $adm_fees = $searcharray['adm_fees'];
         $sub_coach_fees = $searcharray['sub_coach_fees'];
-        $service_tax = $searcharray['service_tax'];
+        $cgst_rate = $searcharray['cgst_rate'];
+        $sgst_rate = $searcharray['sgst_rate'];
+        $cgst_amt = $searcharray['cgst_amt'];
+        $sgst_amt = $searcharray['sgst_amt'];
+
+
         $total_amount = $searcharray['total_amount'];
         $dr_ac_id = $searcharray['actobedebited'];
         $cr_ac_id = $searcharray['actobecredited'];
@@ -297,8 +307,8 @@ public function index()
 
         if ($mode == "ADD" && $memberreceiptID == "0") {
 
-           if ($tran_type=='ORADM') {
-                 $serialmodule='MEMBER ADMISSION RECEIPT';
+           if ($tran_type=='RCFM') {
+                 $serialmodule='RECEIVABLE FROM MEMBER';
                }else{
                  $serialmodule='MEMBER OTHER RECEIPT';
                }
@@ -326,18 +336,28 @@ public function index()
               
               $adm_fees = $searcharray['adm_fees'];
               $sub_coach_fees = $searcharray['sub_coach_fees'];
-              $service_tax = $searcharray['service_tax'];
+             
               $final_amount = $searcharray['total_amount'];
 
+          }else if($tran_type=='ORITM'){
+
+                    $adm_fees = $searcharray['adm_fees'];
+                    $sub_coach_fees = $searcharray['sub_coach_fees'];
+                    $final_amount = $searcharray['total_amount'];
 
 
-
-
-          }else{
+          }
+          else{
                      $adm_fees = NULL;
                      $sub_coach_fees = NULL;
-                     $service_tax = $searcharray['service_tax'];
+                    
                      $final_amount = $searcharray['amount'];
+
+                     $cgst_rate = NULL;
+                     $sgst_rate = NULL;
+                     $cgst_amt =  NULL;
+                     $sgst_amt =  NULL;
+
 
           }
 
@@ -348,7 +368,11 @@ public function index()
                                     'member_id' => $sel_member_id,
                                     'adm_fees' => $adm_fees,
                                     'sub_coach_fees' => $sub_coach_fees,
-                                    'service_tax' => $service_tax,
+                                    'cgst_id' => $cgst_rate,
+                                    'cgst_amt' => $cgst_amt,
+                                    'sgst_id' => $cgst_rate,
+                                    'sgst_amt' => $sgst_amt,
+
                                     'total_amount' => $final_amount,
                                     'dr_ac_id' => $dr_ac_id,
                                     'cr_ac_id' => $cr_ac_id,

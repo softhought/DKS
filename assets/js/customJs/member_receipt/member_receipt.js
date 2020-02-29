@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    var basepath = $('#basepath').val();
+var basepath = $('#basepath').val();
 
 $(document).on('change','#sel_member_code',function(){
    
@@ -28,19 +28,16 @@ $(document).on('change','#sel_member_code',function(){
    
         var tran_type = $(this).val();
 
-        if (tran_type=="ORADM") {
+        if (tran_type=="ORADM" || tran_type=="ORITM" ) {
 
          $('#adm_block').css({backgroundColor: '#f7eeee'});
-          $('#other_block').css({backgroundColor: '#fff'});
+         $('#other_block').css({backgroundColor: '#fff'});
 
+        }else if(tran_type=="RCFM"){
 
-        }else if(tran_type=="ORITM" || tran_type=="RCFM"){
-           $('#other_block').css({backgroundColor: '#f7eeee'});
-            $('#adm_block').css({backgroundColor: '#fff'});
+         $('#other_block').css({backgroundColor: '#f7eeee'});
+         $('#adm_block').css({backgroundColor: '#fff'});
 
-        }else{
-            $('#adm_block').css({backgroundColor: '#fff'});
-            $('#other_block').css({backgroundColor: '#fff'});
         }
   
 
@@ -382,14 +379,12 @@ function validateMemberReceipt(){
 
 
 
-   if (tran_type!='ORADM') {
+   if (tran_type=='RCFM') {
 
          if (sel_member_code=='') {
            $("#sel_member_codeerr").addClass("form_error");   
                return false;
          }
-
-     
 
         if (amount=='') {
              $("#amount").addClass("form_error");  
@@ -397,10 +392,7 @@ function validateMemberReceipt(){
                  return false;
         }
 
-
-
-
-   }else{
+   }else if(tran_type=='ORADM'){
 
           if (sel_member_category=='') {
            $("#sel_member_categoryerr").addClass("form_error");   
@@ -413,16 +405,28 @@ function validateMemberReceipt(){
                  return false;
           }
 
-
-           if (adm_fees=='') {
+          if (adm_fees=='') {
              $("#adm_fees").addClass("form_error");  
              $("#adm_fees").focus(); 
                  return false;
            }
 
-         
+
+   }else if(tran_type=='ORITM'){
+
+        if (sel_member_code=='') {
+           $("#sel_member_codeerr").addClass("form_error");   
+               return false;
+         }
 
 
+        if (adm_fees=='') {
+             $("#adm_fees").addClass("form_error");  
+             $("#adm_fees").focus(); 
+                 return false;
+           }
+
+     
 
 
    }
@@ -477,11 +481,24 @@ function CalculateAdmissionTotal(){
 
   var adm_fees=parseFloat($("#adm_fees").val() || 0);
   var sub_coach_fees=parseFloat($("#sub_coach_fees").val() || 0);
-  var service_tax=parseFloat($("#service_tax").val() || 0);
-  var total_amt =(service_tax+sub_coach_fees+adm_fees);
+
+  var taxable_amt = (adm_fees+sub_coach_fees);
+  var cgst_rate =  parseFloat($("#cgst_rate").val() || 0);
+  var sgst_rate =  parseFloat($("#sgst_rate").val() || 0);
+
+  var cgst_amtount=(taxable_amt*cgst_rate)/100;
+  var sgst_amtount=(taxable_amt*sgst_rate)/100;
+
+  $("#cgst_amt").val(cgst_amtount.toFixed(2));
+  $("#sgst_amt").val(sgst_amtount.toFixed(2));
+
+  var total_amt =(taxable_amt+cgst_amtount+sgst_amtount);
   $("#total_amount").val(total_amt.toFixed(2));
 
 }
+
+
+
 
 
 

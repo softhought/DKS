@@ -56,26 +56,25 @@ public function getallcategorylist(){
 
 
 public function getAllMemberListByCategory($category)
-  {
-    $data = array();
+{
+      $data = array();
       $where = array(
-                            'member_master.category' => $category
-                            
-                        );
+                       'member_master.category' => $category       
+                    );
     
-    $this->db->select("
+     $this->db->select("
                         member_master.*,
                         member_catogary_master.category_name
-                    
                         ")
         ->from('member_master')
         ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
-        
         ->where($where);
-         $query = $this->db->get();
-    #echo $this->db->last_query();
 
-    if($query->num_rows()> 0)
+        $query = $this->db->get();
+
+        #echo $this->db->last_query();
+
+  if($query->num_rows()> 0)
         {
 		       foreach ($query->result() as $rows)
 		       {
@@ -90,11 +89,11 @@ public function getAllMemberListByCategory($category)
         }
 
 
-  }
+}
 
 
 
-    public function getAllSubscriptionFeeList($yearid,$companyid,$member_code,$cat_id)
+  public function getAllSubscriptionFeeList($yearid,$companyid,$member_code,$cat_id)
   {
     $data = array();
 

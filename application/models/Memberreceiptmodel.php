@@ -178,6 +178,33 @@ class memberreceiptmodel extends CI_Model{
     }
 
 
+    public function getFacilityDataByEntryModule($entry_module)
+    {
+        $data = array();
+        $where = array('parameter_master.entry_module' => $entry_module);
+        $this->db->select("parameter_master.*,cgst.rate AS cgst_rate,sgst.rate AS sgst_rate")
+                ->from('parameter_master')
+                ->join('gstmaster as cgst','cgst.id=parameter_master.cgst_id','left')
+                ->join('gstmaster as sgst','sgst.id=parameter_master.sgst_id','left')
+                ->where($where)
+                ->limit(1);
+        $query = $this->db->get();
+        
+        #echo "<br>".$this->db->last_query();
+        
+        if($query->num_rows()> 0)
+        {
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+        else
+        {
+            return $data;
+        }
+    }
+
+
 
 
     

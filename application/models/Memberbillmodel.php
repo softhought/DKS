@@ -4,15 +4,32 @@ class Memberbillmodel extends CI_Model{
 
 
 
- public function getAllActiveMembercode(){
+ public function getAllActiveMembercode($category,$member_id){
 
         $data = array();
 
-        $where = array('member_master.' => 'ACTIVE MEMBER' );
+        $where = array('member_master.status' => 'ACTIVE MEMBER' );
+
+        if ($category!='') {
+
+        		if($member_id!=''){
+        			$where2 = array('member_master.member_id' => $member_id );
+
+        		}else{
+        			$where2 = array('member_master.category' => $category );
+        		}
+        }else{
+        	 $where2=[];
+        }
 
 
-        $this->db->select("member_master.member_code")
+        $this->db->select("
+        					member_master.member_id,
+        					member_master.member_code
+        				 ")
                  ->from('member_master')
+                 ->where($where)
+                 ->where($where2)
                  ->order_by("member_code");
         $query = $this->db->get();
         #echo $this->db->last_query();
@@ -37,15 +54,17 @@ class Memberbillmodel extends CI_Model{
 }
 
 
-public function getAllActiveMemberByCategory(){
+public function getAllActiveMemberByCategory($category){
 
         $data = array();
         $where = array(
         				'member_master.status' => 'ACTIVE MEMBER',
-        			  );
+        				'member_master.category' => $category
+        			   );
 
-        $this->db->select("member_master.member_code")
+        $this->db->select("member_master.*")
                  ->from('member_master')
+                 ->where($where)
                  ->order_by("member_code");
         $query = $this->db->get();
         #echo $this->db->last_query();
@@ -68,6 +87,373 @@ public function getAllActiveMemberByCategory(){
 
 
 }
+
+
+
+public function getBotKotDataByCategory($member_id,$category,$yearmonth)
+	{
+		$data = array();
+		$where = array(
+						'order_master.member_id' => $member_id,
+						'order_master.category' => $category,
+						'DATE_FORMAT(order_master.order_date,"%Y-%m")' => $yearmonth
+					  );
+		$this->db->select("
+							IFNULL(SUM(order_master.item_total),0) AS taxable_total,
+							IFNULL(SUM(order_master.total_cgst),0) AS cgst_total,
+							IFNULL(SUM(order_master.total_sgst),0) AS sgst_total  
+						")
+				->from('order_master')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+	}
+
+
+public function getMemberFacilityByCategory($member_id,$yearmonth,$entry_module)
+{
+		$data = array();
+		$where = array(
+						'member_facility_transaction.member_id' => $member_id,
+						'parameter_master.entry_module' => $entry_module,
+						'DATE_FORMAT(member_facility_transaction.tran_dt,"%Y-%m")' => $yearmonth
+					  );
+		$this->db->select("
+							IFNULL(SUM(member_facility_transaction.taxable),0) AS taxable_total,
+							IFNULL(SUM(member_facility_transaction.cgst_amt),0) AS cgst_total,
+							IFNULL(SUM(member_facility_transaction.sgst_amt),0) AS sgst_total  
+						 ")
+				->from('member_facility_transaction')
+				->join('parameter_master','parameter_master.parameter_id=member_facility_transaction.parameter_mst_id','INNER')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+public function getMemberBenvolentFund($member_id,$month_id,$year_id,$company_id)
+{
+		$data = array();
+		$where = array(
+						'benvolent_fund_transaction.member_id' => $member_id,
+						'benvolent_fund_transaction.month_id' => $month_id,
+						'benvolent_fund_transaction.year_id' => $year_id,
+						'benvolent_fund_transaction.company_id' => $company_id,
+						'benvolent_fund_transaction.is_delete' => "N"
+						
+					  );
+		$this->db->select("
+							IFNULL(SUM(benvolent_fund_transaction.taxable),0) AS taxable_total,
+							IFNULL(SUM(benvolent_fund_transaction.cgst_amt),0) AS cgst_total,
+							IFNULL(SUM(benvolent_fund_transaction.sgst_amt),0) AS sgst_total  
+						 ")
+				->from('benvolent_fund_transaction')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+public function getMemberFixedHardCourt($member_id,$yearmonth,$year_id,$company_id)
+{
+		$data = array();
+		$where = array(
+						'fixed_hard_court_transaction.member_id' => $member_id,
+						'fixed_hard_court_transaction.year_id' => $year_id,
+						'fixed_hard_court_transaction.company_id' => $company_id,
+						
+						'DATE_FORMAT(fixed_hard_court_transaction.tran_dt,"%Y-%m")' => $yearmonth
+					  );
+		$this->db->select("
+							IFNULL(SUM(fixed_hard_court_transaction.taxable),0) AS taxable_total,
+							IFNULL(SUM(fixed_hard_court_transaction.cgst_amt),0) AS cgst_total,
+							IFNULL(SUM(fixed_hard_court_transaction.sgst_amt),0) AS sgst_total  
+						 ")
+				->from('fixed_hard_court_transaction')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+public function getDevelopmentFees($member_id,$month_id,$year_id,$company_id)
+{
+		$data = array();
+		$where = array(
+						'development_fees_transaction.member_id' => $member_id,
+						'development_fees_transaction.month_id' => $month_id,
+						'development_fees_transaction.year_id' => $year_id,
+						'development_fees_transaction.company_id' => $company_id,
+						'development_fees_transaction.is_delete' => "N"
+					  );
+		$this->db->select("
+							IFNULL(SUM(development_fees_transaction.taxable),0) AS taxable_total,
+							IFNULL(SUM(development_fees_transaction.cgst_amt),0) AS cgst_total,
+							IFNULL(SUM(development_fees_transaction.sgst_amt),0) AS sgst_total  
+						 ")
+				->from('development_fees_transaction')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+public function getPujaContribution($member_id,$month_id,$year_id,$company_id)
+{
+		$data = array();
+		$where = array(
+						'puja_contribution.member_id' => $member_id,
+						'puja_contribution.month_id' => $month_id,
+						'puja_contribution.year_id' => $year_id,
+						'puja_contribution.company_id' => $company_id
+						
+					  );
+		$this->db->select("
+							IFNULL(SUM(puja_contribution.total_amount),0) AS taxable_total,
+							0 AS cgst_total,
+							0 AS sgst_total  
+						 ")
+				->from('puja_contribution')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+public function getCorrectionAmount($member_id,$yearmonth,$year_id,$company_id)
+{
+		$data = array();
+		$where = array(
+						'member_correction_transaction.member_id' => $member_id,
+						'member_correction_transaction.year_id' => $year_id,
+						'member_correction_transaction.company_id' => $company_id,
+						'DATE_FORMAT(member_correction_transaction.tran_date,"%Y-%m")' => $yearmonth
+					  );
+		$this->db->select("
+							IFNULL(SUM(member_correction_transaction.taxable),0) AS taxable_total,
+							IFNULL(SUM(member_correction_transaction.cgst_amt),0) AS cgst_total,
+							IFNULL(SUM(member_correction_transaction.sgst_amt),0) AS sgst_total  
+						 ")
+				->from('member_correction_transaction')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+
+public function getMemberReceiptAmount($member_id,$yearmonth,$year_id,$company_id)
+{
+		$data = array();
+		$where = array(
+						'member_receipt.member_id' => $member_id,
+						'member_receipt.year_id' => $year_id,
+						'member_receipt.company_id' => $company_id,
+						'member_receipt.tran_type' => 'RCFM',
+						'DATE_FORMAT(member_receipt.receipt_date,"%Y-%m")' => $yearmonth
+					  );
+		$this->db->select("
+							IFNULL(SUM(member_receipt.total_amount),0) AS taxable_total,
+							0 AS cgst_total,
+							0 AS sgst_total  
+						 ")
+				->from('member_receipt')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+public function checkNextYearExist($year_id)
+{
+		$data = array();
+		$this->db->select("*")
+				->from('financialyear')
+				->where('year_id >', $year_id)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+
+
+}
+
+
+public function getMinimumBillingAmount($member_id,$month_id,$year_id,$company_id)
+	{
+		$data = array();
+
+		        $where = array(
+                                'club_usages.member_id' => $member_id,
+                                'club_usages.month_id' => $month_id,
+                                'club_usages.year_id' => $year_id,
+                                'club_usages.company_id' => $company_id,
+                             );
+
+
+
+		$this->db->select("
+							IFNULL(SUM(club_usages.short_fall),0) AS short_fall,
+							IFNULL(SUM(club_usages.cgst_amt),0) AS cgst_amt,
+							IFNULL(SUM(club_usages.sgst_amt),0) AS sgst_amt,
+							")
+				->from('club_usages')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+	}
+
+
+
+
+
+
+
+
 
 
 

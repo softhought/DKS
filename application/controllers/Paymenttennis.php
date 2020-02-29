@@ -7,12 +7,12 @@ class Paymenttennis extends CI_Controller {
         $this->load->library('session');
         $this->load->model('commondatamodel','commondatamodel',TRUE);
         $this->load->model('Userauditmodel','audit',TRUE);    
-         $this->load->model('Paymenttennismodel','payment_tennis_model',TRUE);    
+        $this->load->model('Paymenttennismodel','payment_tennis_model',TRUE);    
     }
 
 public function index()
 {
-    $session = $this->session->userdata('user_detail');
+  $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  exit;
         $page = "usermanagement/useraudit";
