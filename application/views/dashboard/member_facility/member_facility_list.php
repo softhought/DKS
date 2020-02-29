@@ -99,7 +99,7 @@
                    <span style="color: #bb6265;">Loading...</span>
                </div>
               <div id="facility_list_data">
-              <table class="table customTbl table-bordered table-striped dataTable">
+              <table class="table customTbl table-bordered table-striped dataTable2">
                 <thead>
                     <tr>
                     <th>Sl.No</th>

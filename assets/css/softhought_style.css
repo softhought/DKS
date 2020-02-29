@@ -1037,3 +1037,15 @@ tr td .fc-day-grid-event {
 .fc-button {
     z-index: unset !important;
 }
+
+.dt-button {
+    color: #FFF;
+    letter-spacing: 1px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #D21DC7 0%, #EA1515 100%);
+    border: 0;
+}
+
+.dt-print-view h1 {
+    text-align: center;
+}

@@ -94,7 +94,7 @@
                           <label for="new_partymember_code">Party Member Code</label>
                           <div class="form-group">
                               <div class="input-group input-group-sm">
-                                <input type="text" class="form-control resetval"  name="new_partymember_code" id="new_partymember_code" im-insert="false" value="<?php echo $bodycontent['newCode']; ?>" readonly />
+                                <input type="text" class="form-control resetval"  name="new_partymember_code" id="new_partymember_code" im-insert="false" value="<?php echo $bodycontent['newCode']; ?>"  readonly/>
                               </div>
                           </div>
                         </div>
@@ -140,20 +140,25 @@
                <div class="formblock-box">
                    <div class="row">
                      
-                          <div class="col-md-8">                     
+                          <div class="col-md-8">               
                       
                           <p id="errormsg" class="errormsgcolor"></p>
-                          </div>                         
+                          </div>  
+                                               
                          <div class="col-md-2 text-right">
-                            <button type="submit" class="btn btn-sm action-button" id="partysavebtn" style="width: 60%;">Save</button>
+                            <button type="submit" class="btn btn-sm action-button" id="partysavebtn">Save</button>
 
                               <span class="btn btn-sm action-button loaderbtn" id="loaderbtn" style="display:none;width: 60%;">Saving..</span>
                            </div>
 
                   
-                      <div class="col-md-2">
-                       <button type="reset" id="resetgrpform" class="btn btn-sm action-button" style="width: 60%;">Reset</button>
+                      <div class="col-md-1" style="text-align:center;">
+                       <button type="reset" id="resetgrpform" class="btn btn-sm action-button">Reset</button>
                      </div>
+                     <div class="col-md-1">
+                           <button type="button" id="refresh" class="btn btn-sm action-button">Refresh</button>
+                      </div> 
+
                   
                    </div>
                       

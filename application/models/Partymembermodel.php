@@ -56,17 +56,18 @@ class Partymembermodel extends CI_Model{
           }
     }
 
-    public function getlastcode($startLetters)
+    public function getlastcode()
   {
-    $data = 0;
-    $this->db->select("SUBSTRING(member_code, 4) as last_serial")
+    $data = array();
+    $this->db->select("CAST(SUBSTRING(member_code, 4,4) AS UNSIGNED) as last_serial")
         ->from('member_master')
-        ->where("member_code LIKE '$startLetters%'")
+        ->where("member_code LIKE 'BQ%'")
+        ->where('SUBSTRING(member_code, 8) = YEAR(CURRENT_DATE()) % 100')        
         ->order_by('member_code', 'desc')
         ->limit(1);
     $query = $this->db->get();
     
-    #echo $this->db->last_query();exit;
+   # echo $this->db->last_query();exit;
     
     if($query->num_rows()> 0)
     {

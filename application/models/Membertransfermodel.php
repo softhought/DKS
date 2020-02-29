@@ -6,7 +6,7 @@ class Membertransfermodel extends CI_Model{
   public function getlastcode($startLetters)
   {
     $data = array();
-    $this->db->select("SUBSTRING(member_code, 4) as last_serial")
+    $this->db->select("CAST(SUBSTRING(member_code, 4) AS UNSIGNED) as last_serial")
         ->from('member_master')
         ->where("member_code LIKE '%$startLetters%'")
         ->order_by('member_code', 'desc')

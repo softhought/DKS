@@ -41,7 +41,10 @@
                       
                  </div>
                       <div class="col-sm-7 calcol">
-                         <div id="calender" class="first" data-cla = ></div>
+                         <div id="loader" style="text-align:center; display:none;height: 500px;top: 150px;position: relative;">
+                           <img src="<?php echo base_url(); ?>assets/img/loader.gif" style="width:115px;">
+                         </div>
+                         <div id="calender"></div>
                       </div>
                    </div>   
 

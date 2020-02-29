@@ -118,5 +118,7 @@ define("GENDER_LIST", json_encode(array(
 
 )));
 
+define("UNIT", json_encode(array('BTLS')));
+
 
 

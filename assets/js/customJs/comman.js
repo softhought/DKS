@@ -1,6 +1,13 @@
 $(document).ready(function() {
+    $('.dataTable2').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'pdf', 'print'
+        ]
+    });
 
 })
+
 
 
 function setActiveStatus(uid, status, path) {

@@ -21,90 +21,52 @@ public function index()
         $whereid = array('year_id'=>$session['yearid']);
         $financialyear = explode('-',$this->commondatamodel->getSingleRowByWhereCls('financialyear',$whereid)->short_year);
         
-         $startcCode = $financialyear[0];
+         $startcCode = 'BQ';
         //  pre($startcCode);exit;
         
-        $LastserialData=$this->partymembermodel->getlastcode($startcCode);
-       // $LastserialData='010';
-        $alpha = range('A', 'Z');
-        //pre($LastserialData);exit;
-        if($LastserialData == true && is_numeric($LastserialData[0]) == false && substr($LastserialData,-2) == '99'){
-            $i = array_search($LastserialData[0], $alpha) + 1;
-            $LastserialDatalph = $alpha[$i].'00';
-        }
+        $LastserialData=$this->partymembermodel->getlastcode();
+       
+         //pre($LastserialData);exit;
        
         if ($LastserialData) {
-            if(is_numeric($LastserialData[0]) && $LastserialData == '999'){
-                $lastcodeserialno =  $LastserialData;
-                $newcodeserialno= $alpha[0].'01';  
-
-            }else if(is_numeric($LastserialData[0]) == false){
-               
-                $lastcodeserialno =  $LastserialData;
-                $newcodeserialno = $alpha[$i].sprintf("%02d", substr($LastserialDatalph,-2) + 1);;
-            }else{
-                $lastSerial=intval($LastserialData);
-                $lastcodenextSerial=$lastSerial;
-                $newcodenextSerial=$lastSerial+1;
-                $digit = strlen($lastcodenextSerial); 
-
-                if($digit==2){
-                    $lastcodeserialno = "0".$lastcodenextSerial;
-                    $newcodeserialno = "0".$newcodenextSerial;
-                }
-                elseif($digit==1){
-                    $lastcodeserialno = "00".$lastcodenextSerial;
-                    $newcodeserialno = "00".$newcodenextSerial;
-                }else{
-                    $lastcodeserialno = $lastcodenextSerial;
-                    $newcodeserialno = $newcodenextSerial;
-                }
-            }           
+            $lastSerial = $LastserialData;
+                   
          }else{
            $lastSerial=0; 
-           $lastcodenextSerial=$lastSerial+1;
-           $newcodenextSerial=$lastSerial+1;
-           $digit = strlen($lastcodenextSerial); 
-
-            if($digit==2){
-                $lastcodeserialno = "0".$lastcodenextSerial;
-                $newcodeserialno = "0".$newcodenextSerial;
-            }
-            elseif($digit==1){
-                $lastcodeserialno = "00".$lastcodenextSerial;
-                $newcodeserialno = "00".$newcodenextSerial;
-            }else{
-                $lastcodeserialno = $lastcodenextSerial;
-                $newcodeserialno = $newcodenextSerial;
-            } 
+           
          }
         
-    //  if($lastSerial == 0){
-    //     $lastcodenextSerial=$lastSerial+1;
-    //  }else{
-    //     $lastcodenextSerial=$lastSerial;
-    //  }
+     if($lastSerial == 0){
+        $lastcodenextSerial=$lastSerial+1;
+        
+     }else{
+        $lastcodenextSerial=$lastSerial;
+        
+     }
       
-    //   $newcodenextSerial=$lastSerial+1;
+      $newcodenextSerial=$lastSerial+1;
 
-    //   $digit = strlen($lastcodenextSerial); 
-
-    //   if($digit==2){
-    //      $lastcodeserialno = "0".$lastcodenextSerial;
-    //      $newcodeserialno = "0".$newcodenextSerial;
-    //   }
-    //    elseif($digit==1){
-    //      $lastcodeserialno = "00".$lastcodenextSerial;
-    //      $newcodeserialno = "00".$newcodenextSerial;
-    //   }else{
-    //       $lastcodeserialno = $lastcodenextSerial;
-    //       $newcodeserialno = $newcodenextSerial;
-    //   }
+      $digit = strlen($lastcodenextSerial); 
+    
+      if($digit==3){
+         $lastcodeserialno = "0".$lastcodenextSerial;
+         $newcodeserialno = "0".$newcodenextSerial;
+      }
+       elseif($digit==2){
+         $lastcodeserialno = "00".$lastcodenextSerial;
+         $newcodeserialno = "00".$newcodenextSerial;
+      }elseif($digit==1){
+        $lastcodeserialno = "000".$lastcodenextSerial;
+        $newcodeserialno = "000".$newcodenextSerial;
+     }else{
+          $lastcodeserialno = $lastcodenextSerial;
+          $newcodeserialno = $newcodenextSerial;
+      }
 
       
 
-      $result['lastCode'] = $startcCode.'-'.$lastcodeserialno;
-      $result['newCode'] = $startcCode.'-'.$newcodeserialno;
+      $result['lastCode'] = $startcCode.'-'.$lastcodeserialno.date('y',strtotime(date('Y-m-d')));
+      $result['newCode'] = $startcCode.'-'.$newcodeserialno.date('y',strtotime(date('Y-m-d')));
     //   pre($result['lastCode']);
     //   pre($result['newCode']);
     //   exit;
@@ -141,8 +103,35 @@ public function getmemberdetails() {
 
  }
 
+ public function checkexistingcode(){
 
+    $session = $this->session->userdata('user_detail');
+      if($this->session->userdata('user_detail'))
+      {
+        $new_partymember_code = $this->input->post('new_partymember_code');
 
+        $where = array('member_code'=>$new_partymember_code);
+        $existing = $this->commondatamodel->getSingleRowByWhereCls('member_master',$where);
+
+         if(!empty($existing)){
+            $json_response = array(
+                "msg_status" => 1,
+               );
+         }else{
+            $json_response = array(
+                "msg_status" => 0,
+               );
+         }
+
+        header('Content-Type: application/json');
+        echo json_encode( $json_response );
+        exit;
+      }else
+      {
+          redirect('login','refresh');
+      }
+
+    }
  
 
   public function addparty_action(){

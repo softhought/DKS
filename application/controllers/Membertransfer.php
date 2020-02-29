@@ -48,31 +48,46 @@ public function getlastCode() {
 
         if ($LastserialData) {
             $lastSerial=intval($LastserialData->last_serial);
+            
          }else{
            $lastSerial=0;  
          }
-
+     
+          
      if($lastSerial == 0){
         $lastcodenextSerial=$lastSerial+1;
      }else{
         $lastcodenextSerial=$lastSerial;
      }
-      
+     //pre($lastcodenextSerial);exit;
       $newcodenextSerial=$lastSerial+1;
 
       $digit = strlen($lastcodenextSerial); 
+      $newdigit = strlen($newcodenextSerial); 
 
       if($digit==2){
          $lastcodeserialno = "0".$lastcodenextSerial;
-         $newcodeserialno = "0".$newcodenextSerial;
+         
       }
        elseif($digit==1){
          $lastcodeserialno = "00".$lastcodenextSerial;
-         $newcodeserialno = "00".$newcodenextSerial;
+         
       }else{
           $lastcodeserialno = $lastcodenextSerial;
-          $newcodeserialno = $newcodenextSerial;
+         
       }
+
+      if($newdigit==2){
+        
+        $newcodeserialno = "0".$newcodenextSerial;
+     }
+      elseif($digit==1){
+       
+        $newcodeserialno = "00".$newcodenextSerial;
+     }else{
+        
+         $newcodeserialno = $newcodenextSerial;
+     }
 
       
 

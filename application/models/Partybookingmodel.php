@@ -34,8 +34,8 @@ class Partybookingmodel extends CI_Model{
                 ->join('party_booking_master','member_master.member_code = party_booking_master.member_master_code','LEFT')
                 // ->where("status",'ACTIVE MEMBER')
                 // ->where("member_code  LIKE 'D%'")
-                // ->where("member_code  LIKE 'B%'")
-                ->where("CAST(SUBSTRING(member_code,1,2) AS UNSIGNED) > 0 ")
+                ->where("member_code  LIKE 'BQ%'")
+                ->where('SUBSTRING(member_code, 8) = YEAR(CURRENT_DATE()) % 100')
                 ->where("party_booking_master.`member_master_code` IS NULL");
         $query = $this->db->get();
         #echo $this->db->last_query();exit;
@@ -86,8 +86,8 @@ class Partybookingmodel extends CI_Model{
                 ->join('party_booking_master','member_master.member_code = party_booking_master.member_master_code','LEFT')
                 // ->where("status",'ACTIVE MEMBER')
                 // ->where("member_code  LIKE 'D%'")
-                // ->where("member_code  LIKE 'B%'")
-                ->where("CAST(SUBSTRING(member_code,1,2) AS UNSIGNED) > 0 ")
+                ->where("member_code  LIKE 'BQ%'")
+                ->where('SUBSTRING(member_code, 8) = YEAR(CURRENT_DATE()) % 100')
                 ->where("party_booking_master.`member_master_code` IS NULL")
                 ->or_where("party_booking_master.booking_id = '".$member_id."'");
         $query = $this->db->get();

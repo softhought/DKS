@@ -68,8 +68,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                                       </div>
-                                                      <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="booking_date" id="booking_date" value="
-                                                      <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['partybookingEditdata']->booking_date != ''){ echo date('d/m/Y',strtotime($bodycontent['partybookingEditdata']->booking_date)); }else{ echo date('d/m/Y'); } ?>">
+                                                      <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="booking_date" id="booking_date" value="<?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['partybookingEditdata']->booking_date != ''){ echo date('d/m/Y',strtotime($bodycontent['partybookingEditdata']->booking_date)); }else{ echo date('d/m/Y'); } ?>">
                                                   </div>
                                             </div>
                                       </div>
@@ -149,7 +148,7 @@
                                               <div class="col-md-5">                                                
                                                 <div class="form-group">
                                                     <div class="input-group input-group-sm">
-                                                      <textarea  class="form-control"  name="narration" id="narration" ><?php if($bodycontent['mode'] == 'EDIT'){  echo  $bodycontent['partybookingEditdata']->heads;  } ?></textarea>
+                                                      <textarea  class="form-control"  name="narration" id="narration" ><?php if($bodycontent['mode'] == 'EDIT'){  echo  $bodycontent['partybookingEditdata']->narration;  } ?></textarea>
                                                     </div>
                                                 </div>
                                              </div>

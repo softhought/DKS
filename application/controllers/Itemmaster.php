@@ -52,13 +52,17 @@ public function addedititems(){
 
           $result['itemsEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('item_master',$where);
           $result['openingbaldata'] = $this->commondatamodel->getSingleRowByWhereCls('item_opening_balance',$where2);
+        
            
+          
        }
 
        $result['itemcatlist'] = $this->commondatamodel->getAllRecordOrderBy('item_category_master','id','asc');
        $result['itemgroupcatlist'] = $this->commondatamodel->getAllRecordOrderBy('bar_item_group','item_name','asc');
        $result['unitmasterlist'] = $this->commondatamodel->getAllRecordOrderBy('unit_master','item_unit_name','asc');
        $result['foodcategorylist'] = $this->commondatamodel->getAllRecordOrderBy('item_food_categogry','cat_name','asc');
+       $result['itemsubgroupcatlist'] = $this->commondatamodel->getAllRecordOrderBy('bar_item_sub_group_master','item_sub_group','asc');
+       $result['liquervollist'] = $this->commondatamodel->getAllRecordOrderBy('bar_lequer_vol_master','lequer_vol','asc');
        $result['stocklist'] = array('Y','N');
        $result['manufacturetype'] = array('I','F');
        $wherecgst = array('gstType'=>'CGST');
@@ -106,6 +110,8 @@ public function addedit_action(){
           $sgst = trim(htmlspecialchars($dataArry['sgst']));
           $hsn_no = trim(htmlspecialchars($dataArry['hsn_no']));
           $mrp_rate = trim(htmlspecialchars($dataArry['mrp_rate']));
+        //   $item_sub_group_cat = trim(htmlspecialchars($dataArry['item_sub_group_cat']));
+        //   $liquer_vol = trim(htmlspecialchars($dataArry['liquer_vol']));
 
           $data = array(
                         'item_name'=>$item_name,
@@ -121,6 +127,8 @@ public function addedit_action(){
                         'hsn_no'=>$hsn_no,
                         'mrp_rate'=>$mrp_rate,
                         'cat_id'=>$item_food_cat,
+                        // 'bar_item_sub_groupid'=>$item_sub_group_cat,
+                        // 'lequer_vol_id'=>$liquer_vol,
                         'created_on'=>date('Y-m-d')
                        );
                 //pre($session);exit;       
@@ -135,6 +143,7 @@ public function addedit_action(){
                                        'year_id'=>$session['yearid'],
                                        'company_id'=>$session['companyid']
                                       ); 
+                                      
             $openingid = $this->commondatamodel->insertSingleTableData('item_opening_balance',$openingbal_data);
 
             $activity_module='data Insert';

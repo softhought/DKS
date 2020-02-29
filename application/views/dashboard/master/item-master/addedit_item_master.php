@@ -49,12 +49,13 @@
                                     <div class="input-group input-group-sm">                                
                                         <select class="form-control select2" id="item_cat" name="item_cat" style="width: 100%;">
                                             <option value='' selected="selected">Select</option>
-                                            <?php foreach ($bodycontent['itemcatlist'] as $itemcatlist) { ?>
+                                            <?php $itemgroup = '';
+                                            foreach ($bodycontent['itemcatlist'] as $itemcatlist) { ?>
 
                                                 <option value="<?php echo $itemcatlist->category_name; ?>"
 
                                                 <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['itemsEditdata']->item_category == $itemcatlist->category_name){
-                                                echo 'selected';
+                                                echo 'selected';$itemgroup = $itemcatlist->category_name;
                                                 } ?>
 
                                                 ><?php echo $itemcatlist->category_name; ?></option>
@@ -76,7 +77,8 @@
                                     <div class="input-group input-group-sm">                                
                                         <select class="form-control select2" id="item_group_cat" name="item_group_cat" style="width: 100%;">
                                             <option value='' selected="selected">Select</option>
-                                            <?php foreach ($bodycontent['itemgroupcatlist'] as $itemgroupcatlist) { ?>
+                                            <?php  
+                                            foreach ($bodycontent['itemgroupcatlist'] as $itemgroupcatlist) { ?>
 
                                                 <option value="<?php echo $itemgroupcatlist->bar_item_group_id; ?>"
 
@@ -143,6 +145,64 @@
                                 </div>
                              </div>
 
+                             <!-- <?php if($itemgroup == 'BAR'){
+
+                                 $subitembargroup = "display:block;";
+                             }else{
+                                $subitembargroup = "display:none;";
+
+                             } ?> -->
+
+                             <!-- <div class="row">
+                                <div class="col-md-4 barsubgroupitem" style=<?php echo $subitembargroup; ?>>
+                                    <label for="item_sub_group_cat">Item Sub Group Category</label>                                
+                                        <div class="form-group">
+                                        <div class="input-group input-group-sm">                                
+                                            <select class="form-control select2" id="item_sub_group_cat" name="item_sub_group_cat" style="width: 100%;">
+                                                <option value='' selected="selected">Select</option>
+                                                <?php foreach ($bodycontent['itemsubgroupcatlist'] as $itemsubgroupcatlist) { ?>
+
+                                                    <option value="<?php echo $itemsubgroupcatlist->id; ?>"
+
+                                                    <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['itemsEditdata']->bar_item_sub_groupid == $itemsubgroupcatlist->id){
+                                                    echo 'selected';
+                                                    } ?>
+
+                                                    ><?php echo $itemsubgroupcatlist->item_sub_group; ?></option>
+                                                
+                                                <?php   } ?>
+                                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                
+                                    </div>
+                                    <div class="col-md-4 barsubgroupitem" style=<?php echo $subitembargroup; ?>>
+                                    <label for="liquer_vol">Liquer Vol</label>                                
+                                        <div class="form-group">
+                                        <div class="input-group input-group-sm">                                
+                                            <select class="form-control select2" id="liquer_vol" name="liquer_vol" style="width: 100%;">
+                                                <option value='' selected="selected">Select</option>
+                                                <?php foreach ($bodycontent['liquervollist'] as $liquervollist) { ?>
+
+                                                    <option value="<?php echo $liquervollist->id; ?>"
+
+                                                    <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['itemsEditdata']->lequer_vol_id == $liquervollist->id){
+                                                    echo 'selected';
+                                                    } ?>
+
+                                                    ><?php echo $liquervollist->lequer_vol; ?></option>
+                                                
+                                                <?php   } ?>
+                                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                
+                                    </div>
+
+                             </div> -->
+
                              <div class="formblock-box">
                              <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i>Additional  Info</h3> 
                                     <div class="row">
@@ -150,7 +210,7 @@
                                                 <label for="opening_balance">Opening Balance</label>                                
                                                 <div class="form-group">
                                                     <div class="input-group input-group-sm">                               
-                                                        <input type="text" class="form-control numberwithdecimal" name="opening_bal" id="opening_bal" value =" <?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['openingbaldata']->opening_balance; } ?>" >
+                                                        <input type="text" class="form-control numberwithdecimal" name="opening_bal" id="opening_bal" value =" <?php if($bodycontent['mode'] == 'EDIT' && !empty($bodycontent['openingbaldata'])){ echo $bodycontent['openingbaldata']->opening_balance; } ?>" >
                                                     </div>
                                                 </div>
                                         

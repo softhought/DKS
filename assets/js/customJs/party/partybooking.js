@@ -214,7 +214,8 @@ function fullcalender() {
 
     var basepath = $("#basepath").val();
     var location = $("#location").val();
-
+    $("#calender").html('');
+    $("#loader").css("display", "block");
     $.ajax({
         type: "POST",
         url: basepath + 'calender/getbookingdata',
@@ -227,13 +228,13 @@ function fullcalender() {
             // $('#calendar').fullCalendar('removeEvents');
             // $('#calendar').fullCalendar('addEventSource', result);
             // $('#calendar').fullCalendar('rerenderEvents');
-
+            $("#loader").css("display", "none");
             $('#calender').fullCalendar({
                 displayEventTime: false,
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,listWeek'
+                    right: 'month,agendaWeek,listWeek'
                 },
                 defaultDate: new Date(),
                 navLinks: true, // can click day/week names to navigate views
