@@ -388,7 +388,7 @@
                           <div class="form-group">
                             <label for="firstname">CGST Amt</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="cgst_amt" name="cgst_amt" placeholder="" autocomplete="off"  readonly value="<?php if($bodycontent['mode'] == 'EDIT'){echo $bodycontent['transactionEditdata']->cgst_amt;}?>"  >
+                            <input type="text" class="form-control forminputs " id="cgst_amt" name="cgst_amt" placeholder="" autocomplete="off"  readonly value="<?php if($bodycontent['mode'] == 'EDIT'){echo $bodycontent['receiptEditdata']->cgst_amt;}?>"  >
                             </div>
 
                           </div>
@@ -408,7 +408,7 @@
                           <div class="form-group">
                             <label for="firstname">SGST Amt</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="sgst_amt" name="sgst_amt" placeholder="" autocomplete="off"  readonly value="<?php if($bodycontent['mode'] == 'EDIT'){echo $bodycontent['transactionEditdata']->sgst_amt;}?>">
+                            <input type="text" class="form-control forminputs " id="sgst_amt" name="sgst_amt" placeholder="" autocomplete="off"  readonly value="<?php if($bodycontent['mode'] == 'EDIT'){echo $bodycontent['receiptEditdata']->sgst_amt;}?>">
                             </div>
 
                           </div>

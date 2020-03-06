@@ -91,13 +91,12 @@ public function getSerialNumber($company,$year,$module){
 
 
 
-    public function getfacilityTransactionList($month,$account_id,$member_id)
+    public function getGymSwimmingBillingList($month,$account_id,$member_id)
     {
         $data = array();
 
-   
 
-        if($member_id=='All') {
+        if($member_id=='') {
             $where_member = [];
         }else{
             $where_member = array('gym_swimming_kot.member_id' => $member_id ); 
@@ -110,11 +109,22 @@ public function getSerialNumber($company,$year,$module){
         	$where_account = array('gym_swimming_kot.account_id' => $account_id); 
         }
 
+
+        if ($month=='') {
+        	$where_month=[];
+        }else{
+        	$where_month = array(
+        							'DATE_FORMAT(gym_swimming_kot.kot_date,"%Y-%m")' => $month
+        						 ); 
+        }
+
        
-                $this->db->select("gym_swimming_kot.*,member_master.member_name,member_master.member_code")
+                $this->db->select("gym_swimming_kot.*,member_master.member_name,member_master.member_code,account_master.account_name")
                 ->from('gym_swimming_kot')
                 ->join('member_master','member_master.member_id = gym_swimming_kot.member_id','INNER')
+                ->join('account_master','account_master.account_id = gym_swimming_kot.account_id','INNER')
                 ->where($where_member)
+                ->where($where_month)
                 ->where($where_account);
         $query = $this->db->get();
         #echo $this->db->last_query();

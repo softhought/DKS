@@ -115,7 +115,7 @@
                   </div>
                     
                              <div class="col-md-2">
-                             <label for="is_bank" >Is Bank</label>                                                                
+                             <label for="is_bank" >Is Cash/Bank</label>                                                                
                                   <div class="form-group" style="margin-left: 12px;margin-top: 6px;">
                                         <div class="input-group input-group-sm">                                           
                                            <input type="checkbox" class="rowCheck inputcheck" name="is_bank" id="is_bank"  <?php if($bodycontent['mode'] == 'EDIT' && $bodycontent['accountgroupEditdata']->is_bank == 'Y'){ echo 'checked'; } ?> value=" <?php if($bodycontent['mode'] == 'EDIT'  && $bodycontent['accountgroupEditdata']->is_bank == 'Y'){ echo 'Y'; }else{ echo 'N'; } ?>" >

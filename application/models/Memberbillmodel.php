@@ -449,6 +449,113 @@ public function getMinimumBillingAmount($member_id,$month_id,$year_id,$company_i
 
 
 
+public function getMemberBillMasterData($member_id,$category,$month,$year,$company)
+	{
+		$data = array();
+
+		if($member_id=='') {
+            $where_member = [];
+        }else{
+            $where_member = array('member_bill_master.member_id' => $member_id ); 
+        }
+
+        if($category=='') {
+            $where_category = [];
+        }else{
+            $where_category = array(
+
+            						'member_master.category' => $category
+     					    ); 
+        }
+
+        if($month=='') {
+            $where_month = [];
+        }else{
+            $where_month = array(
+            						'member_bill_master.bill_month' => $month
+     					        ); 
+        }
+
+
+		$where = array(
+						'member_bill_master.year_id' => $year,
+						'member_bill_master.company_id' => $company,
+					   );
+		$this->db->select("
+							member_bill_master.*,
+							member_master.title_one,
+							member_master.member_name,
+							member_master.member_code,
+							member_catogary_master.category_name,
+							month_master.month_name
+						")
+				->from('member_bill_master')
+				->join('member_master','member_master.member_id = member_bill_master.member_id','INNER')
+				->join('month_master','month_master.id = member_bill_master.bill_month','INNER')
+				->join('member_catogary_master','member_catogary_master.cat_id = member_master.category','INNER')
+				->where($where)
+				->where($where_member)
+				->where($where_month)
+				->where($where_category);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+        {
+            foreach ($query->result() as $rows)
+            {
+                $data[] = $rows;
+            }
+                return $data;
+             
+        }
+        else
+        {
+                return $data;
+        }
+
+
+	}
+
+
+public function getBillMasterDataByBillId($bill_id)
+	{
+		$data = array();
+
+		$where = array(
+						'member_bill_master.bill_id' => $bill_id
+					   );
+
+		$this->db->select("member_bill_master.*,
+							member_master.title_one,
+							member_master.member_name,
+							member_master.member_code,
+							member_catogary_master.category_name,
+							month_master.month_name,
+							month_master.short_name,
+							")
+				->from('member_bill_master')
+				->join('member_master','member_master.member_id = member_bill_master.member_id','INNER')
+				->join('month_master','month_master.id = member_bill_master.bill_month','INNER')
+				->join('member_catogary_master','member_catogary_master.cat_id = member_master.category','INNER')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+	}
 
 
 

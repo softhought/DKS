@@ -15,10 +15,25 @@ public function index()
     $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
-        $page = "dashboard/master/account-group/account_group_view";
+        $page = "dashboard/member_bill/member_bill_list.php";
         $header="";  
+        $company=$session['companyid'];
+        $year=$session['yearid'];
+      
+        $member_id='';
+        $month='4';
+        $category='';
+        $result['billList'] = $this->memberbillmodel->getMemberBillMasterData($member_id,$category,$month,$year,$company);
+        $orderby='display_serial';
+        $result['monthList'] = $this->commondatamodel->getAllRecordWhereOrderBy('month_master',[],$orderby);
+        $orderby_cat='category_name';
+        $result['catogaryList'] = $this->commondatamodel->getAllRecordWhereOrderBy('member_catogary_master',[],$orderby_cat);
 
-        $result['accountgrouplist'] = $this->commondatamodel->getAllRecordOrderBy('group_master','id','desc');
+        $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
+        $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+         
+       // pre($result['billList']);exit;
+
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');
@@ -182,6 +197,18 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
             $outgoing_cgst=0;
             $outgoing_sgst=0;
 
+
+            $delete_where = array(
+                              
+                                'member_bill_master.bill_month' => $month,
+                                'member_bill_master.year_id' => $year,
+                                'member_bill_master.company_id' => $company,
+                                'member_bill_master.member_id' => $member_id,
+                             );
+
+
+             $deleteData = $this->commondatamodel->deleteTableData('member_bill_master',$delete_where);
+
             $month_opening=$this->MemberMonthOpening($member_id,$month,$year,$company);
 
             $barData = $this->getBarAmountDetails($member_id,$yearmonth,$year);
@@ -266,15 +293,18 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
             $outgoing_cgst+=$memberReceiptData->cgst_total;
             $outgoing_sgst+=$memberReceiptData->sgst_total;
 
+          
+
             /* minimum belling */
             $minimum_billing_amt=0;
             $minimumBillingData = $this->minimumBillingAmount($member_id,$month,$year,$company);
             $minimum_billing_amt=$minimumBillingData->short_fall;
             $outgoing_cgst+=$minimumBillingData->cgst_amt;
             $outgoing_sgst+=$minimumBillingData->sgst_amt;
-            
 
-            $taxableAmount=($month_subs+$barData->taxable_total+$catData->taxable_total+$swimingData->taxable_total+$gymData->taxable_total+$locData->taxable_total+$hrdData->taxable_total+$guestData->taxable_total+$towelData->taxable_total+$benvolentData->taxable_total+$fixedHardCourtData->taxable_total+$cardplayData->taxable_total+$developmentData->taxable_total+$pujacontributionData->taxable_total+$correctionData->taxable_total+$memberReceiptData->taxable_total+$minimum_billing_amt);
+          
+
+            $taxableAmount=($month_opening+$month_subs+$barData->taxable_total+$catData->taxable_total+$swimingData->taxable_total+$gymData->taxable_total+$locData->taxable_total+$hrdData->taxable_total+$guestData->taxable_total+$towelData->taxable_total+$benvolentData->taxable_total+$fixedHardCourtData->taxable_total+$cardplayData->taxable_total+$developmentData->taxable_total+$pujacontributionData->taxable_total+$correctionData->taxable_total+$minimum_billing_amt);
 
             $gstTotal=($barData->cgst_total+$barData->sgst_total+$catData->cgst_total+$catData->sgst_total+$outgoing_cgst+$outgoing_sgst);
 
@@ -322,24 +352,24 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
 
             /* insert monthly opening */
 
-          
+         
         if ($month=='03') {
-            $month=(int)$month+1;
+            $nextmonth=(int)$month+1;
 
               $nxtyear_id = $this->memberbillmodel->checkNextYearExist($year)->year_id;
        
-            $this->insertMonthlyopening($member_id,$netAmount,$month,$nxtyear_id,$company);
+            $this->insertMonthlyopening($member_id,$netAmount,$nextmonth,$nxtyear_id,$company);
 
         }else{
 
             if ($month=='12') {
-                $month=1;
+                $nextmonth=1;
             }else{
-                $month=(int)$month+1; 
+                $nextmonth=(int)$month+1; 
             }
 
 
-            $this->insertMonthlyopening($member_id,$netAmount,$month,$year,$company);
+            $this->insertMonthlyopening($member_id,$netAmount,$nextmonth,$year,$company);
         }
 
       
@@ -622,11 +652,69 @@ function insertMonthlyopening($member_id,$opening_balance,$month_id,$year_id,$co
 
    $insert = $this->commondatamodel->insertSingleTableData('member_monthly_opening',$insert_array);
 
-
-
-
-
 }
+
+
+
+public function getBillingdataByMonth(){
+
+    $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {
+
+            $company=$session['companyid'];
+            $year=$session['yearid'];
+            $sel_member = $this->input->post('sel_member');
+            $category = $this->input->post('category');
+            $month = $this->input->post('month');
+
+       
+        $result['billList'] = $this->memberbillmodel->getMemberBillMasterData($sel_member,$category,$month,$year,$company);
+      
+
+         $page = "dashboard/member_bill/member_bill_list_partial_view.php"; 
+
+          $this->load->view($page,$result);
+
+          
+
+        }else{
+            redirect('login','refresh');
+        } 
+
+    }
+
+
+public function getbillDetailsModelData()
+  {
+      if($this->session->userdata('user_detail'))
+      {
+        
+
+     $bill_id = $this->input->post('bill_id');
+
+
+          $where = array('bill_id' => $bill_id);
+
+         $data['billData'] = $this->memberbillmodel->getBillMasterDataByBillId($bill_id);
+
+        //pre($data['billData']);exit;
+
+
+
+         $page = 'dashboard/member_bill/member_bill_details_model_view.php';
+           
+            $viewTemp = $this->load->view($page,$data,TRUE);
+            echo $viewTemp;
+       
+
+
+      }
+      else
+      {
+          redirect('login','refresh');
+      }
+  }
 
 
 

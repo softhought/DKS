@@ -125,7 +125,8 @@ public function getCorrectionAmount($member_id,$startyearmonth,$endyearmonth,$ye
         $where = array(
                         'member_correction_transaction.member_id' => $member_id,
                         'member_correction_transaction.year_id' => $year_id,
-                        'member_correction_transaction.company_id' => $company_id
+                        'member_correction_transaction.company_id' => $company_id,
+                        'member_correction_description_master.is_min_billing' => 'Y'
                       );
         $this->db->select("
                             IFNULL(SUM(member_correction_transaction.taxable),0) AS taxable_total,
@@ -155,6 +156,51 @@ public function getCorrectionAmount($member_id,$startyearmonth,$endyearmonth,$ye
 
 
 }
+
+
+public function getMemberGymSwimmingKotConsumption($member_id,$startyearmonth,$endyearmonth)
+{
+        $data = array();
+        $where = array(
+                        'gym_swimming_kot.member_id' => $member_id,
+                      );
+        $this->db->select("
+                           IFNULL(SUM(gym_swimming_kot.kot_amount),0) AS tot_kot_amount
+                         ")
+                ->from('gym_swimming_kot')
+                ->where($where)
+                ->where('DATE_FORMAT(`gym_swimming_kot`.`kot_date`,"%Y-%m") >= ', $startyearmonth)
+                ->where('DATE_FORMAT(`gym_swimming_kot`.`kot_date`,"%Y-%m") <= ', $endyearmonth)
+                ->limit(1);
+        $query = $this->db->get();
+        
+        #echo "<br>".$this->db->last_query();
+        
+        if($query->num_rows()> 0)
+        {
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+        else
+        {
+            return $data;
+        }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

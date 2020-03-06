@@ -12,7 +12,7 @@ class Gymswimmingbill extends CI_Controller {
        
     }
 
-public function facilitylist()
+public function index()
 {
     $session = $this->session->userdata('user_detail');
     if($this->session->userdata('user_detail'))
@@ -22,26 +22,30 @@ public function facilitylist()
         $year=$session['yearid'];
         $page = "dashboard/gym_swimming_minbilling/gym_swimming_minbilling_list";
         $header=""; 
-        $result['entry_module'] = $this->uri->segment(3);
-
-         $result['parameterData'] = $this->memberfacilitymodel->getFacilityDataByEntryModule($result['entry_module']);
-         $parameter_mst_id=$result['parameterData']->parameter_id;
-
-         $where = array('year_id' => $year);
-
-         $result['accountingyear'] = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where);
-
-         $from_dt=$result['accountingyear']->start_date;
-         $to_dt=$result['accountingyear']->end_date;
-    
+      
         $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
         $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
          
-       //  $entry_module='All';
-         $member_id='All';
+  
 
-        $result['facilityTranList'] = $this->memberfacilitymodel->getfacilityTransactionList($from_dt,$to_dt,$parameter_mst_id, $member_id);
-       // pre($result['facilityTranList']); exit;      
+        $member_id='';
+        $month='';
+        $account_id='';
+        $result['kotList'] = $this->gymswimming->getGymSwimmingBillingList($month,$account_id,$member_id);
+
+
+        $orderby='display_serial';
+        $result['monthList'] = $this->commondatamodel->getAllRecordWhereOrderBy('month_master',[],$orderby);
+
+        $where_ac = array(
+                            'account_master.is_active' => 'Y', 
+                            'account_master.is_gym_swim_minbill' => 'Y', 
+                         );
+
+        $result['accountList'] = $this->commondatamodel->getAllRecordWhere('account_master',$where_ac);
+
+
+        //pre($result['kotList']); exit;      
                     
         createbody_method($result, $page, $header, $session);
     }else{
@@ -161,7 +165,7 @@ public function minimumeBillAction() {
 
                /* Delete data */
               $where_delete = array(
-                                    'gym_swimming_kot.accoint_id' => $account,
+                                    'gym_swimming_kot.account_id' => $account,
                                     'gym_swimming_kot.kot_status' => $kot_status,
                                     'gym_swimming_kot.receipt_month' => $month,
                                     'gym_swimming_kot.year_id' => $year,
@@ -192,12 +196,24 @@ public function minimumeBillAction() {
                             $selectMonth=$selectMonth+1;    
                         }
 
+
+                        if ($selectMonth==1 || $selectMonth==2 || $selectMonth==3) {
+                             if($selectMonth<10){$selectMonth="0".$selectMonth;}
+                             $firstdateselmon=$years[2]."-".$selectMonth."-01";
+                          }else{
+                            if($selectMonth<10){$selectMonth="0".$selectMonth;}
+                            $firstdateselmon=$years[0]."-".$selectMonth."-01";
+
+                          }
+
+
+
                         /* insert data */
                            $kot_no = $this->gymswimming->getSerialNumber($company,$year,$module);
                                      $gym_swimming_kot = array( 
                                           'member_id' => $member_id,
                                           'kot_no' => $kot_no,
-                                          'kot_date' => $firstdate,
+                                          'kot_date' => $firstdateselmon,
                                           'kot_amount' => $adm_fees,
                                           'account_id' => $account,
                                           'kot_status' => $kot_status,
@@ -294,12 +310,39 @@ public function getMonthDifferance($month){
 
     return $getDifferance;
 
+}
 
 
+public function gymswimmingbillFilter(){
 
-    
+    $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {
+
+            $month = $this->input->post('month');
+             if($month !='' && $month<10){$month="0".$month;}
+            $member_id = $this->input->post('sel_member');
+            $account_id = $this->input->post('account');
+
+        $result['kotList'] = $this->gymswimming->getGymSwimmingBillingList($month,$account_id,$member_id);
+
+       
+
+        $page = "dashboard/gym_swimming_minbilling/gym_swimming_minbilling_partial_view.php"; 
+
+        $this->load->view($page,$result);
+
+        }else{
+            redirect('login','refresh');
+        } 
 
 }
+
+
+
+
+
+
 
 
 }  // end of class 

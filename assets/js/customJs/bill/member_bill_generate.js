@@ -2,7 +2,9 @@ $(document).ready(function(){
 
 var basepath =$("#basepath").val();
 
-
+var total_amt = $("#total_amt").val();
+ $("#total_amount_value").html(total_amt);
+ 
 
 $('#category').on('change',function(e){
         e.preventDefault();
@@ -106,6 +108,120 @@ $(document).on('click', "#billgeneratebtn", function(e) {
 
       
     });
+
+
+    $(document).on('click', "#memberbillshowbtn", function(e) {
+        e.preventDefault();
+
+
+        var category = $("#category").val();
+        var sel_member = $("#sel_member").val();
+        var month = $("#month").val();
+
+        if (1) {
+            $('#memberbill_list_data').html('');
+            $("#loader").show();
+
+            $.ajax({
+                type: "POST",
+                url: basepath + 'memberbillgenerate/getBillingdataByMonth',
+                dataType: "html",
+                data: {sel_member: sel_member, category: category, month: month },
+
+                success: function(result) {
+                    $("#loader").hide();
+                    $("#memberbill_list_data").html(result);
+                    $('.dataTable2').DataTable();
+                    var total_amt = $("#total_amt").val();
+                    $("#total_amount_value").html(total_amt);
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    // alert(msg);  
+                }
+            }); /*end ajax call*/
+
+        }
+
+    });
+
+
+    $(document).on('click','#bill_dtl_btn',function(e){
+    e.preventDefault();
+   
+         var bill_id=$(this).data("billid");
+
+    if(1)
+    {
+
+   console.log(bill_id);
+      
+       $("#bill_details_data").html('');
+          
+        $.ajax({
+            type: "POST",
+            url: basepath+'memberbillgenerate/getbillDetailsModelData',
+            dataType: "html",
+            data: {bill_id:bill_id},
+            success: function (result) {
+         
+              $("#billModalDetails").modal({backdrop: false});
+              
+             $("#bill_details_data").html(result);
+
+            // $('.select2').select2();
+               var selectedCode = $("#sel_student_code").find('option:selected');
+                console.log(selectedCode);
+               $("#studentname").val(selectedCode.data('name'));
+         
+            }, 
+            error: function (jqXHR, exception) {
+              var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+               // alert(msg);  
+            }
+            }); /*end ajax call*/
+
+    }
+
+
+
+    });
+
+
+
+
+
+
 
 
 
@@ -219,17 +335,11 @@ function checkMonthProcess(){
 	    },
 	    	async:false
 	  });
-
-
-
-	   
+  
 
  }
 
-
-
  return status;
-
 
 
 }

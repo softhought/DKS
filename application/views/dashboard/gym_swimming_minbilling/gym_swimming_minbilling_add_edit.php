@@ -7,8 +7,8 @@
             <div class="card-header box-shdw">
               <h3 class="card-title">Gym,Swimming and Minimum Billing</h3>
                <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
-                  <!-- <a href="<?php echo base_url(); ?>billgeneratetennis/generatelistbill" class="btn btn-default btnpos">
-                   <i class="fas fa-clipboard-list"></i> List </a> -->
+                  <a href="<?php echo base_url(); ?>gymswimmingbill" class="btn btn-default btnpos">
+                   <i class="fas fa-clipboard-list"></i> List </a> 
             </div>
             <!--  <a href="<?php echo base_url(); ?>intratournament" class="">
               <button class="btn btn-info btnpos">List</button></a>  -->
@@ -132,6 +132,7 @@
                <div class="col-md-3">
                <p id="response_msg" style="font-weight: bold;color:#7d6060;"></p>
                </div>
+                 <div class="col-md-2"></div>
                  <div class="col-md-5 colmargin">
                     <p id="errormsg" class="errormsgcolor"></p>
                  </div>

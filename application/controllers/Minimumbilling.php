@@ -14,7 +14,7 @@ public function index()
 {
     $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
-	{  
+	{  exit;
         $page = "dashboard/master/account-group/account_group_view";
         $header="";  
 
@@ -171,8 +171,11 @@ public function minimumeBillAction() {
 
          $quarterlyConsumption = $this->minimumbillingmodel->getMemberQuarterlyConsumption($member_id,$Yearmonth[$month]['first'],$Yearmonth[$month]['third']);
 
+         $gymSwimmingConsumption = $this->minimumbillingmodel->getMemberGymSwimmingKotConsumption($member_id,$Yearmonth[$month]['first'],$Yearmonth[$month]['third']);
+
+
          
-         $total_consumption=($quarterlyConsumption->tot_bar_amount+$quarterlyConsumption->tot_cat_amount+$quarterlyConsumption->tot_swimming+$quarterlyConsumption->tot_gym+$quarterlyConsumption->tot_locker_charge+$quarterlyConsumption->tot_hard_court_extra+$quarterlyConsumption->tot_guest_charge+$quarterlyConsumption->tot_towel_charge+$quarterlyConsumption->tot_ben_fund+$quarterlyConsumption->tot_fixed_hard+$quarterlyConsumption->tot_card_play+$quarterlyConsumption->tot_development_charge+$quarterlyConsumption->tot_puja_contribution+$quarterlyConsumption->tot_puja_contribution)+$correction;
+         $total_consumption=($quarterlyConsumption->tot_bar_amount+$quarterlyConsumption->tot_cat_amount+$quarterlyConsumption->tot_swimming+$quarterlyConsumption->tot_gym+$quarterlyConsumption->tot_locker_charge+$quarterlyConsumption->tot_hard_court_extra+$quarterlyConsumption->tot_guest_charge+$quarterlyConsumption->tot_towel_charge+$quarterlyConsumption->tot_ben_fund+$quarterlyConsumption->tot_fixed_hard+$quarterlyConsumption->tot_card_play+$quarterlyConsumption->tot_development_charge+$quarterlyConsumption->tot_puja_contribution+$quarterlyConsumption->tot_puja_contribution)+$correction+$gymSwimmingConsumption->tot_kot_amount;
 
 
 
