@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PartyBill_subreport" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="721057db-3beb-4e85-a6c7-94ccc4180600">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="memberid" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT `party_bill_details`.*, `item_master`.`item_name`, CAST(`cgst`.`rate` AS INTEGER) AS `cgst_rate`,
+  CAST(`sgst`.`rate` AS INTEGER) AS `sgst_rate`,CAST(`cgst`.`rate` AS INTEGER) + CAST(`sgst`.`rate` AS INTEGER) AS gstrate,
+  party_bill_details.`cgst_amt` + party_bill_details.`sgst_amt` AS gstamt  FROM `party_bill_details` INNER JOIN `item_master` ON `item_master`.`item_id` = `party_bill_details`.`item_id` LEFT JOIN `gstmaster` as `cgst` ON `cgst`.`id`=`party_bill_details`.`cgst_rate_id` LEFT JOIN `gstmaster` as `sgst` ON `sgst`.`id`=`party_bill_details`.`sgst_rate_id` WHERE `bill_mst_id` = $P{memberid} order by party_bill_details.category]]>
+	</queryString>
+	<field name="bill_dtl_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bill_mst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="category" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hsn_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="quantity" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rate" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mrp" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="taxable" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cgst_rate_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sgst_rate_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cgst_rate" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sgst_rate" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gstrate" class="java.lang.Long"/>
+	<field name="gstamt" class="java.math.BigDecimal"/>
+	<variable name="totalvalue" class="java.math.BigDecimal" resetType="Group" resetGroup="Partycat" incrementType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxable}]]></variableExpression>
+	</variable>
+	<variable name="totalgstAmt" class="java.math.BigDecimal" resetType="Group" resetGroup="Partycat" calculation="Sum">
+		<variableExpression><![CDATA[$F{gstamt}]]></variableExpression>
+	</variable>
+	<variable name="totalcgstamt" class="java.math.BigDecimal" resetType="Group" resetGroup="Partycat" calculation="Sum">
+		<variableExpression><![CDATA[$F{cgst_amt}]]></variableExpression>
+	</variable>
+	<variable name="totalsgst" class="java.math.BigDecimal" resetType="Group" resetGroup="Partycat" calculation="Sum">
+		<variableExpression><![CDATA[$F{sgst_amt}]]></variableExpression>
+	</variable>
+	<variable name="amounttotal" class="java.math.BigDecimal" resetType="Group" resetGroup="Partycat" calculation="Sum">
+		<variableExpression><![CDATA[$F{net_amount}]]></variableExpression>
+	</variable>
+	<group name="Partycat">
+		<groupExpression><![CDATA[$F{category}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="1" y="0" width="100" height="15" uuid="449cc26a-b969-4a4d-b792-10cf659ee5ce"/>
+					<textElement textAlignment="Left">
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="32">
+				<line>
+					<reportElement x="88" y="26" width="467" height="1" uuid="3b25d97a-6972-4b5e-ad78-d1cd83b4840a"/>
+				</line>
+				<line>
+					<reportElement x="88" y="3" width="467" height="1" uuid="5ab10ddd-354d-4b5c-908a-2580042e760f"/>
+				</line>
+				<textField>
+					<reportElement x="200" y="3" width="36" height="20" uuid="2bf3fac4-3f0d-4af6-8ac3-9720b4a5f4d1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalvalue}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="272" y="4" width="49" height="20" uuid="e31cf65a-b455-4bd9-b9d5-e307b5b2ee04"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalgstAmt}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="357" y="6" width="57" height="20" uuid="9e19046b-09f0-4417-96ba-6fca152c145e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalcgstamt}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="454" y="3" width="60" height="20" uuid="84786736-35de-44ec-9654-784356bb1535"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalsgst}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="514" y="4" width="41" height="20" uuid="f3ac6076-faa9-4a3c-ae58-1cac35d058cb"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{amounttotal}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="31" splitType="Stretch">
+			<line>
+				<reportElement x="1" y="-2" width="552" height="1" uuid="a48be228-c941-4bbd-aed1-3f68d60060f4"/>
+			</line>
+			<line>
+				<reportElement x="3" y="25" width="552" height="1" uuid="a7352089-557b-46ee-b7c2-641963168eea"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="-1" width="85" height="24" uuid="e5135c31-c7f3-4ead-b839-9b4b5c9636da"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="0" width="45" height="25" uuid="2b893d14-a398-4ea4-83e6-a4f77dafa21a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[HSN No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="0" width="27" height="25" uuid="2ec9642c-3c17-4aa7-b590-8402955241fe"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="167" y="0" width="31" height="25" uuid="238d95c1-76b6-4205-b3aa-4efa4a58869a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="201" y="0" width="33" height="25" uuid="9747acb9-e469-4f8e-b829-aa59b9d19c31"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Value]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="0" width="25" height="25" uuid="088e6c5a-0630-4182-be0b-b5ad1e395b0c"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[GST%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="262" y="0" width="53" height="25" uuid="45cd38e6-e459-45c7-92ee-191704a184e8"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[GST Amt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="0" width="37" height="24" uuid="074a0be8-dea2-4c9f-920b-5405e39b7c69"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CGST%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="0" width="54" height="25" uuid="1f5c43cb-16f4-4cf8-b2a4-17aa6ef9b791"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CGST Amt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="0" width="38" height="24" uuid="a974ab29-f414-49d5-8d8d-c8392bfb5eff"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SGST%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="456" y="0" width="52" height="25" uuid="c2159d13-e1dd-4d86-9808-fe9651b7e273"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SGST Amt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="511" y="0" width="42" height="23" uuid="1da2b1ec-98cf-48b8-8ccd-1f3f97b89d90"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="33">
+			<textField>
+				<reportElement x="0" y="4" width="88" height="20" uuid="d2fc85b7-d5f9-46f3-a91e-706d8e9cd248"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="88" y="4" width="48" height="20" uuid="8b0b2269-475c-456f-be2c-988a4970a28b"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hsn_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="4" width="30" height="20" uuid="a16d5eab-88b6-4d74-b047-17b8c94e2bea"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="166" y="4" width="36" height="20" uuid="f094d7b1-9f10-409c-a671-1b6b3f4375f5"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="321" y="4" width="36" height="20" uuid="dc6f320c-3881-4f9b-8086-140b58ab7490"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cgst_rate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="357" y="4" width="57" height="20" uuid="7ef3e9e6-36c9-4d1d-a445-c9b0d64eb445"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="414" y="4" width="40" height="20" uuid="c13d206f-1de3-41a9-bea7-fb872cdc6ffb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sgst_rate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="4" width="59" height="20" uuid="a8268dc7-0ce1-45de-9091-3494f4824804"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="4" width="35" height="20" uuid="944eb65e-d43e-4dd1-8c1f-0414ab23ab4b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="4" width="25" height="20" uuid="5dd2c071-3f29-4fe9-a9f0-2928d161fb0c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gstrate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="4" width="59" height="20" uuid="41b85ed7-b5fb-4a35-87cc-8e70eadc7c5b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gstamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="514" y="4" width="39" height="20" uuid="c9fc41d6-b808-479c-a1ba-bc57dfb6fbeb"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{net_amount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

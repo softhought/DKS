@@ -7,7 +7,8 @@ class partybill extends CI_Controller {
         $this->load->library('session');
         $this->load->model('memberreceiptmodel','memberreceiptmodel',TRUE);
         $this->load->model('Paymenttennismodel','payment_tennis_model',TRUE);    
-        $this->load->model('partybillmodel','partybillmodel',TRUE);    
+        $this->load->model('partybillmodel','partybillmodel',TRUE);  
+        $this->load->model('companymodel', '', TRUE);   
      
       
     }
@@ -657,6 +658,56 @@ public function partybill_action(){
             redirect('login','refresh');
         } 
 
+    }
+
+    public function billprintJasper()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {      
+            $file= APPPATH."views/dashboard/party_bill/JasperReports/PartyBill.jrxml";
+            $subreportfile= APPPATH."views/dashboard/party_bill/JasperReports/";
+           
+            $this->load->library('jasperphp');
+            $jasperphp = $this->jasperphp->jasper();
+
+            $dbdriver="mysql";
+            // $server="localhost";
+            // $db="teasamrat";
+            // $user="root";
+            // $pass="";
+            
+            $this->load->database();
+            $server=$this->db->hostname;
+            $user=$this->db->username;
+            $pass=$this->db->password;
+            $db=$this->db->database;
+           
+            $companyId = $session['companyid'];
+         
+            $memberid = $this->uri->segment(3);  
+           
+             $company=  $this->companymodel->getCompanyNameById($companyId);
+             $companylocation=  $this->companymodel->getCompanyAddressById($companyId);             
+            // pre($memberid);
+            // pre($company);
+            // pre($companylocation);exit;
+            $printDate=date("d-m-Y");            
+             //$jasperphp->debugsql=true;
+            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'memberid'=>"'".$memberid."'",'SUBREPORT_DIR'=>$subreportfile);
+            
+            $jasperphp->load_xml_file($file); 
+            $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+            $jasperphp->outpage('I','Bill Details-'.date('d_m_Y-His'));  
+            // pre($jasperphp);     
+    
+
+            // $page = 'trial_balance/trailWithJasper.php';
+            // $this->load->view($page, $result, TRUE);
+
+        } else {
+            redirect('login', 'refresh');
+        }
     }
 
 

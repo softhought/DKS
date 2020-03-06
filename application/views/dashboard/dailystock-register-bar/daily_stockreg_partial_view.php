@@ -2,15 +2,14 @@
                 <thead>
                     <tr>
                     <th>Sl.No</th>
-                    <th>Transation Date</th>
-                    <th>Transation No.</th>
-                    <th>Brand Name</th>                   
-                    <th>Liquer Vol</th>                   
-                    <th>Qty</th>  
-                    <?php if($selmode == 'PURCHASE'){  ?>
-                        <th>Pass No</th>                   
-                        <th>Batch No</th>
-                   <?php  } ?>                 
+                    <th>Brand Name</th>
+                    <th>OP. Bal</th>
+                    <th>Purchase</th>
+                    <th>Total</th>                   
+                    <th>Sale(Issue)</th>                   
+                    <th>Closing Stock</th>  
+                    <th>Conv. LTR</th>  
+                                 
                                      
                                                      
                     </tr>
@@ -18,18 +17,17 @@
                 <tbody>
 
                 <?php $i=1;
-                foreach ($allpurchasesalereport as $allpurchasesalereport) { ?>
+                foreach ($stockregisterlist as $stockregisterlist) { ?>
                    <tr>
                    <td><?php echo $i++; ?></td>
-                   <td><?php echo date('d/m/Y',strtotime($allpurchasesalereport->tran_date)); ?></td>
-                   <td><?php echo $allpurchasesalereport->tran_no; ?></td>                 
-                   <td><?php echo $allpurchasesalereport->item_name; ?></td>
-                   <td><?php echo $allpurchasesalereport->lequer_vol; ?></td>
-                   <td><?php echo $allpurchasesalereport->quantity; ?></td>
-                   <?php if($selmode == 'PURCHASE'){  ?>
-                   <td><?php echo $allpurchasesalereport->pass_no; ?></td>
-                   <td><?php echo $allpurchasesalereport->batch_no; ?></td>
-                   <?php } ?>
+                   <td><?php echo $stockregisterlist->ItemName; ?></td>
+                   <td><?php echo $stockregisterlist->Opbot; ?></td>                 
+                   <td><?php echo $stockregisterlist->totalPurchase; ?></td>
+                   <td><?php echo $stockregisterlist->total; ?></td>
+                   <td><?php echo $stockregisterlist->totalSale; ?></td>
+                   <td><?php echo $stockregisterlist->closingstock; ?></td>
+                   <td><?php echo ($stockregisterlist->closingstock * $stockregisterlist->lequervol)/1000; ?></td>
+                  
                                      
                   
 

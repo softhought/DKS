@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PartyBill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="067ece21-ae91-42ed-938c-a1017e2370b8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="313"/>
+	<parameter name="CompanyName" class="java.lang.String"/>
+	<parameter name="CompanyAddress" class="java.lang.String"/>
+	<parameter name="memberid" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\xampp\\htdocs\\DKS\\application\\views\\dashboard\\party_bill\\JasperReports\\New folder\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  party_bill_master.*,
+  member_master.`member_code`,
+ `member_master`.`member_name`,
+  SUM(bartaxable) AS bartaxable,
+  SUM(cattaxable) AS cattaxable,
+  SUM(barcgstamt) AS barcgstamt,
+  SUM(catcgstamt) AS catcgstamt,
+  SUM(barsgstamt) AS barsgstamt,
+  SUM(catsgstamt) AS catsgstamt,
+  SUM(barnetamount) AS barnetamount,
+  SUM(catnetamount) AS catnetamount,
+  member_receipt.`total_amount`,  DATE_FORMAT(party_bill_master.`party_date`,'%d/%m/%Y') AS partydt
+FROM
+  (SELECT
+    `pbd1`.`bill_mst_id`,
+    pbd1.`taxable` AS bartaxable,
+    0 AS cattaxable,
+    pbd1.`cgst_amt` AS barcgstamt,
+    0 AS catcgstamt,
+    pbd1.`sgst_amt` AS barsgstamt,
+    0 AS catsgstamt,
+     pbd1.`net_amount` AS barnetamount,
+    0 AS catnetamount
+  FROM
+    `party_bill_details` AS pbd1
+  WHERE pbd1.`category` = 'BAR'
+    AND pbd1.`bill_mst_id` = $P{memberid}
+  UNION
+  ALL
+  SELECT
+    pbd2.`bill_mst_id`,
+    0,pbd2.`taxable`,
+    0,pbd2.`cgst_amt`,
+    0,pbd2.`sgst_amt`,
+    0,pbd2.`net_amount`
+  FROM
+    `party_bill_details` AS pbd2
+  WHERE pbd2.`category` = 'CAT'
+    AND pbd2.bill_mst_id = $P{memberid}) t1
+  INNER JOIN `party_bill_master`
+    ON t1.bill_mst_id = party_bill_master.`id`
+  INNER JOIN `member_master`
+    ON party_bill_master.`member_id` = `member_master`.`member_id`
+  INNER JOIN `member_receipt`
+  ON  party_bill_master.`member_id` = `member_receipt`.`member_id`]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="party_bill_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="party_bill_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="party_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cat_kot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bar_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hall_chaeges" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cat_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bar_kot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hall_cgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hall_sgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hall_cgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hall_sgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hall_net_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_head" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_rate" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_cgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_sgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_cgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_sgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_net_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deco_chages" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="electric_charges" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="other_charges" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="final_total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dr_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kot_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bot_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hall_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deco_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="electric_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="other_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="voucher_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="company_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bartaxable" class="java.math.BigDecimal"/>
+	<field name="cattaxable" class="java.math.BigDecimal"/>
+	<field name="barcgstamt" class="java.math.BigDecimal"/>
+	<field name="catcgstamt" class="java.math.BigDecimal"/>
+	<field name="barsgstamt" class="java.math.BigDecimal"/>
+	<field name="catsgstamt" class="java.math.BigDecimal"/>
+	<field name="barnetamount" class="java.math.BigDecimal"/>
+	<field name="catnetamount" class="java.math.BigDecimal"/>
+	<field name="total_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="partydt" class="java.lang.String"/>
+	<variable name="GstRate" class="java.lang.Integer">
+		<variableExpression><![CDATA[(($F{hall_cgst_amt}*100)/$F{hall_chaeges})+(($F{hall_sgst_amt}*100)/$F{hall_chaeges})]]></variableExpression>
+	</variable>
+	<variable name="GstAmt" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{hall_cgst_amt}+$F{hall_sgst_amt}]]></variableExpression>
+	</variable>
+	<variable name="TotalAmt" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{hall_chaeges}+$F{hall_cgst_amt}+$F{hall_sgst_amt}]]></variableExpression>
+	</variable>
+	<variable name="cgstrate" class="java.lang.Integer">
+		<variableExpression><![CDATA[($F{hall_cgst_amt}*100)/$F{hall_chaeges}]]></variableExpression>
+	</variable>
+	<variable name="sgstrate" class="java.lang.Integer">
+		<variableExpression><![CDATA[($F{hall_sgst_amt}*100)/$F{hall_chaeges}]]></variableExpression>
+	</variable>
+	<variable name="catgstamt" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{catcgstamt}+$F{catsgstamt}]]></variableExpression>
+	</variable>
+	<variable name="bargstamt" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{barcgstamt}+$F{barsgstamt}]]></variableExpression>
+	</variable>
+	<variable name="gustchargesgstamt" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{guest_cgst_amt}+$F{guest_sgst_amt}]]></variableExpression>
+	</variable>
+	<variable name="gustchargesgst" class="java.lang.Integer">
+		<variableExpression><![CDATA[(($F{guest_cgst_amt}*100)/$F{guest_amt})+(($F{guest_sgst_amt}*100)/$F{guest_amt})]]></variableExpression>
+	</variable>
+	<variable name="guestchargescgstrate" class="java.lang.Integer">
+		<variableExpression><![CDATA[($F{guest_cgst_amt}*100)/$F{guest_amt}]]></variableExpression>
+	</variable>
+	<variable name="guestchargessgstrate" class="java.lang.Integer">
+		<variableExpression><![CDATA[(($F{guest_sgst_amt}*100)/$F{guest_amt})]]></variableExpression>
+	</variable>
+	<variable name="totalgrossamt" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{hall_net_amt}+$F{guest_net_amt}+$F{deco_chages}+$F{electric_charges}+$F{other_charges}+$F{catnetamount}+$F{barnetamount}]]></variableExpression>
+	</variable>
+	<variable name="totalnetpay" class="java.lang.String">
+		<variableExpression><![CDATA[($F{hall_net_amt}+$F{guest_net_amt}+$F{deco_chages}+$F{electric_charges}+$F{other_charges}+$F{catnetamount}+$F{barnetamount})-$F{total_amount}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="142" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="229" y="5" width="47" height="22" forecolor="#FFFFFF" backcolor="#000000" uuid="294b04ef-dd15-4f32-949f-0f535712be20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font size="14"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[BILL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="32" width="249" height="26" uuid="a47cbca0-257f-4dd2-8590-3b479800fcd4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="111" width="250" height="20" uuid="eebf0003-6c19-4d26-9b7b-09398979e0fc"/>
+				<text><![CDATA[GSTIN No : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="31" width="101" height="20" uuid="bc5d9eb0-2187-48b3-bed7-d3992b815d95"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Party Code : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="377" y="72" width="100" height="20" uuid="07bbe9ab-66bd-4308-bdc1-482da6686ad1"/>
+				<textFieldExpression><![CDATA[$F{party_bill_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="377" y="32" width="100" height="20" uuid="3d029686-6a87-4e41-8c59-2848bea3cd42"/>
+				<textFieldExpression><![CDATA[$F{member_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="377" y="91" width="100" height="20" uuid="078207b9-e031-43b8-883a-45a327dcf625"/>
+				<textFieldExpression><![CDATA[$F{partydt}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="31" width="555" height="1" uuid="72bbf5c4-e0ac-4376-adb4-7d9b41f06564"/>
+			</line>
+			<staticText>
+				<reportElement x="276" y="51" width="101" height="20" uuid="c9935655-fea9-4bed-a3a1-6b85ded7edd7"/>
+				<text><![CDATA[Member Name : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="111" width="101" height="20" uuid="acb0a5ea-86bb-4a81-9d97-7df9f5881f2f"/>
+				<text><![CDATA[Party GSTIN No :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="1" y="58" width="245" height="14" uuid="6ead0c51-5c7c-47a3-9239-7be9598b6b05"/>
+				<textFieldExpression><![CDATA[$P{CompanyAddress}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="71" width="101" height="20" uuid="7932ed19-dfb3-4b3b-8068-4acaf532b67d"/>
+				<text><![CDATA[Party Bill No : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="377" y="52" width="100" height="20" uuid="9fe34913-1701-42ff-b9df-201a161bbdbf"/>
+				<textFieldExpression><![CDATA[$F{member_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="91" width="101" height="20" uuid="d9bee12a-9a7e-4bcc-a937-553bb8076026"/>
+				<text><![CDATA[Party Date : ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="251" y="31" width="2" height="109" uuid="a500aa45-35b4-4020-9380-f03fc99b5dda"/>
+			</line>
+			<line>
+				<reportElement x="0" y="140" width="555" height="1" uuid="4a8f75c6-2f0a-4b70-ad39-e359ebf195f7"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42">
+			<staticText>
+				<reportElement x="186" y="0" width="143" height="22" uuid="77398278-78af-4ef3-89ab-a220963c171c"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[BANQUET/P.SHOOT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="22" width="101" height="20" uuid="52613f4e-5dbe-4d6e-8be6-ef910f8516c9"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bill Details]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="252">
+			<rectangle>
+				<reportElement positionType="Float" mode="Opaque" x="1" y="10" width="555" height="210" uuid="9edc1766-3e13-4d41-bd77-f42a04566e5f"/>
+			</rectangle>
+			<textField>
+				<reportElement mode="Transparent" x="342" y="38" width="45" height="19" uuid="332a0d3f-2176-4732-a31d-039bd9065a9d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{hall_sgst_amt}*100)/$F{hall_chaeges}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement mode="Transparent" x="2" y="196" width="553" height="1" uuid="819c4b5c-1f6b-41b0-833c-f4a036b1bf5f"/>
+			</line>
+			<line>
+				<reportElement mode="Transparent" x="3" y="35" width="553" height="1" uuid="ef11c925-9741-4fa9-aa88-f5e918ffe484"/>
+			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="246" y="13" width="38" height="19" uuid="3a8798f6-9ac2-4318-b9c7-1e4cd02a42a0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CGST%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="285" y="13" width="53" height="19" uuid="13f03dfd-477f-4cbf-ac7b-155d49822375"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CGST Amt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="339" y="13" width="45" height="19" uuid="6531c428-9686-444a-8f62-2f71462628e7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SGST%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="385" y="13" width="53" height="19" uuid="c310f2ac-ed9f-45a3-89da-16ca25d98ca3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SGST Amt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="439" y="13" width="54" height="19" uuid="8122a0e0-3742-4caf-91a5-2e454fa86fbd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Total Amt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="497" y="13" width="58" height="19" uuid="a459338b-292e-41f3-a887-4d4262a36f94"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Amount(Rs.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="2" y="37" width="110" height="20" uuid="5db7bdf9-dcc1-4a39-9fb1-fb435f330141"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<text><![CDATA[ Banquet/P.Shot Charges]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="111" y="38" width="44" height="19" uuid="7965a885-5cf5-4778-afb9-cdf51478573c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hall_chaeges}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement mode="Transparent" x="495" y="10" width="1" height="210" uuid="7b8a6174-f553-448e-a44a-8ae6e2f0c223"/>
+			</line>
+			<textField>
+				<reportElement mode="Transparent" x="156" y="38" width="38" height="19" uuid="9259b2df-6e91-4008-9282-60b2f733c94b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{hall_cgst_amt}*100)/$F{hall_chaeges})+(($F{hall_sgst_amt}*100)/$F{hall_chaeges})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="195" y="38" width="51" height="19" uuid="31577c03-2242-4224-8c3b-0be1f6265667"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hall_cgst_amt}+$F{hall_sgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="288" y="38" width="53" height="19" uuid="2b57e068-d0f8-49a4-933a-b9a9d7b78e69"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hall_cgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="388" y="38" width="53" height="19" uuid="1ac4f571-4663-49f3-ba1c-79f068a48075"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hall_sgst_amt}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="1" y="58" width="110" height="19" uuid="a657ce82-fa95-415a-916d-98fec6472cb2"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ Canteen Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="6" y="197" width="99" height="23" uuid="4049bebe-3757-4928-8b27-5d7074170ff8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="1" y="78" width="108" height="19" uuid="7becbb1e-32ab-4794-8508-68c6e4bf0894"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ Bar Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="98" width="110" height="19" uuid="888d436d-0967-4c0a-9ba5-555ee01af035"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ Guest Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="1" y="132" width="107" height="19" uuid="1c02b836-7285-49f6-84a9-ee14c7e67872"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ Decoration Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="3" y="152" width="108" height="19" uuid="68c25bd6-046d-406e-bbfb-f60fcc720169"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ Electric Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="2" y="172" width="109" height="19" uuid="2c8c489c-5d9e-40d0-ba94-17e747e481f6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ Other Charges **]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="248" y="38" width="39" height="19" uuid="7f27ee3a-cc8a-4ef0-ac7a-83840522b521"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{hall_cgst_amt}*100)/$F{hall_chaeges}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="112" y="58" width="43" height="19" uuid="3e4b4f3d-ca0c-4eb3-810b-43aead1a80da"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cattaxable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="288" y="58" width="53" height="19" uuid="c008f71f-0ae3-434e-bbba-4f7024e2db36"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{catcgstamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="388" y="58" width="53" height="19" uuid="00ff625e-dac8-4664-a82a-d0ca28b8736d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{catsgstamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="442" y="58" width="52" height="19" uuid="74aebce0-4dbe-49f3-9f0b-05d06f0560f5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{catnetamount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="199" y="58" width="47" height="19" uuid="4fd53549-2402-4c0f-9170-74a91968311a"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{catcgstamt}+$F{catsgstamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="109" y="78" width="46" height="19" uuid="28e4a1c8-de65-4edd-a571-db263f385b15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bartaxable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="199" y="78" width="47" height="19" uuid="da12cdbc-cf64-4762-badb-0491b28c7fea"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barcgstamt}+$F{barsgstamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="288" y="78" width="53" height="19" uuid="199cbcda-ce68-434e-95bf-57f7cdcbbd52"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barcgstamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="388" y="78" width="53" height="19" uuid="e33db031-f8c5-4d89-9cb5-59bbd4e7510b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barsgstamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="442" y="78" width="52" height="19" uuid="eace33e0-0e9c-4de8-942d-d76e178a8324"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barnetamount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" mode="Transparent" x="5" y="117" width="27" height="13" uuid="bb8deb03-240f-4338-9dfa-02259fd5fd37"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[[ Rs.]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" mode="Transparent" x="32" y="117" width="19" height="13" uuid="9bdf47c6-b9a4-49db-8c0e-3eeb90eafd4d"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guest_rate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" mode="Transparent" x="51" y="117" width="22" height="13" uuid="ddbaaa9c-aaa1-4043-8e1c-227e90a5de3c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" mode="Transparent" x="73" y="117" width="13" height="13" uuid="eacb4ac5-b434-45a2-b3e6-4fec71b2ae40"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guest_head}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" mode="Transparent" x="86" y="117" width="19" height="13" uuid="8e48552e-000d-4f33-984e-7ef8f604c49e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="112" y="98" width="43" height="19" uuid="3ff68e20-58c3-4fc3-9d20-a74a422a62a9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isStrikeThrough="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guest_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="288" y="98" width="53" height="19" uuid="4ee84001-63d3-4a0a-828d-793439685d5d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guest_cgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="388" y="98" width="53" height="19" uuid="6dff59b1-9146-4bd3-adda-5f24633e0cca"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guest_sgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="442" y="98" width="52" height="19" uuid="ba3d5c85-fdb6-43b1-81e8-171550f0f82f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guest_net_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="199" y="98" width="49" height="19" uuid="d01b3912-2a5a-4015-a411-d8f229224ce6"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guest_cgst_amt}+$F{guest_sgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="442" y="132" width="52" height="19" uuid="29513c61-1630-4ce8-a53e-dac31517610f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deco_chages}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="442" y="152" width="52" height="19" uuid="60d19b59-808c-4223-bf27-7687fe55d391"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{electric_charges}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="442" y="174" width="52" height="19" uuid="baf233e1-ae0f-4918-b453-5bca6aa7a735"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{other_charges}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="161" y="98" width="33" height="19" uuid="f4795553-8787-4afd-916b-a64aa15bb3f2"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{guest_cgst_amt}*100)/$F{guest_amt})+(($F{guest_sgst_amt}*100)/$F{guest_amt})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="249" y="98" width="38" height="19" uuid="42a6fbf2-fc9f-4ce6-873e-a02d9dc5ff9f"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{guest_cgst_amt}*100)/$F{guest_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="342" y="98" width="45" height="19" uuid="9d0d3273-09df-4482-92ff-0f299f0ee4fb"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{guest_sgst_amt}*100)/$F{guest_amt})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="108" y="13" width="44" height="19" uuid="093beca1-1460-45fc-b7b7-4a350f7fbd53"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="153" y="13" width="38" height="19" uuid="bb2d6fbb-a3b3-4ef8-8327-51d176eefc25"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[GST%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="192" y="13" width="53" height="19" uuid="80fccecb-8057-40d8-b679-a53e51dde9d0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[GST Amt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="227" width="472" height="19" uuid="b478419d-9c2b-405a-a7a5-89d5d7e7a3f7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Other Charges Reason :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="442" y="38" width="51" height="19" uuid="8b89dbcd-ffb7-4eb7-874b-c4ffb511a5be"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hall_net_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="197" width="97" height="22" uuid="c3c5dec0-b14a-45fc-b8cd-c11410b17ef9"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hall_net_amt}+$F{guest_net_amt}+$F{deco_chages}+$F{electric_charges}+$F{other_charges}+$F{catnetamount}+$F{barnetamount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="38" width="59" height="20" uuid="ea1e9ed1-5f44-4660-8839-ca5b1206d3c8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hall_net_amt}+$F{guest_net_amt}+$F{deco_chages}+$F{electric_charges}+$F{other_charges}+$F{catnetamount}+$F{barnetamount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="497" y="165" width="27" height="20" uuid="58b63bbb-f41e-492f-8245-dce48033754f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Less: Pay]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="524" y="165" width="31" height="20" uuid="2d86273f-09ca-41de-b611-d935f49df52f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="524" y="197" width="32" height="22" uuid="cf2dff79-bc19-4659-ae31-a7af739e4d25"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{hall_net_amt}+$F{guest_net_amt}+$F{deco_chages}+$F{electric_charges}+$F{other_charges}+$F{catnetamount}+$F{barnetamount})-$F{total_amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="495" y="197" width="28" height="23" uuid="cb708f2d-e03f-41d3-90bb-1a2f4c3b9536"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<text><![CDATA[Net Amt]]></text>
+			</staticText>
+		</band>
+		<band height="351">
+			<subreport>
+				<reportElement x="1" y="0" width="555" height="332" uuid="f8d04b50-8933-4f69-a12d-3f48b9da3522"/>
+				<subreportParameter name="memberid">
+					<subreportParameterExpression><![CDATA[$P{memberid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PartyBill_subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

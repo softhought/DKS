@@ -8,6 +8,7 @@ class Purchaseentryreceive extends CI_Controller {
         $this->load->model('commondatamodel','commondatamodel',TRUE);
         $this->load->model('purchaseentrymodel','purchaseentrymodel',TRUE);
         $this->load->model('baritemopeningmodel','baritemopeningmodel',TRUE);
+        $this->load->model('dailystockregistermodel','dailystockregistermodel',TRUE);   
          
        
     }
@@ -108,6 +109,54 @@ public function addeditpurchasentry(){
     }
 
 }
+
+public function getstockdetails(){
+
+    $session = $this->session->userdata('user_detail');
+      if($this->session->userdata('user_detail'))
+      {
+       $item_name = $this->input->post('item_name');
+       $tran_date = $this->input->post('tran_date');
+       $where = array('year_id' =>$session['yearid']);
+       $from_date = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where)->start_date; 
+       if($tran_date != ''){
+
+        $tran_date = str_replace('/', '-', $this->input->post('tran_date'));
+        $to_dt =  date('Y-m-d',strtotime($tran_date));
+       }else{
+        $to_dt = NULL;
+       } 
+       $fiscalstartdate =  $from_date;
+       $compnyid = $yearid = $session['companyid']; 
+       $yearid = $session['yearid']; 
+      
+    //    pre($item_name);exit;
+      
+       $stock =  $this->dailystockregistermodel->geAllStockRegister($compnyid,$yearid,$from_date,$to_dt,$item_name);
+            
+     
+       if($stock > 0){
+       $json_response = array(
+        "msg_status" => 1,
+        "msg_data" =>$stock 
+       );
+    }else{
+        $json_response = array(
+            "msg_status" => 0,
+            "msg_data" =>$stock
+          
+           );
+    }
+
+
+        header('Content-Type: application/json');
+        echo json_encode( $json_response );
+        exit; 
+
+      }else{
+        redirect('login','refresh');
+    }
+}    
 
 public function purchaseentry_action(){
 

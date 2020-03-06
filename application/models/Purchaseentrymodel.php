@@ -101,4 +101,34 @@ public function getSerialNumber($company,$year,$module){
              return $data;
          }
     }
+
+    
+    public function getstockdtl($item_id,$from_date,$to_dt)
+	
+	{
+        $data = 0;
+        $where = array('bar_item_master.id'=>$item_id);
+		$this->db->select("SUM(purchase_entry_receive.quantity) + bar_item_opening.opening_bal_bot - SUM(sale_entry_issue.quantity) AS opbal")
+                ->from('bar_item_master')
+                ->join('bar_item_opening','bar_item_master.id = bar_item_opening.bar_item_master_id','INNER')
+                ->join('purchase_entry_receive','bar_item_master.id = purchase_entry_receive.item_master_id','INNER')
+                ->join('sale_entry_issue','bar_item_master.id = sale_entry_issue.item_master_id','INNER')                
+                ->where($where)
+                ->where('purchase_entry_receive.tran_date BETWEEN "'.$from_date.'" AND  "'.$to_dt.'"');		
+        $query = $this->db->get();
+       # echo $this->db->last_query();exit;
+		if($query->num_rows()> 0)
+		{
+            foreach ($query->result() as $rows)
+			{
+				$data = $rows->opbal;
+            }
+            return $data;
+             
+        }
+		else
+		{
+             return $data;
+         }
+    }
 }

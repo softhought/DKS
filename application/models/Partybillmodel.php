@@ -541,7 +541,7 @@ class partybillmodel extends CI_Model{
                 ->join('gstmaster as sgst','sgst.id=party_bill_details.sgst_rate_id','left')
                 ->where($where);
         $query = $this->db->get();
-       # echo $this->db->last_query();
+        #echo $this->db->last_query();exit;
 
         if($query->num_rows()> 0)
         {
@@ -576,7 +576,7 @@ class partybillmodel extends CI_Model{
 				->limit(1);
 		$query = $this->db->get();
 		
-		#echo "<br>".$this->db->last_query();
+		#echo "<br>".$this->db->last_query();exit;
 		
 		if($query->num_rows()> 0)
 		{

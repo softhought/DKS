@@ -20,6 +20,23 @@ $(document).ready(function() {
             $("#convar_ml").val((liquer_vol * quantity) / 1000);
         }
 
+        var item_name = $("#item_name").val();
+        var tran_date = $("#tran_date").val();
+
+        $.ajax({
+            type: "POST",
+            url: basepath + 'purchaseentryreceive/getstockdetails',
+            dataType: "json",
+            data: {
+                item_name: item_name,
+                tran_date: tran_date
+
+            },
+            success: function(result) {
+                $("#stock_in_hand").val(result.msg_data);
+
+            },
+        });
 
     })
 
@@ -184,6 +201,8 @@ $(document).ready(function() {
         $("tr#rowpurchasedetails_" + rowDtlNo[1]).remove();
 
     });
+
+
 
 
     //form submit

@@ -65,9 +65,13 @@ $(document).ready(function() {
                             $("#errormsg").text(result.msg_data).addClass('succmsg');
                             $("#baritemsavebtn").css('display', 'inline-block');
                             $("#loaderbtn").css('display', 'none');
-                            // $('#groupname').val('');
-                            // $('#gropcat').val('').change();
-                            // $('#subgropucat').val('').change();
+                            $('#item_name').val('');
+                            $('#group_id').val('').change();
+                            $('#unit').val('').change();
+                            $('#liquer_vol_id').val('').change();
+                            $('#opening_bal_botl').val('');
+                            $('#opening_bal_ml').val('');
+                            $('#convar_ml').val('');
 
                         }
 

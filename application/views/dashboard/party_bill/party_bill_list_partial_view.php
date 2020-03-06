@@ -36,6 +36,9 @@
                          <a href="<?php echo base_url(); ?>memberfacility/addFacility/<?php echo $partybillist->id; ?>" class="btn tbl-action-btn padbtn">
                       <i class="fas fa-edit"></i> 
                     </a>
+                    <a href="<?php echo base_url(); ?>partybill/billprintJasper/<?php echo $partybillist->id; ?>" target="_blank" class="btn tbl-action-btn padbtn" style="padding-right:7px;">
+                      <i class="fas fa-print"></i> 
+                    </a>
                         
                     </td>
                
