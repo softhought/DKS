@@ -205,7 +205,35 @@ class memberreceiptmodel extends CI_Model{
     }
 
 
-
+    public function getallmembercode()
+    {
+      $data = array();
+      $this->db->select("*")
+          ->from('member_master')
+          ->where("status",'ACTIVE MEMBER')
+          ->where("member_code NOT LIKE 'D%'")
+          ->where("member_code NOT LIKE 'B%'")
+          ->where("CAST(SUBSTRING(member_code,1,2) AS UNSIGNED) = 0 ")
+          ->order_by('member_code', 'asc');
+         
+      $query = $this->db->get();
+      
+     #echo $this->db->last_query();exit;
+      
+      if($query->num_rows()> 0)
+      {
+          foreach ($query->result() as $rows)
+          {
+              $data[] = $rows;
+          }
+          return $data;
+               
+          }
+      else
+      {
+              return $data;
+          }
+    }
 
     
 } // end of class

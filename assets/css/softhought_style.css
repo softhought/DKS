@@ -1049,3 +1049,13 @@ tr td .fc-day-grid-event {
 .dt-print-view h1 {
     text-align: center;
 }
+
+.alerttitale {
+    font-size: 21px;
+    color: #ac6262;
+}
+
+.alerttext {
+    font-size: 18px;
+    color: #372121;
+}

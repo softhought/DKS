@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MemberReceipt" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="09ed55c9-0692-4209-bb3c-a8404d3c519f">
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CompanyName" class="java.lang.String"/>
+	<parameter name="CompanyAddress" class="java.lang.String"/>
+	<parameter name="receptId" class="java.lang.String"/>
+	<parameter name="phone" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+  `member_receipt`.*,
+  member_master.`title_one`,
+  member_master.`member_name`,
+  member_master.`member_code`,
+  member_master.`address_one`,
+  member_master.`address_two`,
+  member_master.`address_three`,
+  member_master.`pin`,
+DATE_FORMAT(member_receipt.`receipt_date`,'%d/%m/%Y') AS receiptdate,
+DATE_FORMAT(member_receipt.`cheque_dt`,'%d/%m/%Y') AS chequedate,
+cgst.rate AS cgstrate,
+sgst.rate AS sgstrate,
+numbertostring(member_receipt.total_amount) as numstr
+FROM
+  `member_receipt`
+  INNER JOIN `member_master`
+    ON `member_receipt`.member_id = member_master.member_id
+  LEFT JOIN `gstmaster` cgst
+  ON member_receipt.`cgst_id` = cgst.`id`
+  LEFT JOIN `gstmaster` sgst
+  ON member_receipt.`sgst_id` = sgst.`id`
+    WHERE member_receipt.`receipt_id` = $P{receptId} ]]>
+	</queryString>
+	<field name="receipt_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mem_receipt_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receipt_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tran_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="adm_fees" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sub_coach_fees" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="service_tax" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Party_receipt]]></fieldDescription>
+	</field>
+	<field name="service_charges" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Party_receipt]]></fieldDescription>
+	</field>
+	<field name="total_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dr_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cr_ac_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bank" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="branch" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cheque_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cheque_dt" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="narration" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="created_on" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="company_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_category" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="title_one" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_one" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_two" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_three" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pin" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receiptdate" class="java.lang.String"/>
+	<field name="chequedate" class="java.lang.String"/>
+	<field name="cgstrate" class="java.math.BigDecimal"/>
+	<field name="sgstrate" class="java.math.BigDecimal"/>
+	<field name="numstr" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="19">
+			<staticText>
+				<reportElement mode="Opaque" x="258" y="0" width="39" height="18" forecolor="#FFFFFF" backcolor="#00CC33" uuid="5f7e5700-2eda-4293-bd52-8091fcbd2c88"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[BILL]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="213">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="a2ab8b26-d85c-47bc-9cd7-d61af004dba2"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement positionType="Float" x="0" y="68" width="259" height="1" isPrintWhenDetailOverflows="true" uuid="440e6e62-0682-435a-b974-3157d6e833cc"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="270" y="4" width="90" height="18" uuid="552f75a2-5b58-4f6f-971c-aa1e7e48ee52"/>
+				<textElement>
+					<font fontName="Arial Black" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mem. Code   : ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="360" y="4" width="185" height="18" uuid="2059a87a-62b0-44be-a6a3-43129458336d"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{member_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="270" y="22" width="90" height="16" uuid="1fb4fbe1-09bf-40ba-916e-39f96f8a8dfe"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Mem. Name  :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="360" y="22" width="185" height="16" uuid="3f540c48-d3c2-4c03-83f8-59a89267b14b"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title_one}+" "+$F{member_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="270" y="38" width="90" height="17" uuid="62ad6db2-cabb-45b5-a759-e43ca6657058"/>
+				<textElement>
+					<font fontName="Arial Black" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Address        :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="358" y="38" width="187" height="17" uuid="15ae0f9a-f4ce-4e4d-baf2-959bede6f255"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address_one}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="360" y="55" width="185" height="17" uuid="ba79abd9-8c48-4947-b5db-fdb506dfdf47"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address_two}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="360" y="72" width="185" height="18" uuid="62aeacb3-6686-452f-a3f8-a6b8c8892daa"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address_three}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="93" width="100" height="20" uuid="0d4b9757-8996-41d5-b5dc-ca404833d607"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Receipt No.        :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="103" y="93" width="116" height="20" uuid="6b03843c-a64e-4371-a12e-54c91326c2ca"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mem_receipt_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="360" y="90" width="76" height="17" uuid="9230a770-640d-41e8-a96d-0a832a8a9a0b"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Receipt Dt.   :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="436" y="90" width="109" height="17" uuid="98e5c74f-f1fd-498f-90bb-dd7662589be9"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{receiptdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="360" y="107" width="76" height="16" uuid="8d418bba-83a6-49f0-ad83-ef1216ebbd06"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Bank             :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="436" y="107" width="109" height="16" uuid="e0100012-a9e5-4033-8376-59c5c3220935"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bank}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="360" y="123" width="76" height="16" uuid="95ebca26-cc32-493e-b36c-1197dcb7ad56"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Branch          :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="436" y="123" width="109" height="16" uuid="58e6bbd8-e6b7-4d01-9bb6-6c56452348fb"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="110" width="100" height="20" uuid="c8ca60ba-4e9b-40ae-91f6-73db49a9c2bd"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Payment Amt     :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="103" y="111" width="116" height="20" uuid="be47ec06-b82c-423c-8a1f-b614c8ef0a46"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adm_fees}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="360" y="139" width="76" height="16" uuid="daa9629f-80e3-4cae-bde6-81472367e80a"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Cheque No   :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="436" y="139" width="109" height="16" uuid="d801b1b7-6e1b-48be-ba18-7f3507fa8223"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheque_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="158" width="100" height="20" uuid="b32b68ff-0845-4d85-93ee-cdb247fde17a"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Amount Paid      :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="3" y="190" width="240" height="20" uuid="ade3b114-7226-4801-8c81-0027de3ab8ba"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{narration}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="103" y="158" width="116" height="20" uuid="b0dcee31-74c6-419a-a68b-222c62f8bfd0"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="103" y="129" width="116" height="20" uuid="cc6d584a-9060-4582-8beb-a8d5802cbb7c"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="103" y="143" width="116" height="20" uuid="b2b3310e-499e-4b1f-9ac1-71201506cc2c"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sgst_amt}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="3" y="173" width="216" height="21" uuid="cae6d1fa-9135-45ee-863d-049c5527ed72"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+$F{numstr}+")" ]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="360" y="155" width="76" height="16" uuid="18cd4b95-6fcb-4b36-9de2-9b428797792c"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Cheque Dt    :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="436" y="155" width="109" height="16" uuid="d569164e-d384-469d-882e-a12fcceafcb6"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chequedate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="3" width="149" height="18" uuid="11bd9255-0aa1-4b35-be2e-13a5f7a76610"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="2" y="22" width="252" height="20" uuid="63852c3b-a301-4baa-898c-9bc251e7c55d"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyAddress}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="258" y="0" width="1" height="90" uuid="67c75660-804f-47b7-b961-7c09847f0067"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="3" y="126" width="100" height="17" uuid="e523ac3c-4cbe-42f8-88b9-ba2b53ca3526"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CGST @ "+$F{cgstrate}+"%"+"   :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="3" y="143" width="100" height="15" uuid="9221cbc1-7455-4a06-91bc-f6de142ae165"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SGST @ "+$F{sgstrate}+"%"+"   :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="2" y="49" width="251" height="20" uuid="aaa828dd-6107-4847-a0db-f4e75b0ac9ef"/>
+				<textElement>
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Phone : "+$P{phone}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

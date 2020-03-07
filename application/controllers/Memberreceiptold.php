@@ -6,15 +6,14 @@ class memberreceipt extends CI_Controller {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('memberreceiptmodel','memberreceiptmodel',TRUE);
-        $this->load->model('Paymenttennismodel','payment_tennis_model',TRUE); 
-        $this->load->model('companymodel', '', TRUE);     
+        $this->load->model('Paymenttennismodel','payment_tennis_model',TRUE);
+        $this->load->model('companymodel', '', TRUE);    
       
     }
 
 public function index()
 {
-  
-  $session = $this->session->userdata('user_detail');
+    $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
           $page = "dashboard/member_receipt/member_receipt_list.php";
@@ -87,10 +86,8 @@ public function index()
                 
             }
 
-             //comment by anil and new membercodelist on 07-03-2020
             
-              //$result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
-              $result['memberCodeList'] = $this->memberreceiptmodel->getallmembercode();
+              $result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
               $result['categoryList'] = $this->commondatamodel->getAllRecordWhere('member_catogary_master',[]);
             
               $result['fineAccountList'] = $this->commondatamodel->getAllDropdownData('account_master');
@@ -268,10 +265,8 @@ public function index()
         $amount = $searcharray['amount'];
         $adm_fees = $searcharray['adm_fees'];
         $sub_coach_fees = $searcharray['sub_coach_fees'];
-        // $cgst_rate = $searcharray['cgst_rate'];
-        // $sgst_rate = $searcharray['sgst_rate'];
-         $cgst_rate = $searcharray['cgst_id'];
-        $sgst_rate = $searcharray['sgst_id'];
+        $cgst_rate = $searcharray['cgst_rate'];
+        $sgst_rate = $searcharray['sgst_rate'];
         $cgst_amt = $searcharray['cgst_amt'];
         $sgst_amt = $searcharray['sgst_amt'];
 
@@ -386,7 +381,7 @@ public function index()
                                     'branch' => $branch,
                                     'cheque_no' => $cheque_no,
                                     'cheque_dt' => $cheque_dt,
-                                    'narration' => strtoupper($narration),
+                                    'narration' => $narration,
                                     'member_category' => $sel_member_category,
                                     'created_on' => date('Y-m-d'),
                                     'user_id' => $session['userid'],
@@ -408,9 +403,8 @@ public function index()
                         $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => "Saved successfully",
-                            "mode" => "ADD",
-                            "receipt_id"=>$insertData,
-                            "receipt_no"=>$receipt_no
+                            "mode" => "ADD"
+                           
                            
 
                         );
@@ -429,22 +423,19 @@ public function index()
               $memreceipt_array_before_upd = $this->memberreceiptmodel->getMemberReceiptData($memberreceiptID); 
 
 
-             if ($tran_type=='ORADM' || $tran_type=='ORITM') {
+             if ($tran_type=='ORADM') {
 
 
                     $adm_fees = $searcharray['adm_fees'];
                     $sub_coach_fees = $searcharray['sub_coach_fees'];
-                  
+                    $service_tax = $searcharray['service_tax'];
                     $final_amount = $searcharray['total_amount'];
 
                    $upd_array_mem = array(
                                     'receipt_date' => $receipt_dt,
                                     'adm_fees' => $adm_fees,
                                     'sub_coach_fees' => $sub_coach_fees,
-                                    'cgst_id' => $cgst_rate,
-                                    'cgst_amt' => $cgst_amt,
-                                    'sgst_id' => $cgst_rate,
-                                    'sgst_amt' => $sgst_amt,
+                                    'service_tax' => $service_tax,
                                     'total_amount' => $final_amount,
                                     'dr_ac_id' => $dr_ac_id,
                                     'cr_ac_id' => $cr_ac_id,
@@ -460,12 +451,9 @@ public function index()
 
                  }else{
 
-                             $adm_fees = NULL;
-                             $sub_coach_fees = NULL;
-                             $cgst_rate = NULL;
-                             $sgst_rate = NULL;
-                             $cgst_amt =  NULL;
-                             $sgst_amt =  NULL;
+                           $adm_fees = NULL;
+                           $sub_coach_fees = NULL;
+                           $service_tax = $searcharray['service_tax'];
                            $final_amount = $searcharray['amount'];
 
 
@@ -476,10 +464,7 @@ public function index()
                                     'member_id' => $sel_member_id,
                                     'adm_fees' => $adm_fees,
                                     'sub_coach_fees' => $sub_coach_fees,
-                                    'cgst_id' => $cgst_rate,
-                                    'cgst_amt' => $cgst_amt,
-                                    'sgst_id' => $cgst_rate,
-                                    'sgst_amt' => $sgst_amt,
+                                    'service_tax' => $service_tax,
                                     'total_amount' => $final_amount,
                                     'dr_ac_id' => $dr_ac_id,
                                     'cr_ac_id' => $cr_ac_id,
@@ -629,19 +614,17 @@ public function index()
             $receptid = $this->uri->segment(3);  
            
              $company=  $this->companymodel->getCompanyNameById($companyId);
-             $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
-             $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
-            //  pre($phone);exit;       
+             $companylocation=  $this->companymodel->getCompanyAddressById($companyId);             
             // pre($memberid);
             // pre($company);
             // pre($companylocation);exit;
             $printDate=date("d-m-Y");            
              //$jasperphp->debugsql=true;
-            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'receptId'=>"'".$receptid."'",'phone'=> $phone);
+            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'receptId'=>"'".$receptid."'");
             
             $jasperphp->load_xml_file($file); 
             $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
-            $jasperphp->outpage('I','Receipt-'.date('d_m_Y-His').'.pdf');  
+            $jasperphp->outpage('I','Receipt-'.date('d_m_Y-His'));  
             // pre($jasperphp);     
     
 

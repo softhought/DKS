@@ -380,6 +380,7 @@
                                 <label for="firstname">CGST%</label>
                                   <div class="input-group input-group-sm">
                                 <input type="text" class="form-control forminputs " id="cgst_rate" name="cgst_rate" placeholder="" autocomplete="off" value="<?php echo $bodycontent['parameterData']->cgst_rate; ?>"  readonly  >
+                                <input type="hidden" class="form-control  " id="cgst_id" name="cgst_id"  value="<?php echo $bodycontent['parameterData']->cgst_id; ?>"  >
                                 </div>
 
                               </div>
@@ -390,6 +391,7 @@
                             <label for="firstname">CGST Amt</label>
                               <div class="input-group input-group-sm">
                             <input type="text" class="form-control forminputs " id="cgst_amt" name="cgst_amt" placeholder="" autocomplete="off"  readonly value="<?php if($bodycontent['mode'] == 'EDIT'){echo $bodycontent['receiptEditdata']->cgst_amt;}?>"  >
+                           
                             </div>
 
                           </div>
@@ -400,6 +402,7 @@
                             <label for="firstname">SGST%</label>
                               <div class="input-group input-group-sm">
                             <input type="text" class="form-control forminputs " id="sgst_rate" name="sgst_rate" placeholder="" autocomplete="off" value="<?php echo $bodycontent['parameterData']->sgst_rate; ?>"  readonly  >
+                            <input type="hidden" class="form-control  " id="sgst_id" name="sgst_id" value="<?php echo $bodycontent['parameterData']->sgst_id; ?>"  >
                             </div>
 
                           </div>
