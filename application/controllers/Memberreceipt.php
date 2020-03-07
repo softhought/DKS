@@ -12,7 +12,8 @@ class memberreceipt extends CI_Controller {
 
 public function index()
 {
-    $session = $this->session->userdata('user_detail');
+  
+  $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
           $page = "dashboard/member_receipt/member_receipt_list.php";
@@ -422,19 +423,22 @@ public function index()
               $memreceipt_array_before_upd = $this->memberreceiptmodel->getMemberReceiptData($memberreceiptID); 
 
 
-             if ($tran_type=='ORADM') {
+             if ($tran_type=='ORADM' || $tran_type=='ORITM') {
 
 
                     $adm_fees = $searcharray['adm_fees'];
                     $sub_coach_fees = $searcharray['sub_coach_fees'];
-                    $service_tax = $searcharray['service_tax'];
+                  
                     $final_amount = $searcharray['total_amount'];
 
                    $upd_array_mem = array(
                                     'receipt_date' => $receipt_dt,
                                     'adm_fees' => $adm_fees,
                                     'sub_coach_fees' => $sub_coach_fees,
-                                    'service_tax' => $service_tax,
+                                    'cgst_id' => $cgst_rate,
+                                    'cgst_amt' => $cgst_amt,
+                                    'sgst_id' => $cgst_rate,
+                                    'sgst_amt' => $sgst_amt,
                                     'total_amount' => $final_amount,
                                     'dr_ac_id' => $dr_ac_id,
                                     'cr_ac_id' => $cr_ac_id,
@@ -450,9 +454,12 @@ public function index()
 
                  }else{
 
-                           $adm_fees = NULL;
-                           $sub_coach_fees = NULL;
-                           $service_tax = $searcharray['service_tax'];
+                             $adm_fees = NULL;
+                             $sub_coach_fees = NULL;
+                             $cgst_rate = NULL;
+                             $sgst_rate = NULL;
+                             $cgst_amt =  NULL;
+                             $sgst_amt =  NULL;
                            $final_amount = $searcharray['amount'];
 
 
@@ -463,7 +470,10 @@ public function index()
                                     'member_id' => $sel_member_id,
                                     'adm_fees' => $adm_fees,
                                     'sub_coach_fees' => $sub_coach_fees,
-                                    'service_tax' => $service_tax,
+                                    'cgst_id' => $cgst_rate,
+                                    'cgst_amt' => $cgst_amt,
+                                    'sgst_id' => $cgst_rate,
+                                    'sgst_amt' => $sgst_amt,
                                     'total_amount' => $final_amount,
                                     'dr_ac_id' => $dr_ac_id,
                                     'cr_ac_id' => $cr_ac_id,

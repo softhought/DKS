@@ -4,7 +4,7 @@
             <div class="card-header box-shdw">
               <h3 class="card-title">Main Group Master</h3>
                <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
-              <a href="<?php echo base_url(); ?>maingroupinv/addMaingroup" class="btn btn-default btnpos">
+              <a href="<?php echo base_url(); ?>storemaingroup/addMaingroup" class="btn btn-default btnpos">
                <i class="fas fa-plus"></i> Add </a>
             </div>
              
@@ -31,7 +31,7 @@
                    <td><?php echo $i++; ?></td>
                    <td><?php echo $maingrouplist->group_desc; ?></td>
                    <td>
-                     <a href="<?php echo base_url(); ?>maingroupinv/addMaingroup/<?php echo $maingrouplist->main_group_id; ?>" class="btn tbl-action-btn padbtn">
+                     <a href="<?php echo base_url(); ?>storemaingroup/addMaingroup/<?php echo $maingrouplist->id; ?>" class="btn tbl-action-btn padbtn">
                   <i class="fas fa-edit"></i> 
                 </a>
                     

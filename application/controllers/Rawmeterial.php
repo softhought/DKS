@@ -6,9 +6,8 @@ class Rawmeterial extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-    
-    
-        
+        $this->load->model('rawmeterialmodel','rawmeterialmodel',TRUE);
+   
     }
 
 public function index()
@@ -16,12 +15,12 @@ public function index()
   $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
-        $page = "dashboard/inventory_master/vendor/vendor_list_view";
+         $page = "dashboard/raw_meterial/raw_meterial_list_view.php";
         $header="";  
   
-        $result['vendorList'] = $this->commondatamodel->getAllRecordOrderBy('vendor_master','vendor_name','asc');
+        $result['rawmeterialList'] = $this->rawmeterialmodel->getAllRawMeterialList();
 
-        //pre($result['tennisitemlist']);exit;
+        //pre($result['rawmeterialList']);exit;
         
         createbody_method($result, $page, $header, $session);
 
@@ -61,14 +60,21 @@ public function addRawmeterial(){
                 ];
 
                 // getSingleRowByWhereCls(tablename,where params)
-                 $result['rawmeterialEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('raw_meterial_master',$whereAry); 
+                 $result['rawmeterialEditdata'] = $this->rawmeterialmodel->getRawmeterialDataById($rawmeterialID); 
                 //  pre($result['cbnaatEditdata']);exit;
                 
             }
 
+
+
+              
+              $result['mainGroupList'] = $this->commondatamodel->getAllRecordOrderBy('main_group_master','group_desc','asc');
+              $result['unitList'] = $this->commondatamodel->getAllRecordOrderBy('unit_master','item_unit_name','asc');
+              $result['itemgroupList'] = $this->commondatamodel->getAllRecordOrderBy('store_item_group_master','group_name','asc');
+              $result['itemsubgroupList'] = $this->commondatamodel->getAllRecordOrderBy('material_type_inv','material_type','asc');
       
 
-         // pre($result['stateList'] );exit;
+            // pre($result['mainGroupList'] );exit;
 
 
             $header = "";
@@ -84,7 +90,7 @@ public function addRawmeterial(){
     }
 
 
-public function vendor_action(){
+public function rawmeterial_action(){
 
       $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -98,41 +104,52 @@ public function vendor_action(){
             $year=$session['yearid'];
 
            
+
+           
             $mode = trim(htmlspecialchars($dataArry['mode']));
-            $vendorID = trim(htmlspecialchars($dataArry['vendorID']));
-            $vendor_name = trim(htmlspecialchars($dataArry['vendor_name']));
-            $address = trim(htmlspecialchars($dataArry['address']));
-            $gst_no = trim(htmlspecialchars($dataArry['gst_no']));
-            $sel_state = trim(htmlspecialchars($dataArry['sel_state']));
+            $rawmeterialID = trim(htmlspecialchars($dataArry['rawmeterialID']));
+            $name = trim(htmlspecialchars($dataArry['name']));
+            $sel_group = trim(htmlspecialchars($dataArry['sel_group']));
+            $sel_unit = trim(htmlspecialchars($dataArry['sel_unit']));
+            $store_item_group = trim(htmlspecialchars($dataArry['store_item_group']));
+            $material_type = trim(htmlspecialchars($dataArry['material_type']));
+            $opening_balance = trim(htmlspecialchars($dataArry['opening_balance']));
+            $min_order_level = trim(htmlspecialchars($dataArry['min_order_level']));
            
 
-              if($vendorID>0 && $mode=="EDIT")
+              if($rawmeterialID>0 && $mode=="EDIT")
                 {
                     /*  EDIT MODE
                      *  -----------------
                     */
-                  $whereAry = [
-                    'vendor_master.vendor_id' => $vendorID
-                   ];
+                  // $whereAry = [
+                  //   'raw_meterial_master.vendor_id' => $rawmeterialID
+                  //  ];
 
                
-                 $vendor_array_before_upd = $this->commondatamodel->getSingleRowByWhereCls('vendor_master',$whereAry); 
-                    $vendor_array_upd = array(     
-                                          'vendor_name' => $vendor_name,   
-                                          'address' => $address,   
-                                          'gst_no' => $gst_no,   
-                                          'state_code' => $sel_state,   
-                                          'last_modified' => date('Y-m-d'),       
-                                         );
+                // $vendor_array_before_upd = $this->commondatamodel->getSingleRowByWhereCls('raw_meterial_master',$whereAry); 
+                  $rawmeterial_master_upd = array(
+                                          'name' => $name, 
+                                          'main_group_id' => $sel_group, 
+                                          'unit_id' => $sel_unit, 
+                                          'store_item_group' => $store_item_group, 
+                                          'material_type_id' => $material_type, 
+                                          'min_order_level' => $min_order_level, 
+                                          'created_on' => date('Y-m-d'), 
+                                        );
 
-                    $upd_where = array('vendor_master.vendor_id' => $vendorID);
+                    $upd_where = array('raw_meterial_master.raw_meterial_id' => $rawmeterialID);
 
-                    $update = $this->commondatamodel->updateSingleTableData('material_type_inv',$vendor_array_upd,$upd_where);
+                    $update = $this->commondatamodel->updateSingleTableData('raw_meterial_master',$rawmeterial_master_upd,$upd_where);
+
+                    $update_open = array('open_balance' => $opening_balance );
+                    $upd_open_where = array('raw_meterial_opening.raw_meterial_id' => $rawmeterialID);
+                    $update2 = $this->commondatamodel->updateSingleTableData('raw_meterial_opening',$update_open,$upd_open_where);
 
                      
-                    $activity_description = json_encode($vendor_array_upd);
-                    $old_description = json_encode($vendor_array_before_upd);
-                    $this->insertActivity($activity_description,$old_description,$materialtypeID,"Update");
+                    // $activity_description = json_encode($vendor_array_upd);
+                    // $old_description = json_encode($vendor_array_before_upd);
+                    // $this->insertActivity($activity_description,$old_description,$rawmeterialID,"Update");
 
                     
                     
@@ -160,54 +177,37 @@ public function vendor_action(){
                     /*  ADD MODE
                      *  -----------------
                     */
-                    $where_exist = array('account_master.account_name' => $vendor_name);
-                    $exist= $this->commondatamodel->checkExistanceData('account_master',$where_exist);
+                    
 
-                    if ($exist) {
+             $activity_array=[];
 
-                       $json_response = array(
-                            "msg_status" => 0,
-                            "msg_data" => "Vendor name already exist"
-                        );
-
-                    }else{
-
-
-                     $whereAry = [
-                    'group_master.group_description' => 'SUNDRY CREDITOR'
-                   ];
-
-               
-                 $group_id = $this->commondatamodel->getSingleRowByWhereCls('group_master',$whereAry)->id; 
-
-                 $account_master = array(
-                                          'account_name' => $vendor_name, 
-                                          'group_id' => $group_id, 
-                                          'is_active' => 'Y', 
-                                          'company_id' => $company, 
-                                          'is_gym_swim_minbill' => 'N', 
-
+              $rawmeterial_master = array(
+                                          'name' => $name, 
+                                          'main_group_id' => $sel_group, 
+                                          'unit_id' => $sel_unit, 
+                                          'store_item_group' => $store_item_group, 
+                                          'material_type_id' => $material_type, 
+                                          'min_order_level' => $min_order_level, 
+                                          'created_on' => date('Y-m-d'), 
                                         );
 
-              $account_id = $this->commondatamodel->insertSingleTableData('account_master',$account_master);
-
+              $rawmeterial_id = $this->commondatamodel->insertSingleTableData('raw_meterial_master',$rawmeterial_master);
+              $activity_array[]=$rawmeterial_master;
 
  
-                $vendor_array = array(
-                                          'vendor_name' => $vendor_name,   
-                                          'address' => $address,   
-                                          'gst_no' => $gst_no,  
-                                          'state_code' => $sel_state,
-                                          'account_id' => $account_id,
-                                          'company_id' => $company, 
-                                          'is_active' => 'Y',         
-                                          'created_on' => date('Y-m-d'),       
+                $raw_meterial_opening = array(
+                                              'raw_meterial_id' => $rawmeterial_id,   
+                                              'open_balance' => $opening_balance,   
+                                              'company_id' => $company,   
+                                              'year_id' => $year,      
                                          );
 
-               $insertData = $this->commondatamodel->insertSingleTableData('vendor_master',$vendor_array);
+               $insertData = $this->commondatamodel->insertSingleTableData('raw_meterial_opening',$raw_meterial_opening);
 
-                    $activity_description = json_encode($vendor_array);
-                    $this->insertActivity($activity_description,NULL,$insertData,"Insert");
+                $activity_array[]=$raw_meterial_opening;
+
+                    $activity_description = json_encode($activity_array);
+                    $this->insertActivity($activity_description,NULL,$rawmeterial_id,"Insert");
 
                     if($insertData)
                     {
@@ -227,7 +227,7 @@ public function vendor_action(){
 
 
 
-                  }
+                 
 
 
                 } // end add mode ELSE PART

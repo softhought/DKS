@@ -56,18 +56,18 @@ public function addMaingroup(){
                 $result['groupID'] = $groupID;
                 
                 $whereAry = [
-                    'store_item_group_master.main_group_id' => $groupID
+                    'main_group_master.id' => $groupID
                 ];
 
                 // getSingleRowByWhereCls(tablename,where params)
-                 $result['groupEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('store_item_group_master',$whereAry); 
+                 $result['groupEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('main_group_master',$whereAry); 
                 //  pre($result['cbnaatEditdata']);exit;
                 
             }
 
                
             $header = "";
-            $page = "dashboard/inventory_master/main_group/addedit_main_group";
+            $page = "dashboard/inventory_master/store_main_group/addedit_store_main_group";
             createbody_method($result, $page, $header,$session);
         }
         else
@@ -104,19 +104,18 @@ public function group_action(){
                      *  -----------------
                     */
                   $whereAry = [
-                    'store_item_group_master.main_group_id' => $groupID
+                    'main_group_master.id' => $groupID
                    ];
 
                
-                 $group_array_before_upd = $this->commondatamodel->getSingleRowByWhereCls('store_item_group_master',$whereAry); 
-                      $group_array_upd = array(     
-                                          'group_name' => $group_name,   
+                     $group_array_before_upd = $this->commondatamodel->getSingleRowByWhereCls('main_group_master',$whereAry); 
+                     $group_array_upd = array(     
+                                          'group_desc' => $group_name,   
                                           'last_modified' => date('Y-m-d'),       
                                          );
 
-                     $upd_where = array('store_item_group_master.main_group_id' => $groupID);
-
-                     $update = $this->commondatamodel->updateSingleTableData('store_item_group_master',$group_array_upd,$upd_where);
+                    $upd_where = array('main_group_master.id' => $groupID);
+                    $update = $this->commondatamodel->updateSingleTableData('main_group_master',$group_array_upd,$upd_where);
 
                      
                     $activity_description = json_encode($group_array_upd);
@@ -153,12 +152,13 @@ public function group_action(){
             
               
                 $group_array = array(
-                                          'group_name' => $group_name,          
+                                          'group_desc' => $group_name,          
+                                          'is_active' => 'Y',          
                                           'company_id' => $company,         
                                           'created_on' => date('Y-m-d'),       
                                          );
 
-                 $insertData = $this->commondatamodel->insertSingleTableData('store_item_group_master',$group_array);
+                 $insertData = $this->commondatamodel->insertSingleTableData('main_group_master',$group_array);
 
                     $activity_description = json_encode($group_array);
                     $this->insertActivity($activity_description,NULL,$insertData,"Insert");
@@ -200,10 +200,10 @@ public function group_action(){
 function insertActivity($description,$old_description,$table_id,$action){
 $session = $this->session->userdata('user_detail');
     $user_activity = array(
-                              "activity_module" => 'Inventory Main Group ',
+                              "activity_module" => 'Store Main Group ',
                               "action" => $action,
-                              "from_method" => 'maingroupinv/group_action',
-                              "table_name" => 'store_item_group_master',
+                              "from_method" => 'storemaingroup/group_action',
+                              "table_name" => 'main_group_master',
                               "module_master_id" => $table_id,
                               "user_id" => $session['userid'],
                               "ip_address" => getUserIPAddress(),

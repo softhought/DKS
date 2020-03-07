@@ -1,16 +1,18 @@
-<script src="<?php echo base_url(); ?>assets/js/customJs/inventory/main_group.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/customJs/inventory/store_main_group.js"></script>
 
 <section class="layout-box-content-format1">
         <div class="card card-primary">
             <div class="card-header box-shdw">
-              <h3 class="card-title">Store Item Group</h3>
-               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
-              <a href="<?php echo base_url(); ?>maingroupinv" class="btn btn-info btnpos">
+              <h3 class="card-title">Main Group</h3>
+
+              <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>storemaingroup" class="btn btn-info btnpos">
               <i class="fas fa-clipboard-list"></i> List </a>
-                </div>           
+              </div>
+
             </div><!-- /.card-header -->
 
-           <form name="groupFrom" id="groupFrom" enctype="multipart/form-data">
+           <form name="storegroupFrom" id="storegroupFrom" enctype="multipart/form-data">
 
            <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
            <input type="hidden" name="groupID" id="groupID" value="<?php echo $bodycontent['groupID']; ?>">
@@ -24,7 +26,7 @@
                                 <label for="groupname">Group Name</label>
                                   <div class="form-group">
                                    <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" name="group_name" id="group_name" placeholder="Enter Group Name" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['groupEditdata']->group_name; } ?>">
+                                    <input type="text" class="form-control" name="group_name" id="group_name" placeholder="Enter Group Name" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo $bodycontent['groupEditdata']->group_desc; } ?>">
                                 </div>
                               </div>
                            

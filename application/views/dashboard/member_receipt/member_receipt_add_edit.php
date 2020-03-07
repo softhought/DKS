@@ -177,7 +177,7 @@
 
                                <?php 
                                if($bodycontent['mode'] == 'EDIT'){ 
-                                if($bodycontent['receiptEditdata']->tran_type=='RCFM'){
+                                if($bodycontent['receiptEditdata']->tran_type=='RCFM' || $bodycontent['receiptEditdata']->tran_type=='ORITM'){
                                    if($bodycontent['receiptEditdata']->member_id == $membercode->member_id){echo "selected";}
                                 }
                                
@@ -198,7 +198,7 @@
                             <div class="input-group input-group-sm">
                             <input type="text" class="form-control forminputs " id="member_name" name="member_name" placeholder="" autocomplete="off" value="<?php 
                                if($bodycontent['mode'] == 'EDIT'){ 
-                                if($bodycontent['receiptEditdata']->tran_type!='ORADM'){
+                                if($bodycontent['receiptEditdata']->tran_type=='RCFM' || $bodycontent['receiptEditdata']->tran_type=='ORITM'){
                                   echo $bodycontent['receiptEditdata']->title_one." ".$bodycontent['receiptEditdata']->member_name;
                                 }  
                               }
@@ -213,7 +213,7 @@
                             <div class="input-group input-group-sm">
                             <input type="text" class="form-control forminputs " id="amount" name="amount" placeholder="" autocomplete="off" value="<?php 
                                if($bodycontent['mode'] == 'EDIT'){ 
-                                if($bodycontent['receiptEditdata']->tran_type!='ORADM'){
+                                if($bodycontent['receiptEditdata']->tran_type=='RCFM'){
                                   echo $bodycontent['receiptEditdata']->total_amount;
                                 }
                                
@@ -274,12 +274,13 @@
                     $lastname="";
 
                      if($bodycontent['mode'] == 'EDIT'){
+                       if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
 
                       $name = $bodycontent['receiptEditdata']->member_name;
                       $parts = explode(' ', $name);
                       $firstname = $parts[0];
                       $lastname = $parts[1];
-
+                        }
 
                       }
 
@@ -342,7 +343,7 @@
                                       <div class="input-group input-group-sm">
                                       <input type="text" class="form-control forminputs " id="adm_fees" name="adm_fees" placeholder="" autocomplete="off" value="<?php 
                                      if($bodycontent['mode'] == 'EDIT'){ 
-                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                      if($bodycontent['receiptEditdata']->tran_type!='RCFM'){
                                        echo $bodycontent['receiptEditdata']->adm_fees;
                                       }
                                     }
@@ -360,7 +361,7 @@
                                     <div class="input-group input-group-sm">
                                     <input type="text" class="form-control forminputs " id="sub_coach_fees" name="sub_coach_fees" placeholder="" autocomplete="off" value="<?php 
                                      if($bodycontent['mode'] == 'EDIT'){ 
-                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                      if($bodycontent['receiptEditdata']->tran_type!='RCFM'){
                                        echo $bodycontent['receiptEditdata']->sub_coach_fees;
                                       }
                                      
@@ -440,7 +441,7 @@
                                           <div class="input-group input-group-sm">
                                           <input type="text" class="form-control forminputs " id="total_amount" name="total_amount" placeholder="" autocomplete="off" value="<?php 
                                      if($bodycontent['mode'] == 'EDIT'){ 
-                                      if($bodycontent['receiptEditdata']->tran_type=='ORADM'){
+                                      if($bodycontent['receiptEditdata']->tran_type!='RCFM'){
                                        echo $bodycontent['receiptEditdata']->total_amount;
                                       }
                                      
@@ -598,7 +599,12 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="cheque_dt" id="cheque_dt" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo date("d/m/Y", strtotime($bodycontent['receiptEditdata']->cheque_dt));}?>">
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="cheque_dt" id="cheque_dt" value="<?php if($bodycontent['mode'] == 'EDIT'){
+                              if ($bodycontent['receiptEditdata']->cheque_dt!='') {
+                                echo date("d/m/Y", strtotime($bodycontent['receiptEditdata']->cheque_dt));
+                              }
+                            
+                             }?>">
                           </div>
 
                           </div>
