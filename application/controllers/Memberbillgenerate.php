@@ -6,7 +6,7 @@ class Memberbillgenerate extends CI_Controller {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('memberbillmodel','memberbillmodel',TRUE);
-         
+        $this->load->model('companymodel', '', TRUE);   
        
     }
 
@@ -698,7 +698,7 @@ public function getbillDetailsModelData()
 
          $data['billData'] = $this->memberbillmodel->getBillMasterDataByBillId($bill_id);
 
-        //pre($data['billData']);exit;
+       // pre($data['billData']);exit;
 
 
 
@@ -716,6 +716,117 @@ public function getbillDetailsModelData()
       }
   }
 
+
+  public function memberbillprintJasper()
+  {
+      $session = $this->session->userdata('user_detail');
+      if($this->session->userdata('user_detail'))
+      {      
+          $file= APPPATH."views/dashboard/reports/bill-process/BillProcess.jrxml";
+          
+         
+          $this->load->library('jasperphp');
+          $jasperphp = $this->jasperphp->jasper();
+
+          $dbdriver="mysql";
+          // $server="localhost";
+          // $db="teasamrat";
+          // $user="root";
+          // $pass="";
+          
+          $this->load->database();
+          $server=$this->db->hostname;
+          $user=$this->db->username;
+          $pass=$this->db->password;
+          $db=$this->db->database;
+         
+          $companyId = $session['companyid'];
+       
+          $billid = $this->uri->segment(3);  
+         
+           $company=  $this->companymodel->getCompanyNameById($companyId);
+           $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
+           $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
+          //  pre($phone);exit;       
+          // pre($memberid);
+          // pre($company);
+          // pre($companylocation);exit;
+          $printDate=date("d-m-Y");            
+           //$jasperphp->debugsql=true;
+          $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'bill_id'=>"'".$billid."'",);
+          
+          $jasperphp->load_xml_file($file); 
+          $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+          $jasperphp->outpage('I','Bill Process-'.date('d_m_Y-His').'.pdf');  
+          // pre($jasperphp);     
+  
+
+          // $page = 'trial_balance/trailWithJasper.php';
+          // $this->load->view($page, $result, TRUE);
+
+      } else {
+          redirect('login', 'refresh');
+      }
+  }
+
+
+
+  public function multibillprintJasper()
+  {
+      $session = $this->session->userdata('user_detail');
+      if($this->session->userdata('user_detail'))
+      {      
+          $file= APPPATH."views/dashboard/reports/bill-process/MultBillProcess.jrxml";
+          
+         
+          $this->load->library('jasperphp');
+          $jasperphp = $this->jasperphp->jasper();
+
+          $dbdriver="mysql";
+          // $server="localhost";
+          // $db="teasamrat";
+          // $user="root";
+          // $pass="";
+          
+          $this->load->database();
+          $server=$this->db->hostname;
+          $user=$this->db->username;
+          $pass=$this->db->password;
+          $db=$this->db->database;
+         
+          $companyId = $session['companyid'];
+          $yearid  = $session['yearid'];
+          //$billid = $this->uri->segment(3); 
+          $sel_member = $this->uri->segment(3);
+          $category = $this->uri->segment(4);
+          $month = $this->uri->segment(5);
+         
+         
+         
+           $company=  $this->companymodel->getCompanyNameById($companyId);
+           $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
+           $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
+          //  pre($phone);exit;       
+          // pre($memberid);
+          // pre($company);
+          // pre($companylocation);exit;
+          $printDate=date("d-m-Y");            
+           //$jasperphp->debugsql=true;
+           $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'sel_member'=>$sel_member,'category'=>$category,'month'=>$month,'company_id'=>$companyId,'year_id'=>$yearid);
+         //pre( $jasperphp->arrayParameter);exit;
+          $jasperphp->load_xml_file($file); 
+          $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+          $jasperphp->outpage('I','Multiple Bill Process-'.date('d_m_Y-His').'.pdf');  
+          // pre($jasperphp);     
+  
+
+          // $page = 'trial_balance/trailWithJasper.php';
+          // $this->load->view($page, $result, TRUE);
+
+      } else {
+          redirect('login', 'refresh');
+      }
+  }
 
 
 

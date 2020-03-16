@@ -34,9 +34,10 @@ public function ActiveInactiveAccountMaster($accId,$is_active)
     public function getallacountmasterdtl()
     {
         $data = array();
-		$this->db->select("account_master.*,group_master.group_description")
+		$this->db->select("account_master.*,group_master.group_description,vendor_master.vendor_id")
                 ->from('account_master')
                 ->join('group_master','account_master.group_id = group_master.id','INNER')
+                ->join('vendor_master','account_master.account_id = vendor_master.account_id','LEFT')
                 ->order_by('account_id','desc');
 		$query = $this->db->get();
 		#echo $this->db->last_query();

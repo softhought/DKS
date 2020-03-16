@@ -6,7 +6,8 @@ class Order extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->library('session');
-		$this->load->model('ordermodel','ordermodel',TRUE);
+        $this->load->model('ordermodel','ordermodel',TRUE);
+        $this->load->model('companymodel', '', TRUE);
 	}
 	
 	public function index()
@@ -81,7 +82,8 @@ class Order extends CI_Controller {
 
           
 			$result['itemlist'] = $this->ordermodel->getAllItemByCategory($category);
-			$result['memberCodeList'] = $this->ordermodel->getAllMemberList();
+            //$result['memberCodeList'] = $this->ordermodel->getAllMemberList();
+            $result['memberCodeList'] = $this->ordermodel->getallmembercode();
 			$result['locationList'] = $this->ordermodel->getAllLocationList();
 			$result['waiterList'] = $this->commondatamodel->getAllRecordWhere('waiter_master',[]);
 
@@ -520,7 +522,7 @@ public function getOrderHistoryData() {
 
 
             $orderHistory = $this->ordermodel->getLastOrderHistory($view_category,0);
-
+            
             if ($orderHistory) {
             	  $json_response = array(
                             "status" => 1,
@@ -599,9 +601,63 @@ public function getOrderHistoryData() {
 
     }
   
+    public function orderprintJasper()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {      
+            $file= APPPATH."views/dashboard/reports/kot-bot-print/KotBotPrint.jrxml";
+            
+           
+            $this->load->library('jasperphp');
+            $jasperphp = $this->jasperphp->jasper();
 
+            $dbdriver="mysql";
+            // $server="localhost";
+            // $db="teasamrat";
+            // $user="root";
+            // $pass="";
+            
+            $this->load->database();
+            $server=$this->db->hostname;
+            $user=$this->db->username;
+            $pass=$this->db->password;
+            $db=$this->db->database;
+           
+            $companyId = $session['companyid'];
+         
+            $orderId = $this->uri->segment(3);  
+           
+             $company=  $this->companymodel->getCompanyNameById($companyId);
+             $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
+             $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
+            
+            
+           
+            //  pre($phone);exit;       
+            // pre($memberid);
+            // pre($company);
+            // pre($companylocation);exit;
+            $printDate=date("d-m-Y");            
+             //$jasperphp->debugsql=true;
+            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'orderId'=>"'".$orderId."'");
+            
+            $jasperphp->load_xml_file($file); 
+            $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+            $jasperphp->outpage('I','Order-'.date('d_m_Y-His').'.pdf');  
+           
+            // pre($jasperphp);     
+           
 
+            // $page = 'trial_balance/trailWithJasper.php';
+            // $this->load->view($page, $result, TRUE);
 
+        } else {
+            redirect('login', 'refresh');
+        }
+    }
+
+   
 
 	
 }  // end of class

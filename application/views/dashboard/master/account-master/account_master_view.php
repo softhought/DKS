@@ -50,9 +50,11 @@
                             <?php } ?>
                     </td>
                    <td>
+                    <?php if($accountmasterlist->vendor_id == ''){ ?>
                    <a href="<?php echo base_url(); ?>accountmaster/addaccountMaster/<?php echo $accountmasterlist->account_id; ?>" class="btn tbl-action-btn padbtn">
                   <i class="fas fa-edit"></i> 
                 </a>
+                    <?php } ?>
                   </td>
 
 

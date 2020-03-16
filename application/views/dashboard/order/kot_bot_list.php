@@ -140,6 +140,10 @@
                          <a href="<?php echo base_url(); ?>order/addOrder/<?php echo $orderlist->order_id; ?>" class="btn tbl-action-btn padbtn">
                       <i class="fas fa-edit"></i> 
                     </a>
+
+                    <a href="<?php echo base_url(); ?>order/orderprintJasper/<?php echo $orderlist->order_id; ?>" target="_blank" class="btn tbl-action-btn padbtn" style="padding-right:7px;">
+                      <i class="fas fa-print"></i> 
+                    </a>
                         
                     </td>
                

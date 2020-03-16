@@ -19,7 +19,7 @@ public function index()
         $header="";  
 
         $result['accountmasterlist'] = $this->accountmastermodel->getallacountmasterdtl();
-        //pre( $result['accountmasterlist']);exit;
+       // pre( $result['accountmasterlist']);exit;
         createbody_method($result, $page, $header, $session);
     }else{
         redirect('login','refresh');

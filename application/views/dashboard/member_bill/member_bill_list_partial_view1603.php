@@ -1,4 +1,4 @@
-  <table class="table customTbl table-bordered table-striped dataTable2">
+  <table class="table customTbl table-bordered table-striped dataTable">
                 <thead>
                     <tr>
                     <th>Sl.No</th>
@@ -9,6 +9,7 @@
                     <th>Category</th>
                     <th>Amount</th>
                     <th>Action</th>
+                  
           
                 </thead>
                 <tbody>
@@ -30,15 +31,11 @@
                    <td><?php echo $billlist->month_name; ?></td>
                    <td><?php echo $billlist->category_name; ?></td>
                    <td align="right"><?php echo $billlist->net_amount; ?></td>
-                   
-                   <td> <span  class="btn tbl-action-btn btn-xs receivableDtl" data-toggle="modal" data-target="#billModalDetails" id="bill_dtl_btn"
-                    data-billid="<?php echo $billlist->bill_id; ?>" style="padding-right:7px;"  ><i class="fas fa-cog"></i> </span>
-                    
-                    <a href="<?php echo base_url(); ?>memberbillgenerate/memberbillprintJasper/<?php echo $billlist->bill_id; ?>" target="_blank" class="btn tbl-action-btn padbtn" style="padding-right:7px;">
-                      <i class="fas fa-print"></i> 
-                    </a>
-                    
-                    </td>
+                   <td>
+                     <span  class="btn tbl-action-btn btn-xs receivableDtl" data-toggle="modal" data-target="#billModalDetails" id="bill_dtl_btn"
+                    data-billid="<?php echo $billlist->bill_id; ?>"   ><i class="fas fa-cog"></i> </span>
+                   </td>
+                  
                
                 
                

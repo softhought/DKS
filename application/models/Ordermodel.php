@@ -187,7 +187,7 @@ class Ordermodel extends CI_Model{
 				->limit(1);
 		$query = $this->db->get();
 		
-		#echo "<br>".$this->db->last_query();
+		#echo "<br>".$this->db->last_query();exit;
 		
 		if($query->num_rows()> 0)
 		{
@@ -249,7 +249,7 @@ public function getLastOrderHistory($category,$oderid)
 		}
 		
 		$data=1;
-		$this->db->select("order_master.*,member_master.title_one,member_master.member_name,member_master.member_code")
+		$this->db->select("order_master.*,DATE_FORMAT(order_master.order_date,'%d/%m/%Y') as orderdate,member_master.title_one,member_master.member_name,member_master.member_code")
 				->from('order_master')
 				->join('member_master','member_master.member_id=order_master.member_id','INNER')
 				->where($where)
@@ -360,7 +360,35 @@ public function getLastOrderHistory($category,$oderid)
     }
 
 
-
+	public function getallmembercode()
+    {
+      $data = array();
+      $this->db->select("*")
+          ->from('member_master')
+          ->where("status",'ACTIVE MEMBER')
+          ->where("member_code NOT LIKE 'D%'")
+          ->where("member_code NOT LIKE 'B%'")
+          ->where("CAST(SUBSTRING(member_code,1,2) AS UNSIGNED) = 0 ")
+          ->order_by('member_code', 'asc');
+         
+      $query = $this->db->get();
+      
+     #echo $this->db->last_query();exit;
+      
+      if($query->num_rows()> 0)
+      {
+          foreach ($query->result() as $rows)
+          {
+              $data[] = $rows;
+          }
+          return $data;
+               
+          }
+      else
+      {
+              return $data;
+          }
+    }
 
 
 

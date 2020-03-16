@@ -499,7 +499,7 @@ public function getMemberBillMasterData($member_id,$category,$month,$year,$compa
 				->where($where_category);
 		$query = $this->db->get();
 		
-		#echo "<br>".$this->db->last_query();
+		#echo "<br>".$this->db->last_query();exit;
 		
 		if($query->num_rows()> 0)
         {

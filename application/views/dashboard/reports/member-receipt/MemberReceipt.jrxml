@@ -30,7 +30,7 @@ FROM
   ON member_receipt.`cgst_id` = cgst.`id`
   LEFT JOIN `gstmaster` sgst
   ON member_receipt.`sgst_id` = sgst.`id`
-    WHERE member_receipt.`receipt_id` = $P{receptId} ]]>
+    WHERE member_receipt.`receipt_id` = $P{receptId}]]>
 	</queryString>
 	<field name="receipt_id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -341,7 +341,7 @@ FROM
 				<textElement>
 					<font fontName="Arial Black" size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["("+$F{numstr}+")" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA["("+$F{numstr}+")"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement positionType="Float" x="360" y="155" width="76" height="16" uuid="18cd4b95-6fcb-4b36-9de2-9b428797792c"/>
@@ -358,7 +358,7 @@ FROM
 				<textFieldExpression><![CDATA[$F{chequedate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="2" y="3" width="149" height="18" uuid="11bd9255-0aa1-4b35-be2e-13a5f7a76610"/>
+				<reportElement positionType="Float" x="2" y="3" width="149" height="18" isPrintWhenDetailOverflows="true" uuid="11bd9255-0aa1-4b35-be2e-13a5f7a76610"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>

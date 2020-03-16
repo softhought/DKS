@@ -267,9 +267,9 @@
                       <th>Qty</th>
                       <th>Rate</th>
                       <th>Taxable</th>
-                      <th>Rate</th>
+                      <th>CGST Rt.</th>
                       <th>CGST Amt.</th>
-                      <th>Rate</th>
+                      <th>SGST Rt.</th>
                       <th>SGST Amt.</th>
                       <th>Net Amt.</th>
                       <th style="width: 40px">Del</th>
@@ -591,9 +591,9 @@
                       <th>Qty</th>
                       <th>Rate</th>
                       <th>Taxable</th>
-                      <th>Rate</th>
+                      <th>CGST Rt.</th>
                       <th>CGST Amt.</th>
-                      <th>Rate</th>
+                      <th>SGST Rt.</th>
                       <th>SGST Amt.</th>
                       <th>Net Amt.</th>
                       <th style="width: 40px">Del</th>
