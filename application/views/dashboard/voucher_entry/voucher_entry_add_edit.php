@@ -5,6 +5,8 @@
             <div class="card-header box-shdw">
               <h3 class="card-title">Voucher Entry</h3>
                <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+                <a href="<?php echo base_url(); ?>voucherentry/addVoucher" class="btn btn-info btnpos">
+                  <i class="fas fa-plus"></i> Add </a> 
               <a href="<?php echo base_url(); ?>voucherentry" class="btn btn-info btnpos">
               <i class="fas fa-clipboard-list"></i> List </a>
                 </div>           
@@ -356,6 +358,7 @@
                           <div class="col-md-10">
                         <?php  }?>
                           <p id="errormsg" class="errormsgcolor"></p>
+                           <p id="response_msg" style="color: #689921;font-weight: bold;">  </p>
                           </div>
                          <div class="col-md-2 text-right">
                             <button type="submit" class="btn btn-sm action-button" id="patrecsavebtn" style="width: 60%;"><?php echo $bodycontent['btnText']; ?></button>

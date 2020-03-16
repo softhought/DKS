@@ -47,6 +47,16 @@ $(document).on('input keyup','#voucher_dt',function(){
 $(document).on('keyup input','.listamounted',function(){
 
  		 resetDrCrAmount();
+     checkDrCrAmount();
+});
+
+ $(document).on('change','#account_id',function(){
+
+ 
+        checkDrCrAmount();
+   
+
+     
 });
 
 
@@ -182,8 +192,17 @@ $(document).on('keyup input','.listamounted',function(){
                 success: function (result) {
 
                     if (result.msg_status == 1) {
+                       $("#loaderbtn").css('display', 'none');
 
-                    window.location.replace(basepath+'voucherentry');
+
+                   // window.location.replace(basepath+'voucherentry');
+                   if (mode=='ADD') {
+                           $("#voucher_no").val(result.voucher_no);
+                           $("#response_msg").text(result.msg_data);
+                           $("#voucher_no").focus();
+                        }else{
+                            window.location.replace(basepath+'voucherentry');
+                        }
 
                     } 
                     else {
@@ -354,6 +373,26 @@ function resetSerial(){
 }
 
 
+function checkDrCrAmount(){
+
+   var account_id=$("#account_id").val();
+
+    if (account_id=='') {
+        $("#amount").val('');
+    }else{
+
+  var total_dr = parseFloat($("#total_dr").val() || 0);
+  var total_cr = parseFloat($("#total_cr").val() || 0);
+
+  var diffdrcr = Math.abs(total_dr-total_cr);
+
+    console.log(diffdrcr);
+    $("#amount").val(diffdrcr);
+
+   }
+}
+
+
 
 function validateMasterData(){
 
@@ -362,7 +401,7 @@ function validateMasterData(){
      var total_cr= $("#total_cr").val();
         
 
-   	 $("#voucher_dt,#total_cr,#total_cr").removeClass("form_error");
+   $("#voucher_dt,#total_cr,#total_cr").removeClass("form_error");
 	 $('#error_msg').text('');
 	 $('#errormsg').text('');
 
@@ -378,10 +417,13 @@ function validateMasterData(){
      }
 
 
+
+
 	 if (total_dr!=total_cr) {
 	 	 $("#total_dr,#total_cr").addClass("form_error");
+     $('#errormsg').text('Please maintain equivalent debit and credit amount');
        
-         return false;
+      return false;
 	 }
 
 
@@ -394,12 +436,22 @@ var accountlist=0;
     });
 
 
-     if(accountlist==0){
+    if(accountlist==0){
 
        $('#errormsg').text('Add account head list');
-
+         return false;
 
    }
+
+     if(total_dr==''){   
+         $("#total_dr").addClass("form_error");
+      return false;
+     } 
+
+     if(total_cr==''){   
+         $("#total_cr").addClass("form_error");
+      return false;
+     } 
 
 
 

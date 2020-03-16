@@ -351,7 +351,7 @@ public function receipt_payment_action(){
                               for ($i=0; $i <count($dataArry['listaccountid']) ; $i++) { 
 
 
-                              	   $vouchrDtlCus['voucher_master_id'] = $vMastId;
+                             $vouchrDtlCus['voucher_master_id'] = $vMastId;
 			                       $vouchrDtlCus['srl_no'] = $sl++;
 			                       $vouchrDtlCus['tran_tag'] ='Cr' ;
 			                       $vouchrDtlCus['account_master_id'] = $acdroplist[$i];
@@ -422,7 +422,7 @@ public function receipt_payment_action(){
                         $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => "Saved successfully",
-                            "mode" => "ADD"
+                            "voucher_no" => $voucher_no
                         );
                     }
                     else

@@ -200,10 +200,19 @@ $(document).on('submit','#receiptPaymentFrom',function(event)
                 data: formData,
                 
                 success: function (result) {
+                    $("#loaderbtn").css('display', 'none');
 
                     if (result.msg_status == 1) {
 
-                    window.location.replace(basepath+'receiptpayment');
+                   // window.location.replace(basepath+'receiptpayment');
+                        if (mode=='ADD') {
+                           $("#voucher_no").val(result.voucher_no);
+                           $("#response_msg").text(result.msg_data);
+                           $("#voucher_no").focus();
+                        }else{
+                           window.location.replace(basepath+'receiptpayment');
+                        }
+                     
 
                     } 
                     else {

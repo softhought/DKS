@@ -8,6 +8,7 @@
                     <th>Month</th>
                     <th>Category</th>
                     <th>Amount</th>
+                    <th>Action</th>
                   
           
                 </thead>
@@ -30,7 +31,10 @@
                    <td><?php echo $billlist->month_name; ?></td>
                    <td><?php echo $billlist->category_name; ?></td>
                    <td align="right"><?php echo $billlist->net_amount; ?></td>
-                   
+                   <td>
+                     <span  class="btn tbl-action-btn btn-xs receivableDtl" data-toggle="modal" data-target="#billModalDetails" id="bill_dtl_btn"
+                    data-billid="<?php echo $billlist->bill_id; ?>"   ><i class="fas fa-cog"></i> </span>
+                   </td>
                   
                
                 

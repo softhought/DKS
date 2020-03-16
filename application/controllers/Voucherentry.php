@@ -10,8 +10,6 @@ class Voucherentry extends CI_Controller {
           
     }
 
-
-
 public function index()
 {
     $session = $this->session->userdata('user_detail');
@@ -315,7 +313,8 @@ public function addAmountDetail()
                         $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => "Saved successfully",
-                            "mode" => "ADD"
+                            "mode" => "ADD",
+                            "voucher_no" => $voucher_no
                         );
                     }
                     else
