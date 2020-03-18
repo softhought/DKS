@@ -2,6 +2,20 @@ $(document).ready(function(){
  	
  var basepath = $("#basepath").val();
 
+ var selectedCode = $('#sel_rawmeterial').find('option:selected');
+        $("#sel_unit").val(selectedCode.data('unitname'));
+
+     $(document).on('change', '#sel_rawmeterial', function() {
+
+        var selectedCode = $('#sel_rawmeterial').find('option:selected');
+        $("#sel_unit").val(selectedCode.data('unitname'));
+        console.log(selectedCode);
+  
+       
+
+
+    });
+
 
 
  $(document).on('submit', '#rawMeterialRateFrom', function(e) {

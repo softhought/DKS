@@ -78,7 +78,7 @@ public function addRawmeterialrate(){
               $result['cgstrate'] = $this->rawmeterialratemodel->getGSTrate($company,$year,$type='CGST',$usedfor='O');
               $result['sgstrate'] = $this->rawmeterialratemodel->getGSTrate($company,$year,$type='SGST',$usedfor='O');
                 
-             $result['rawmeterialList'] = $this->commondatamodel->getAllRecordOrderBy('raw_meterial_master','name','asc');
+             $result['rawmeterialList'] = $this->rawmeterialratemodel->getAllRawmeterial();
             // pre($result['mainGroupList'] );exit;
 
             $header = "";
@@ -135,7 +135,7 @@ public function rawmeterialrate_action(){
                 // $vendor_array_before_upd = $this->commondatamodel->getSingleRowByWhereCls('raw_meterial_master',$whereAry); 
                   $rawmeterialrate_master_upd = array(
                                           'rawmeterial_id' => $sel_rawmeterial, 
-                                          'unit_id' => $sel_unit, 
+                                       
                                           'supplier_id' => $sel_supplier, 
                                           'rate' => $rate, 
                                           'cgst_id' => $cgst_rate, 
@@ -185,7 +185,7 @@ public function rawmeterialrate_action(){
 
               $rawmeterial_rate_master = array(
                                            'rawmeterial_id' => $sel_rawmeterial,  
-                                          'unit_id' => $sel_unit, 
+                                           
                                           'supplier_id' => $sel_supplier, 
                                           'rate' => $rate, 
                                           'cgst_id' => $cgst_rate, 

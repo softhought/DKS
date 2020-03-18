@@ -11,7 +11,14 @@ public function __construct() {
        
     }
 
-  function activity_log(){
+
+function index(){
+
+
+
+}
+
+function activity_log(){
 
   $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
@@ -37,4 +44,49 @@ public function __construct() {
   }
 
 
-}
+  function send_sms(){
+
+    $phone='7003319369';
+    $msg='softhought';
+    
+    $dks_user = "dkssms";
+    $dks_password = "dks1928";
+    
+    $dks_url = "http://5.189.187.82/sendsms/bulk.php?";
+    //$mantra_from = "manl";
+    $type='TEXT';
+    $sender = "DKSSMS";
+    $mantra_udh = 0;
+
+      $url = 'username='.$dks_user;
+      $url.= '&password='.$dks_password;
+      $url.= '&type='.$type;
+      $url.= '&sender='.$sender;
+      $url.= '&mobile='.urlencode($phone);
+      $url.= '&message='.urlencode($msg);
+      // $url.= '&dlr-mask=19&dlr-url*';
+
+      $urltouse =  $dks_url.$url;
+
+
+     echo $file = file_get_contents($urltouse);
+      if ($file=="Sent.")
+      {
+          $response="Y";
+      }
+      else
+      {
+          $response="N";
+      }
+
+      return($response);
+
+
+
+  }
+
+
+
+
+
+} // end of class

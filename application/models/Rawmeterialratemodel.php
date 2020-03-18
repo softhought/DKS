@@ -83,6 +83,34 @@ public function getAllRawMeterialrateList()
 	}
 
 
+	public function getAllRawmeterial()
+	{
+		$data = array();
+		$where=[];
+		$this->db->select("raw_meterial_master.*,unit_master.item_unit_name")
+				->from('raw_meterial_master')
+				->where($where)
+				->join('unit_master','unit_master.unit_id = raw_meterial_master.unit_id','LEFT')
+				->order_by("name", "asc");
+		$query = $this->db->get();
+		#echo $this->db->last_query();
+
+		if($query->num_rows()> 0)
+		{
+            foreach ($query->result() as $rows)
+			{
+				$data[] = $rows;
+            }
+            return $data;
+             
+        }
+		else
+		{
+             return $data;
+         }
+	}
+
+
 
 
 

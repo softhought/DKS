@@ -38,6 +38,7 @@
                             <option value="">Select</option>
                             <?php foreach ($bodycontent['rawmeterialList'] as $rawmeteriallist) { ?>
                             <option value="<?php echo $rawmeteriallist->raw_meterial_id; ?>"
+                             data-unitname="<?php echo $rawmeteriallist->item_unit_name ?>"
                              <?php if($bodycontent['mode'] == 'EDIT'){
                                   if ($rawmeteriallist->raw_meterial_id==$bodycontent['rawmeterialrateEditdata']->rawmeterial_id) {
                                       echo "selected";
@@ -57,26 +58,14 @@
 
                 <div class="row">
                     <div class="col-md-4"></div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                            <label for="specialcoching">Unit</label>
-                            <div class="input-group input-group-sm" id="sel_uniterr">
-                            <select class="form-control select2" name="sel_unit" id="sel_unit" >
-                            <option value="">Select</option>
-                            <?php foreach ($bodycontent['unitList'] as $unitlist) { ?>
-                            <option value="<?php echo $unitlist->unit_id; ?>"
-                             <?php if($bodycontent['mode'] == 'EDIT'){
-                                  if ($unitlist->unit_id==$bodycontent['rawmeterialrateEditdata']->unit_id) {
-                                      echo "selected";
-                                  }
-                               } ?>
-                             >
-                            <?php echo $unitlist->item_unit_name; ?></option>
-                            <?php } ?>                          
-                            </select>
-                            </div>
-                            </div>
-                      </div>      
+                         <div class="col-md-4">
+                                <label for="groupname">Unit</label>
+                                  <div class="form-group">
+                                   <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" name="sel_unit" id="sel_unit" placeholder="Unit" value="<?php if($bodycontent['mode'] == 'EDIT'){ } ?>" readonly>
+                                </div>
+                              </div>
+                              </div>      
                 </div>
 
                   <div class="row">

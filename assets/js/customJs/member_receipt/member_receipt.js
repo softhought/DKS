@@ -1,13 +1,19 @@
 $(document).ready(function() {
 
     var basepath = $('#basepath').val();
+    $("#adm_block").hide();
+    $("#receivable_amt_block").hide();
 
     $(document).on('change', '#sel_member_code', function() {
 
         var selectedCode = $('#sel_member_code').find('option:selected');
         $("#member_name").val(selectedCode.data('name'));
         console.log(selectedCode);
-        resetNewMember();
+        var mode = $('#mode').val();
+        if (mode=='ADD') {
+             resetNewMember();
+        }
+       
 
 
     });
@@ -21,6 +27,39 @@ $(document).ready(function() {
         $('#cheque_bank_dtl').show();
     }
 
+    var mode = $('#mode').val();
+
+    if(mode=='EDIT'){
+
+         var tran_type = $('#tran_type').val();
+
+                 if (tran_type == "ORITM") {
+
+            $('#adm_block').css({ backgroundColor: '#fff' });
+            $('#receivable_block').css({ backgroundColor: '#f7eeee' });
+            $('#item_block').css({ backgroundColor: '#f7eeee' });
+            $("#adm_block").hide();
+            $("#receivable_amt_block").hide();
+
+        } else if (tran_type == "RCFM") {
+
+            $('#receivable_block').css({ backgroundColor: '#f7eeee' });
+            $('#adm_block').css({ backgroundColor: '#fff' });
+            $('#item_block').css({ backgroundColor: '#fff' });
+            $("#adm_block").hide();
+              $("#receivable_amt_block").show();
+
+        }else if (tran_type == "ORADM") {
+            $("#adm_block").show();
+            $("#receivable_amt_block").hide();
+            $('#receivable_block').css({ backgroundColor: '#ffff' });
+            $('#adm_block').css({ backgroundColor: '#f7eeee' });
+            $('#item_block').css({ backgroundColor: '#f7eeee' });
+
+        }
+
+    }
+
 
 
 
@@ -28,15 +67,28 @@ $(document).ready(function() {
 
         var tran_type = $(this).val();
 
-        if (tran_type == "ORADM" || tran_type == "ORITM") {
+        if (tran_type == "ORITM") {
 
-            $('#adm_block').css({ backgroundColor: '#f7eeee' });
-            $('#other_block').css({ backgroundColor: '#fff' });
+            $('#adm_block').css({ backgroundColor: '#fff' });
+            $('#receivable_block').css({ backgroundColor: '#f7eeee' });
+            $('#item_block').css({ backgroundColor: '#f7eeee' });
+            $("#adm_block").hide();
+            $("#receivable_amt_block").hide();
 
         } else if (tran_type == "RCFM") {
 
-            $('#other_block').css({ backgroundColor: '#f7eeee' });
+            $('#receivable_block').css({ backgroundColor: '#f7eeee' });
             $('#adm_block').css({ backgroundColor: '#fff' });
+            $('#item_block').css({ backgroundColor: '#fff' });
+            $("#adm_block").hide();
+              $("#receivable_amt_block").show();
+
+        }else if (tran_type == "ORADM") {
+            $("#adm_block").show();
+            $("#receivable_amt_block").hide();
+            $('#receivable_block').css({ backgroundColor: '#ffff' });
+            $('#adm_block').css({ backgroundColor: '#f7eeee' });
+            $('#item_block').css({ backgroundColor: '#f7eeee' });
 
         }
 
@@ -163,6 +215,8 @@ $(document).ready(function() {
     $(document).on('submit', '#memberreceiptForm', function(e) {
         e.preventDefault();
 
+         var mode = $('#mode').val();
+
         $("#error_msg").html('');
         if (validateMemberReceipt()) {
 
@@ -185,7 +239,11 @@ $(document).ready(function() {
                 success: function(data) {
                     if (data.msg_status == 1) {
 
+
+
                         $('#memberreceiptForm').trigger("reset");
+
+                        if (mode=='ADD') {
                         Swal.fire({
                             title: 'Receipt No : ' + data.receipt_no,
                             text: "Want to print",
@@ -212,6 +270,12 @@ $(document).ready(function() {
                                 window.location.replace(basepath + 'memberreceipt/addReceipt');
                             }
                         });
+
+
+                    }
+
+
+
 
                     } else {
 
@@ -426,6 +490,19 @@ function validateMemberReceipt() {
     }
 
 
+    if (actobedebited == '') {
+        $("#actobedebitederr").addClass("form_error");
+        return false;
+    }
+
+
+    if (actobecredited == '') {
+        $("#actobecreditederr").addClass("form_error");
+
+        return false;
+    }
+
+
 
     if (tran_type == 'RCFM') {
 
@@ -489,17 +566,6 @@ function validateMemberReceipt() {
 
 
 
-    if (actobedebited == '') {
-        $("#actobedebitederr").addClass("form_error");
-        return false;
-    }
-
-
-    if (actobecredited == '') {
-        $("#actobecreditederr").addClass("form_error");
-
-        return false;
-    }
 
 
 
@@ -520,7 +586,7 @@ function resetNewMember() {
 
     $('#sel_member_category').val('').change();
     $('#first_name,#last_name,#new_member_code').val('');
-    $('#adm_fees,#sub_coach_fees,#service_tax,#total_amount').val('');
+    $('#adm_fees,#sub_coach_fees,#cgst_amt,#sgst_amt,#total_amount').val('');
 
 }
 

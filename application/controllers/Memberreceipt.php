@@ -17,7 +17,7 @@ public function index()
   $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
-          $page = "dashboard/member_receipt/member_receipt_list.php";
+        $page = "dashboard/member_receipt/member_receipt_list.php";
         $header="";       
         $company=$session['companyid'];
         $year=$session['yearid'];
@@ -26,9 +26,9 @@ public function index()
          $result['accountingyear'] = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where);
          $from_dt=$result['accountingyear']->start_date;
          $to_dt=$result['accountingyear']->end_date;
-        $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
-        $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
-        $member_id='All';
+         $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
+         $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+         $member_id='All';
 
         $result['memberReceiptList'] = $this->memberreceiptmodel->getMemberReceiptList($from_dt,$to_dt,$member_id);
 

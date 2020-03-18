@@ -24,6 +24,7 @@
 
   #cheque_bank_dtl{
     display: none;
+    margin-left: 10px;
   }
 
 
@@ -150,6 +151,126 @@
                             </div>
                           </div>
                  </div><!-- end of col-md-3 -->
+
+                   <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="code">(A/C to be debited)</label>
+                            <div class="input-group input-group-sm" id="actobedebitederr">
+                              <select class="form-control select2" name="actobedebited" id="actobedebited"  style="width: 100%;">
+                              <option value="">Select</option>
+                              <?php
+                              foreach ($bodycontent['acTobeDebited'] as $actobedebited) {
+                              
+                               ?>
+                               <option value="<?php echo $actobedebited->id;?>"
+                                <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->dr_ac_id==$actobedebited->id){echo "selected";}
+                              }
+                              ?>
+                               ><?php echo $actobedebited->payment_mode;?></option>
+
+                              <?php } ?>
+                            
+                            </select>
+                            </div>
+                          </div>
+                  </div>
+
+
+                  <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="code">A/C to be credited</label>
+                            <div class="input-group input-group-sm" id="actobecreditederr">
+                              <select class="form-control select2" name="actobecredited" id="actobecredited"  style="width: 100%;">
+                              <option value="">Select</option>
+                              <?php
+                              foreach ($bodycontent['actobeCreditedList'] as $actobecredited) {
+                              
+                               ?>
+                               <option value="<?php echo $actobecredited->account_id;?>"
+                                <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->dr_ac_id==$actobecredited->id){echo "selected";}
+                              }
+                              ?>
+                               ><?php echo $actobecredited->account_name;?></option>
+
+                              <?php } ?>
+                            
+                            </select>
+                            </div>
+                          </div>
+                       </div>
+
+       <div id="cheque_bank_dtl">
+                    <span class="frm_header form-block-subtitle"><i class="fas fa-angle-right"></i> Cheque In Hand Details</span>
+                    <div class="row" >
+                    <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="firstname">Bank</label>
+                            <div class="input-group input-group-sm">
+                            <input type="text" class="form-control forminputs " id="bank" name="bank" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                echo $bodycontent['receiptEditdata']->bank;
+                              }
+                              ?>" >
+                            </div>
+
+                          </div>
+                     </div><!-- end of col-md-3 -->
+                     <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="firstname">Branch</label>
+                            <div class="input-group input-group-sm">
+                            <input type="text" class="form-control forminputs " id="branch" name="branch" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                echo $bodycontent['receiptEditdata']->branch;
+                              }
+                              ?>"  >
+                            </div>
+
+                          </div>
+                     </div><!-- end of col-md-3 -->
+                      <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="firstname">Cheque No.</label>
+                            <div class="input-group input-group-sm">
+                            <input type="text" class="form-control forminputs " id="cheque_no" name="cheque_no" placeholder="" autocomplete="off" value="<?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                echo $bodycontent['receiptEditdata']->cheque_no;
+                              }
+                              ?>">
+                            </div>
+
+                          </div>
+                     </div><!-- end of col-md-3 -->
+
+                      <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="firstname">Cheque Date.</label>
+                             <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="cheque_dt" id="cheque_dt" value="<?php if($bodycontent['mode'] == 'EDIT'){
+                              if ($bodycontent['receiptEditdata']->cheque_dt!='') {
+                                echo date("d/m/Y", strtotime($bodycontent['receiptEditdata']->cheque_dt));
+                              }
+                            
+                             }?>">
+                          </div>
+
+                          </div>
+                     </div><!-- end of col-md-3 -->
+                      
+
+                    </div>
+
+                    </div>
+
+
+                       
            
 
               </div>
@@ -159,7 +280,7 @@
               <fieldset class="scheduler-border formblock-box"> 
                <div class="row">
                 <div class="col-md-1"></div>
-                 <div class="col-md-4" id="other_block">
+                 <div class="col-md-4" id="receivable_block">
                     <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Regular</h3>
 
              
@@ -208,7 +329,7 @@
 
 
 
-                          <div class="form-group">
+                          <div class="form-group" id="receivable_amt_block">
                             <label for="firstname">Amount</label>
                             <div class="input-group input-group-sm">
                             <input type="text" class="form-control forminputs " id="amount" name="amount" placeholder="" autocomplete="off" value="<?php 
@@ -235,9 +356,11 @@
               
                  </div>
                   <div class="col-md-2"></div>
-                 <div class="col-md-4" id="adm_block">
+                 <div class="col-md-4" >
                   <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> New membership & Items</h3>
 
+
+                    <div id="adm_block">
                    <div class="row">
                                <div class="col-md-12">
                                       <div class="form-group ">
@@ -336,6 +459,12 @@
                                </div>
                            </div>
 
+
+                           </div>
+
+
+
+                           <div id="item_block">
                            <div class="row">
                                <div class="col-md-6">
                                    <div class="form-group">
@@ -456,7 +585,7 @@
                                </div>
                            </div>
 
-
+                           </div>
 
 
                           
@@ -473,153 +602,9 @@
 
      
   <fieldset class="scheduler-border formblock-box"> 
-  <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Accounting Treatment </h3>
-    <!-- <legend class="scheduler-border">Payment Details</legend> -->
-              <!--    <span class="frm_header"></span> -->
-                 <div class="row">
-                 
-               <?php
-                          // testing data it will be call from databese account map table
-                          // $acTobeDebited = array(
-                          //                         '1' =>"CASH IN HAND" , 
-                          //                         '2' =>"CHEQUE IN HAND" , 
-                          //                         '3' =>"DEBIT CARD" , 
-                          //                         '4' =>"CREDIT CARD" 
-                          //                         );
-
-                  ?>
-
-              
-             <div class="col-md-2"></div>
-                  <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="code">(A/C to be debited)</label>
-                            <div class="input-group input-group-sm" id="actobedebitederr">
-                              <select class="form-control select2" name="actobedebited" id="actobedebited"  style="width: 100%;">
-                              <option value="">Select</option>
-                              <?php
-                              foreach ($bodycontent['acTobeDebited'] as $actobedebited) {
-                              
-                               ?>
-                               <option value="<?php echo $actobedebited->id;?>"
-                                <?php 
-                               if($bodycontent['mode'] == 'EDIT'){ 
-                                if($bodycontent['receiptEditdata']->dr_ac_id==$actobedebited->id){echo "selected";}
-                              }
-                              ?>
-                               ><?php echo $actobedebited->payment_mode;?></option>
-
-                              <?php } ?>
-                            
-                            </select>
-                            </div>
-                          </div>
-                  </div>
 
 
-                       <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="code">A/C to be credited</label>
-                            <div class="input-group input-group-sm" id="actobecreditederr">
-                              <select class="form-control select2" name="actobecredited" id="actobecredited"  style="width: 100%;">
-                              <option value="">Select</option>
-                              <?php
-                              foreach ($bodycontent['actobeCreditedList'] as $actobecredited) {
-                              
-                               ?>
-                               <option value="<?php echo $actobecredited->account_id;?>"
-                                <?php 
-                               if($bodycontent['mode'] == 'EDIT'){ 
-                                if($bodycontent['receiptEditdata']->dr_ac_id==$actobecredited->id){echo "selected";}
-                              }
-                              ?>
-                               ><?php echo $actobecredited->account_name;?></option>
-
-                              <?php } ?>
-                            
-                            </select>
-                            </div>
-                          </div>
-                       </div>
-
-
-                        
-
-            
-
-                 </div>
-
-            
-               
-
-                  <div id="cheque_bank_dtl">
-                    <span class="frm_header form-block-subtitle"><i class="fas fa-angle-right"></i> Cheque In Hand Details</span>
-                    <div class="row" >
-                    <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="firstname">Bank</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="bank" name="bank" placeholder="" autocomplete="off" value="<?php 
-                               if($bodycontent['mode'] == 'EDIT'){ 
-                                echo $bodycontent['receiptEditdata']->bank;
-                              }
-                              ?>" >
-                            </div>
-
-                          </div>
-                     </div><!-- end of col-md-3 -->
-                     <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="firstname">Branch</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="branch" name="branch" placeholder="" autocomplete="off" value="<?php 
-                               if($bodycontent['mode'] == 'EDIT'){ 
-                                echo $bodycontent['receiptEditdata']->branch;
-                              }
-                              ?>"  >
-                            </div>
-
-                          </div>
-                     </div><!-- end of col-md-3 -->
-                      <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="firstname">Cheque No.</label>
-                            <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="cheque_no" name="cheque_no" placeholder="" autocomplete="off" value="<?php 
-                               if($bodycontent['mode'] == 'EDIT'){ 
-                                echo $bodycontent['receiptEditdata']->cheque_no;
-                              }
-                              ?>">
-                            </div>
-
-                          </div>
-                     </div><!-- end of col-md-3 -->
-
-                      <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="firstname">Cheque Date.</label>
-                             <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                            </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="cheque_dt" id="cheque_dt" value="<?php if($bodycontent['mode'] == 'EDIT'){
-                              if ($bodycontent['receiptEditdata']->cheque_dt!='') {
-                                echo date("d/m/Y", strtotime($bodycontent['receiptEditdata']->cheque_dt));
-                              }
-                            
-                             }?>">
-                          </div>
-
-                          </div>
-                     </div><!-- end of col-md-3 -->
-                      
-
-                    </div>
-
-                    </div>
-                    </fieldset>
-
-              <fieldset class="scheduler-border formblock-box">
+             
                         <div class="row">
                           <div class="col-md-8">
                                   <div class="form-group">
@@ -637,7 +622,7 @@
                     </div>
 
 
-                     </fieldset> 
+                    
 
 
 
