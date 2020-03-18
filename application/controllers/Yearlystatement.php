@@ -31,7 +31,8 @@ public function index()
         $result['catogaryList'] = $this->commondatamodel->getAllRecordWhereOrderBy('member_catogary_master',[],$orderby_cat);
 
         $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
-        $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+        //$result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+        $result['memberList'] = $this->yearlystatementmodel->getallmembercode();
        //  pre($result['memberList']);exit;
 
         createbody_method($result, $page, $header, $session);
@@ -42,8 +43,8 @@ public function index()
 }
 
 
-  public function getYearlyStatementByMonth(){
-
+public function getYearlyStatementByMonth(){
+    
     $session = $this->session->userdata('user_detail');
         if($this->session->userdata('user_detail'))
         {

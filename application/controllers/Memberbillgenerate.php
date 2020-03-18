@@ -1,4 +1,4 @@
-<?php
+ <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Memberbillgenerate extends CI_Controller {
@@ -12,7 +12,8 @@ class Memberbillgenerate extends CI_Controller {
 
 public function index()
 {
-    $session = $this->session->userdata('user_detail');
+
+  $session = $this->session->userdata('user_detail');
 	if($this->session->userdata('user_detail'))
 	{  
         $page = "dashboard/member_bill/member_bill_list.php";
@@ -350,6 +351,13 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
         $insertdata = $this->commondatamodel->insertSingleTableData('member_bill_master',$member_bill_inst);
 
 
+
+
+
+
+
+
+
             /* insert monthly opening */
 
          
@@ -357,8 +365,9 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
             $nextmonth=(int)$month+1;
 
               $nxtyear_id = $this->memberbillmodel->checkNextYearExist($year)->year_id;
+                     
        
-            $this->insertMonthlyopening($member_id,$netAmount,$nextmonth,$nxtyear_id,$company);
+            $this->insertMonthlyopening($member_id,$netAmount,$nextmonth,$nxtyear_id,$company,$bill_dt);
 
         }else{
 
@@ -369,7 +378,7 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
             }
 
 
-            $this->insertMonthlyopening($member_id,$netAmount,$nextmonth,$year,$company);
+            $this->insertMonthlyopening($member_id,$netAmount,$nextmonth,$year,$company,$bill_dt);
         }
 
       
@@ -628,7 +637,7 @@ public function minimumBillingAmount($member_id,$month,$year,$company){
 
 
 
-function insertMonthlyopening($member_id,$opening_balance,$month_id,$year_id,$company_id){
+function insertMonthlyopening($member_id,$opening_balance,$month_id,$year_id,$company_id,$bill_dt){
 
     $delete_where = array(
                             'member_monthly_opening.member_id' => $member_id,
@@ -640,14 +649,13 @@ function insertMonthlyopening($member_id,$opening_balance,$month_id,$year_id,$co
 
    $deletedata = $this->commondatamodel->deleteTableData('member_monthly_opening',$delete_where);
 
-
-
    $insert_array = array(
                             'member_monthly_opening.open_bal' => $opening_balance,
                             'member_monthly_opening.member_id' => $member_id,
                             'member_monthly_opening.month_id' => $month_id,
                             'member_monthly_opening.year_id' => $year_id,
                             'member_monthly_opening.company_id' => $company_id,
+                            'member_monthly_opening.previous_month_bill_date' => $bill_dt,
                          );
 
    $insert = $this->commondatamodel->insertSingleTableData('member_monthly_opening',$insert_array);

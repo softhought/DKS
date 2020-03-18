@@ -35,7 +35,7 @@ public function getAllRawMeterialrateList()
 							")
 				->from('raw_meterial_rate')
 				->join('raw_meterial_master','raw_meterial_master.raw_meterial_id = raw_meterial_rate.rawmeterial_id','LEFT')
-				->join('unit_master','unit_master.unit_id = raw_meterial_rate.unit_id','LEFT')
+				->join('unit_master','unit_master.unit_id = raw_meterial_master.unit_id','LEFT')
 				->join('vendor_master','vendor_master.vendor_id = raw_meterial_rate.supplier_id','LEFT')
 				->where($where);
 		$query = $this->db->get();

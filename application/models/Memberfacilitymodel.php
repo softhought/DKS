@@ -325,12 +325,12 @@ public function getAllBenvolentFundList($yearid,$companyid,$member_code,$cat_id,
 
 
 
-  public function getAllMemberListByCategory($category)
-  {
+public function getAllMemberListByCategory($category)
+{
     $data = array();
       $where = array(
-                            'member_master.category' => $category
-                        );
+                      'member_master.category' => $category
+                    );
     
     $this->db->select("
                         member_master.*,
@@ -357,7 +357,9 @@ public function getAllBenvolentFundList($yearid,$companyid,$member_code,$cat_id,
     {
              return $data;
          }
-  }
+
+
+}
 
 
   public function getAllDevelopmentFeeList($yearid,$companyid,$member_code,$cat_id,$month_id)

@@ -55,7 +55,7 @@ class Purchaseordermodel extends CI_Model{
 	{
 		$data = array();
 		$where = array(
-						'rawmeterial_id' => $rawmeterial_id,
+						'raw_meterial_master.raw_meterial_id' => $rawmeterial_id,
 						'supplier_id' => $vendor_id,
 					   );
 		$this->db->select("raw_meterial_rate.*,unit_master.item_unit_name,cgst.rate AS cgst_rate,sgst.rate AS sgst_rate")

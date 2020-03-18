@@ -375,6 +375,13 @@ function rawMeterialRateData(){
 
                     } 
                     else {
+
+                      $('#unit').val('');
+                      $('#rate').val('');
+                      $('#cgst_rate').val('');
+                      $('#sgst_rate').val('');
+                      $('#cgst_rate_id').val('');
+                      $('#sgst_rate_id').val('');
                      
                     }
                    
