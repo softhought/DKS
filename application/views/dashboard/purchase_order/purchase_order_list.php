@@ -27,8 +27,8 @@
             <div class="card-header box-shdw">
               <h3 class="card-title">Purchase Order Register</h3>
                <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
-                  <a href="<?php echo base_url(); ?>partybill/addPartyBill" class="btn btn-info btnpos">
-                  <i class="fas fa-plus"></i> Add </a> 
+                  <a href="<?php echo base_url(); ?>purchaseorder/addPurchaseorder" class="btn btn-info btnpos">
+              <i class="fas fa-plus"></i> Add </a>
                 </div>
       
        
