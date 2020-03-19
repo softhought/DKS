@@ -14,7 +14,10 @@ public function __construct() {
 
 function index(){
 
-
+        $mobile='7003319369';
+        $message='COVID-19';
+        $module='TEST';
+        send_sms($mobile,$message,$module);
 
 }
 
@@ -68,11 +71,14 @@ function activity_log(){
 
       $urltouse =  $dks_url.$url;
 
+      $file = file_get_contents($urltouse);
+      $status = explode(" | ",$file);
 
-     echo $file = file_get_contents($urltouse);
-      if ($file=="Sent.")
+
+      if($status[0]=='SUBMIT_SUCCESS')
       {
           $response="Y";
+
       }
       else
       {

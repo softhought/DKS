@@ -128,23 +128,33 @@
               </div>
 
               <div class="row">
-              <div class="col-sm-10">
+              <div class="col-sm-8">
                   <div class="form-group">
-         <label for="specialcoching">&nbsp;</label>
-          <div class="input-group input-group-sm">
-          <button type="submit" class="btn btn-sm action-button" id="noticeApplybtn">Notice</button>
-          </div>
-     </div>
+                     <label for="specialcoching">&nbsp;</label>
+                      <div class="input-group input-group-sm">
+                      <button type="submit" class="btn btn-sm action-button" id="noticeApplybtn">Reminder Notice</button>
+                      </div>
+                 </div>
               </div>
 
-                 <div class="col-sm-2">
+                <div class="col-sm-2">
+                     <div class="form-group">
+                            <label for="firstname">&nbsp;</label>
+                            <div class="input-group input-group-sm">
+                              <button type="button" class="btn btn-block action-button btn-sm noprint" id="defaulterprintbtn" style="width: 60%;">Print</button>
+                            </div>
+                          </div>
+              </div>
+
+              <div class="col-sm-2">
                      <div class="form-group">
                             <label for="firstname">&nbsp;</label>
                             <div class="input-group input-group-sm">
                               <button type="button" class="btn btn-block action-button btn-sm noprint" id="defaultershowbtn" style="width: 60%;">Show</button>
                             </div>
                           </div>
-                  </div>
+              </div>
+
               </div>
 
               </div>
@@ -165,7 +175,7 @@
                    <img src="<?php echo base_url(); ?>assets/img/loader.gif" width="90" height="90" id="gear-loader" style="margin-left: auto;margin-right: auto;"/>
                    <span style="color: #bb6265;">Loading...</span>
                </div>
-              <div id="memberbill_list_data" >
+              <div id="memberbill_list_data" style="max-height: 400px;overflow-y:scroll;" >
              
               </div>
 

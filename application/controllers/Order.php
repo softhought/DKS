@@ -18,7 +18,7 @@ class Order extends CI_Controller {
 			$page = "dashboard/order/kot_bot_list";
 			$header=""; 
 			$company=$session['companyid'];
-            $year=$session['yearid'];
+      $year=$session['yearid'];
 			$result = [];
 			$category='CAT';
 			$result['itemlist'] = $this->ordermodel->getAllItemByCategory($category);
@@ -247,6 +247,8 @@ public function order_action(){
            $old_description[0] = $this->ordermodel->getOrderMasterData($orderId);
            $old_description[1] = $this->ordermodel->getOrderDetailsBymasterId($orderId);
 
+       
+
 
                      $order_mst_array = array(  
                                           'order_date' => $order_dt,       
@@ -337,9 +339,18 @@ public function order_action(){
                 } // end if mode
                 else
                 {
+
                     /*  ADD MODE
                      *  -----------------
                     */
+
+           $where_loc = array('location_master.location_id' => $sel_location);
+           $result['location'] = $this->commondatamodel->getSingleRowByWhereCls('location_master',$where_loc)->location;
+
+           $where_mem = array('member_master.member_id' => $sel_member_code);
+           $member_mobile = $this->commondatamodel->getSingleRowByWhereCls('member_master',$where_mem)->mobile;
+
+         
 
                $nextserial = $this->ordermodel->getOrderSerial($item_category,$order_dt);
                $order_no = $item_category."/".$nextserial;
@@ -378,8 +389,8 @@ public function order_action(){
                   $is_free = $dataArry['isFree'];
                   $manualkot = $dataArry['manualkot'];
                
-                   $activity_description[] = json_encode($order_mst_array);
-                	for ($i=0; $i < count($dataArry['oitemid']); $i++) { 
+                  $activity_description[] = json_encode($order_mst_array);
+                	for($i=0; $i < count($dataArry['oitemid']); $i++) { 
 
                 $order_details_array = array(
                 										'order_mst_id' => $insertId,
@@ -406,6 +417,20 @@ public function order_action(){
                   $activity_description = json_encode($activity_description);
                 	
                      $this->insertActivity($activity_description,NULL,$insertId,"Insert");
+
+
+                     /* send sms */
+
+                      $sms_message = "Invoice for Rs. ".$totaltobepaid." dtd ".date("d-m-Y",strtotime($order_dt))." has been debited to your account for usages at ".$result['location'];
+
+                      if ($member_mobile!='') {
+
+                          $module='KOT/BOT';
+                         // send_sms($member_mobile,$sms_message,$module);
+                      }
+
+                    
+
 
                     if($insertId)
                     {

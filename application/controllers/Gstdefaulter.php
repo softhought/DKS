@@ -76,7 +76,7 @@ public function getDefaluterMemberList(){
         $result['billList'] = $this->gstdefaultermodel->getBillingDefaulterList($sel_member,$category,$month,$year,$company,$firstdate,$notice_date,$equal_above);
       
        // pre($result['billList']);exit;
-         $page = "dashboard/gstdefaulter/member_bill_list_partial_view.php"; 
+         $page = "dashboard/gstdefaulter/defaulter_notice_pdf_list_view"; 
 
           $this->load->view($page,$result);
 
@@ -157,7 +157,7 @@ public function getDefaluterMemberList(){
 
              $result['billList'] = $this->gstdefaultermodel->getSelectedDefaulterListNotice($memberids,$month,$year,$company,$firstdate,$notice_date,$equal_above);
 
-            // pre($result['billList']);
+             //pre($result['billList']);exit;
       
 
 

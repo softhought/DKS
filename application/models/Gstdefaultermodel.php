@@ -207,7 +207,7 @@ public function getMemberBillMasterData($member_id,$month,$year,$company)
 		// 	echo "<br>".$this->db->last_query();exit;
 		// }
 
-		#echo "<br>".$this->db->last_query();exit;
+		#echo "<br>".$this->db->last_query();
 		
 		
 		if($query->num_rows()> 0)
@@ -392,50 +392,50 @@ public function getSelectedDefaulterListNotice($member_ids,$month,$year,$company
             foreach ($query->result() as $rows)
             {
             		$billAmount=0;$paidAmount=0;$correctionAmount=0;$dispatchdate=NULL;$outstanding=0;
-            		//$billData=$this->getMemberBillMasterData($rows->member_id,$month,$year,$company);
-            		$billData=$this->getMonthBillDataOpeningMonthlyData($rows->member_id,$month,$year,$company);
+            		$billData=$this->getMemberBillMasterData($rows->member_id,$month,$year,$company);
+            		
             		 if ($billData) {
-                         $billAmount=$billData->open_bal;
-                         if ($billData->previous_month_bill_date!='') {
-                         	  $dispatchdate=date("M-Y", strtotime($billData->previous_month_bill_date));
+                         $billAmount=$billData->net_amount;
+                         if ($billData->bill_date!='') {
+                         	  $dispatchdate=date("M-Y", strtotime($billData->bill_date));
                          }
                        
                          }
 
-            		$PaidAmt=$this->getMemberReceiptAmount($rows->member_id,$year,$company,$firstdate,$notice_date);
 
-            		if ($PaidAmt) { 
-                         $paidAmount=$PaidAmt->taxable_total;
-                    }
+		            if ($month=='12') {
+		                $nextmonth=1;  
+		            }else{
+		            	$nextmonth=$month+1;  
+		                if ($month=='3') {
+		                	 $year=$year+1;
+		                }
+		            }
+		            $billAmountNext='';$dispatchdateNext=NULL;
+            	 
+					$billDataNext=$this->getMemberBillMasterData($rows->member_id,$nextmonth,$year,$company);
+					 if ($billDataNext) {
+                         $billAmountNext=$billDataNext->net_amount;
+                         if ($billDataNext->bill_date!='') {
+                         	  $dispatchdateNext=date("M-Y", strtotime($billDataNext->bill_date));
+                         }
+                       
+                         }
 
-            		$CorrectionAmt=$this->getCorrectionAmount($rows->member_id,$year,$company,$firstdate,$notice_date);
-            		if($CorrectionAmt) { 
-                           $correctionAmount=$CorrectionAmt->total_amount;
-                        }
-
-                   $outstanding= $billAmount-$paidAmount+$correctionAmount ;   
-
-               // $data[] = $rows;
-            	 // $data[]=[
-              //     "memberData"=>$rows,
-              //     "billData"=>$this->getMemberBillMasterData($rows->member_id,$month,$year,$company),
-              //     "PaidAmt"=>$this->getMemberReceiptAmount($rows->member_id,$year,$company,$firstdate,$notice_date),
-              //     "CorrectionAmt"=>$this->getCorrectionAmount($rows->member_id,$year,$company,$firstdate,$notice_date)
-              //     ];
-
-                   if ($equal_above<=$outstanding) {
+                         $dailyBalance = $this->getDailyBalanceByMemberId($rows->member_id)->daily_balance;
                   
 		            		$data[]=[
 		                  "memberData"=>$rows,
-		                  "billAmount"=>$billAmount,
-		                  "dispatchDate"=>$dispatchdate,
-		                  "paidAmount"=>$paidAmount,
-		                  "adjustmentAmount"=>$correctionAmount,
-		                  "outstandingAmount"=>$outstanding,
-		                  
+		                  "selMonthbillAmount"=>$billAmount,
+		                  "selMonthdispatchDate"=>$dispatchdate,
+		                  "nxtMonthbillAmount"=>$billAmountNext,
+		                  "nxtMonthdispatchDate"=>$dispatchdateNext,
+		                  "dailyBalance"=>$dailyBalance,
+		               
+		                 
 		                  ];
 
-                    }
+                  
 
 
 
@@ -452,6 +452,35 @@ public function getSelectedDefaulterListNotice($member_ids,$month,$year,$company
 
 
 	}
+
+
+
+public function getDailyBalanceByMemberId($member_id)
+	{
+		$data = array();
+		$where = array('member_master.member_id' => $member_id);
+		$this->db->select("member_master.daily_balance")
+				->from('member_master')
+				->where($where)
+				->limit(1);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+	}
+
+
+
 
 
 
