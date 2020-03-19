@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KotBotPrint" language="groovy" pageWidth="595" pageHeight="421" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="687ead46-0bf3-4c85-b27d-161221840038">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KotBotPrint" language="groovy" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="687ead46-0bf3-4c85-b27d-161221840038">
 	<property name="ireport.zoom" value="1.2100000000000024"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -11,6 +11,7 @@
 	<parameter name="CompanyAddress" class="java.lang.String"/>
 	<parameter name="phone" class="java.lang.String"/>
 	<parameter name="orderId" class="java.lang.String"/>
+	<parameter name="print_dt" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   `order_master`.`order_no`,
@@ -457,13 +458,6 @@ WHERE `order_master`.`order_id` =$P{orderId} ]]>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy h.mm a">
-				<reportElement style="Column header" positionType="Float" x="0" y="31" width="254" height="20" uuid="dec4adf6-e770-471b-9ade-c046ece56c6f"/>
-				<textElement>
-					<font size="10" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<line>
 				<reportElement x="0" y="4" width="555" height="1" uuid="7c40ef5b-1b2c-45fb-949a-eedbfc0de828"/>
 			</line>
@@ -478,39 +472,43 @@ WHERE `order_master`.`order_id` =$P{orderId} ]]>
 				<text><![CDATA[Signature]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="210" y="9" width="44" height="18" uuid="decf42aa-c910-48e0-aa3a-b71d8ea33526"/>
+				<reportElement x="210" y="8" width="44" height="13" uuid="decf42aa-c910-48e0-aa3a-b71d8ea33526"/>
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{total_value}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="349" y="9" width="36" height="14" uuid="74a65195-8a18-49ff-a1ae-44bc9d9c9c04"/>
+				<reportElement x="344" y="8" width="41" height="14" uuid="74a65195-8a18-49ff-a1ae-44bc9d9c9c04"/>
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalcgst_amt}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="416" y="9" width="32" height="15" uuid="7fc43bd4-709b-4eb4-8103-e6f4ce2f45bb"/>
+				<reportElement x="412" y="8" width="36" height="15" uuid="7fc43bd4-709b-4eb4-8103-e6f4ce2f45bb"/>
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalsgst_amt}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="448" y="9" width="39" height="14" uuid="4691d683-caf2-4cc2-941e-9b1f36af7af3"/>
+				<reportElement x="451" y="8" width="36" height="14" uuid="4691d683-caf2-4cc2-941e-9b1f36af7af3"/>
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalgst_amt}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="486" y="9" width="41" height="14" uuid="687617e6-ed83-4ef6-827c-f3c8681bbf13"/>
-				<textElement textAlignment="Right">
+				<reportElement x="486" y="8" width="55" height="14" uuid="687617e6-ed83-4ef6-827c-f3c8681bbf13"/>
+				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalamt_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="30" width="202" height="21" uuid="3758d75a-a268-4d1e-8a73-51a08b6d514f"/>
+				<textFieldExpression><![CDATA[$P{print_dt}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

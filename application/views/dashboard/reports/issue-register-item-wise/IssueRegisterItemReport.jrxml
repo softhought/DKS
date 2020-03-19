@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IssueRegisterItemReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="126bda9b-305e-4a4a-93a4-c51554eb1bb5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="form_date" class="java.lang.String"/>
+	<parameter name="to_date" class="java.lang.String"/>
+	<parameter name="row_material_id" class="java.lang.String"/>
+	<parameter name="YearId" class="java.lang.String"/>
+	<parameter name="company_id" class="java.lang.String"/>
+	<parameter name="CompanyName" class="java.lang.String"/>
+	<parameter name="dateRange" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+  DATE_FORMAT(`issue_master`.`issue_date`,'%d/%m/%Y') AS issue_date,
+issue_master.issue_no,
+  issue_details.`raw_meterial_id`,
+  raw_meterial_master.`name`,
+  issue_details.`quantity`,
+  `unit_master`.`item_unit_name`,
+   department_master_inv.`department_name`
+FROM
+  `issue_master`
+ LEFT JOIN `issue_details`
+ ON `issue_master`.`issue_id` = `issue_details`.`issue_mst_id`
+ LEFT JOIN `raw_meterial_master`
+ ON issue_details.`raw_meterial_id` =  raw_meterial_master.`raw_meterial_id`
+ LEFT JOIN `unit_master`
+ ON raw_meterial_master.`unit_id` = `unit_master`.`unit_id`
+ LEFT JOIN `department_master_inv`
+ ON issue_master.`department_id` = department_master_inv.`department_id`
+ WHERE issue_master.`issue_date` BETWEEN $P{form_date} AND $P{to_date} AND issue_details.`raw_meterial_id` IN($P{row_material_id})
+ ORDER BY raw_meterial_master.`name` ASC,issue_master.`issue_date` ASC]]>
+	</queryString>
+	<field name="issue_date" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="issue_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="raw_meterial_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="quantity" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_unit_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="department_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="itemid">
+		<groupExpression><![CDATA[$F{raw_meterial_id}]]></groupExpression>
+		<groupHeader>
+			<band height="27">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="3" y="5" width="100" height="20" uuid="daa1f3dd-fafe-4570-b003-a87c2ce69502"/>
+					<textElement>
+						<font isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="4"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="78" splitType="Stretch">
+			<textField>
+				<reportElement x="182" y="7" width="190" height="20" uuid="aacb8e21-711c-4f37-b2a6-5603ecb3f21f"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="135" y="27" width="285" height="20" isPrintWhenDetailOverflows="true" uuid="8c9d364a-a3c8-440c-a9b9-23ea30c07c0a"/>
+				<textFieldExpression><![CDATA["Issue Register(Item Wise) From " + $P{dateRange}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="53" width="555" height="1" uuid="f703b43f-a806-4508-af33-a4153d369b65"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="1" y="72" width="555" height="1" uuid="91461cb6-83de-4acf-8980-f0bea82fe272"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="98" y="55" width="84" height="20" uuid="144de3ee-ee75-40e7-9782-9b09c09d5072"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="55" width="74" height="20" uuid="6d2bc487-10ec-4b50-8439-d8cd1c80cf8d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="56" width="84" height="20" uuid="86d54a80-e2c9-439c-a3ad-386981e6f054"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UOM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="56" width="100" height="20" uuid="d579d298-c9fe-4707-9440-3e89f739b316"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="55" width="100" height="20" uuid="13b88fe5-e298-461a-a9c4-f95e9e4db21a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue No.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="103" y="0" width="79" height="20" uuid="c3498652-a84e-49c7-8222-b79a7abffa2f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issue_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="0" width="100" height="20" uuid="e24edef2-342e-411a-83ab-ba2549c1db6a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issue_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="0" width="49" height="20" uuid="c4db005e-b10a-4a04-8172-80e083e0cf83"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="318" y="0" width="84" height="20" uuid="118b3a98-755c-40ec-b88a-23bfa8b5d172"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_unit_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="432" y="0" width="123" height="20" uuid="c82d7dd9-43bb-485d-8293-6f9ac0be1e45"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{department_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

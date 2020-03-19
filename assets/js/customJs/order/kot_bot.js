@@ -339,6 +339,7 @@ $(document).ready(function() {
                             $("#odersavebtn").show();
                             $("#loaderbtn").hide();
                             $("#response_msg").text(result.msg_data);
+                            $('#orderID').val(result.order_id);
 
                             $("#orderaftersavemodel").modal({
                                 "backdrop": "static",
@@ -491,7 +492,12 @@ $(document).ready(function() {
     });
 
 
+    $(document).on("click", "#printbtn", function() {
 
+        orderID = $("#orderID").val();
+        window.open(basepath + 'order/orderprintJasper/' + orderID, '_blank');
+        location.reload();
+    })
 
 
 

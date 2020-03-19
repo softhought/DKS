@@ -601,15 +601,19 @@
         <div class="modal-dialog modal-xs" style="width: 300px;margin-top: 260px;">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="frm_header"> Saved Succesfully</h5>
-           
+              <h5 class="frm_header"> Saved Succesfully <span class="kotmodalspan">( For Print Click Yes )</span> </h5>            
+            
               
             </div>
+             
            <!--  <div class="modal-body" style="font-size: 12px;">
-           
+            
              
           </div> -->
+          
            <div class="modal-footer">
+          
+           <button type="button" class="btn btn-block btn-danger btn-xs kotprintbtn" data-dismiss="modal" aria-label="Close" id="printbtn">Yes</button>
                <button type="button" class="btn btn-block btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="close_btn_ordersave">Close</button>
            </div>
           <!-- /.modal-content -->

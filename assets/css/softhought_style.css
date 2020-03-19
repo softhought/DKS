@@ -1059,3 +1059,21 @@ tr td .fc-day-grid-event {
     font-size: 18px;
     color: #372121;
 }
+
+
+/* added by anil on 16-03-2020 */
+
+.kotprintbtn {
+    margin-top: 7px;
+    background-color: #439ae1;
+    border: 1px solid #439ae1;
+}
+
+.kotmodalspan {
+    font-size: 13px;
+    color: blueviolet;
+}
+
+.purchtab {
+    border: 6px solid #c3cece;
+}

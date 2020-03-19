@@ -71,7 +71,7 @@ class Billprint extends CI_Controller {
                 'CompanyPhone'=>$company->phone,
                 'ofc_time'=>$company->ofc_time
             ];
-            //    pre($arrayParameter);exit;
+               //pre($arrayParameter);exit;
 
             $file= APPPATH."views/dashboard/reports/JasperReports/BillPrint.jrxml";
             

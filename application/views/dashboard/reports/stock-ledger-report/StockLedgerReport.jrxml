@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockLedgerReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4f67477f-9463-4dbd-b78a-b0a2d758122a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="form_date" class="java.lang.String"/>
+	<parameter name="to_date" class="java.lang.String"/>
+	<parameter name="fiscalStartDt" class="java.lang.String"/>
+	<parameter name="row_material_id" class="java.lang.String"/>
+	<parameter name="YearId" class="java.lang.String"/>
+	<parameter name="company_id" class="java.lang.String"/>
+	<parameter name="CompanyName" class="java.lang.String"/>
+	<parameter name="dateRange" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[CALL `usp_GetStockLedger`($P{company_id},$P{YearId},$P{form_date},$P{to_date},$P{fiscalStartDt},$P{row_material_id})]]>
+	</queryString>
+	<field name="RawMeterialName" class="java.lang.String"/>
+	<field name="OpenQty" class="java.lang.Integer"/>
+	<field name="GrnTotalQty" class="java.lang.Integer"/>
+	<field name="IssueTotalqty" class="java.lang.Integer"/>
+	<field name="WastgeTotalqty" class="java.lang.Integer"/>
+	<field name="totalqty" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="83" splitType="Stretch">
+			<textField>
+				<reportElement x="192" y="10" width="190" height="20" uuid="dbbeaa08-db2a-4938-bcd6-14e69f209722"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="132" y="30" width="313" height="20" isPrintWhenDetailOverflows="true" uuid="947d6986-0566-4370-9ddf-5872136a39b2"/>
+				<textFieldExpression><![CDATA["Stock Ledger Report From " + $P{dateRange}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="56" width="555" height="1" uuid="df60d2fd-734e-417e-8dd4-764177b87a9a"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="11" y="75" width="555" height="1" uuid="c41e152d-ea15-4d15-84db-d47db82258fb"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="146" y="58" width="77" height="20" uuid="f3fd4d64-acd3-4fab-895b-2f169c41330e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Opening Stock]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="59" width="60" height="20" uuid="91087d50-93cf-4f85-959e-92e492665430"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issued]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="59" width="84" height="20" uuid="d5156fbe-d7c2-42ea-b4ee-d3b87709560d"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Wastage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="58" width="133" height="20" uuid="418ec298-a209-4618-98e0-6aedb015cac7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="245" y="59" width="62" height="20" uuid="7d7ae6a3-d7eb-47d7-998b-2bd044ef0250"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="60" width="75" height="20" uuid="9fa161b9-f394-418b-8287-511b5952db27"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Closing Stock]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="13" y="0" width="133" height="20" uuid="2547ed0a-d18f-40eb-86ab-dea16892ac79"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RawMeterialName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="146" y="0" width="77" height="20" uuid="484dad4a-05ff-442f-b66f-027e8778b55f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OpenQty}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="214" y="0" width="72" height="20" uuid="8bd47136-35c3-4ff0-b048-3f55b3b40b30"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GrnTotalQty}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="301" y="2" width="66" height="20" uuid="16abd2cf-af87-4150-828f-3640e63855d6"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IssueTotalqty}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="360" y="2" width="84" height="20" uuid="ffd90918-6d24-4908-8d82-f09908420bdc"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WastgeTotalqty}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="457" y="2" width="75" height="18" uuid="88b2c6bb-e186-4d09-add1-ee79ad21832b"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalqty}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

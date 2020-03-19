@@ -2949,8 +2949,8 @@ class TCPDF {
 					}
 					$pf = $this->getPageSizeFromFormat($format['format']);
 				}
-				$this->fwPt = $pf[1];
-				$this->fhPt = $pf[0];
+				$this->fwPt = $pf[0];
+				$this->fhPt = $pf[1];
 				$this->setPageBoxes($this->page, 'MediaBox', 0, 0, $this->fwPt, $this->fhPt, true);
 			}
 			// the visible region of default user space
