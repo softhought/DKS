@@ -46,6 +46,8 @@ public function index()
 }
 
 
+
+
 public function getDefaluterMemberList(){
 
     $session = $this->session->userdata('user_detail');
@@ -75,10 +77,85 @@ public function getDefaluterMemberList(){
        
         $result['billList'] = $this->gstdefaultermodel->getBillingDefaulterList($sel_member,$category,$month,$year,$company,$firstdate,$notice_date,$equal_above);
       
-       // pre($result['billList']);exit;
-         $page = "dashboard/gstdefaulter/defaulter_notice_pdf_list_view"; 
+        // pre($result['billList']);exit;
+
+         $page = "dashboard/gstdefaulter/member_bill_list_partial_view.php"; 
 
           $this->load->view($page,$result);
+
+          
+
+        }else{
+            redirect('login','refresh');
+        } 
+
+    }
+
+
+
+    public function getDefaluterMemberListPrint(){
+
+    $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {
+
+            $company=$session['companyid'];
+            $year=$session['yearid'];
+            $sel_member = $this->input->post('member_id');
+            $category = $this->input->post('category');
+            $month = $this->input->post('billing_upto');
+            $notice_date = $this->input->post('notice_date');
+            $equal_above = $this->input->post('equal_above');
+            $result['equal_above']=$equal_above;
+
+
+            if($notice_date!=""){
+                    $notice_date = str_replace('/', '-', $notice_date);
+                    $notice_monthyear = date("Y-m",strtotime($notice_date)); 
+                    $notice_date = date("Y-m-d",strtotime($notice_date)); 
+            }else{
+                    $notice_date = NULL;
+            }
+
+            $firstdate = $notice_monthyear."-01";
+          
+            $result['noticeDate']=date("d/m/y",strtotime($notice_date));
+       
+        $result['billList'] = $this->gstdefaultermodel->getBillingDefaulterList($sel_member,$category,$month,$year,$company,$firstdate,$notice_date,$equal_above);
+
+        $where_month = array('month_master.id' => $month);
+        $result['month'] = $this->commondatamodel->getSingleRowByWhereCls('month_master',$where_month)->month_name;
+
+        $where = array('financialyear.year_id' =>  $year);
+        $result['financialyear'] = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where);
+
+          
+            $years=explode(" ",$result['financialyear']->year);
+           
+            if ($month==1 || $month==2 || $month==3) {
+                $result['yearmonth']=$years[2];
+            }else{
+                $result['yearmonth']=$years[0];
+            }
+
+            // load library
+            $this->load->library('Pdf');
+            $pdf = $this->pdf->load();
+            ini_set('memory_limit', '256M'); 
+            $page = "dashboard/gstdefaulter/defaulter_notice_pdf_list_view"; 
+      
+            // pre($result['billList']);exit;
+
+           $html = $this->load->view($page, $result, true);
+                // render the view into HTML
+                $pdf->WriteHTML($html); 
+                $output = 'testPdf' . date('Y_m_d_H_i_s') . '_.pdf'; 
+                $pdf->Output("$output", 'I');
+                exit();
+
+         
+
+         // $this->load->view($page,$result);
 
           
 

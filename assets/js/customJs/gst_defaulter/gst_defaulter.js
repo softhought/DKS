@@ -76,62 +76,7 @@ $(document).ready(function() {
 
 
 
-$(document).on('click', "#defaulterprintbtn", function(e) {
-        e.preventDefault();
 
-       var category =$("#category").val();
-       var billing_upto =$("#billing_upto").val();
-       var notice_date =$("#notice_date").val();
-       var member_id =$("#member_id").val();
-       var equal_above =$("#equal_above").val();
-     
-  if(validate()){
-         $('#memberbill_list_data').html('');
-         $("#loader").show();
-
-   $.ajax({
-                type: "POST",
-                url: basepath+'gstdefaulter/getDefaluterMemberList',
-                dataType: "html",
-                data: {
-                    category:category,
-                    billing_upto:billing_upto,
-                    notice_date:notice_date,
-                    member_id:member_id,
-                    equal_above:equal_above,
-                 },
-                
-                success: function (result) {
-                   $("#loader").hide();
-                     $("#memberbill_list_data").html(result);
-                    // $(".dataTable").DataTable();
-                    
-                 
-                }, 
-                error: function (jqXHR, exception) {
-                  var msg = '';
-                    if (jqXHR.status === 0) {
-                        msg = 'Not connect.\n Verify Network.';
-                    } else if (jqXHR.status == 404) {
-                        msg = 'Requested page not found. [404]';
-                    } else if (jqXHR.status == 500) {
-                        msg = 'Internal Server Error [500].';
-                    } else if (exception === 'parsererror') {
-                        msg = 'Requested JSON parse failed.';
-                    } else if (exception === 'timeout') {
-                        msg = 'Time out error.';
-                    } else if (exception === 'abort') {
-                        msg = 'Ajax request aborted.';
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                   // alert(msg);  
-                }
-            }); /*end ajax call*/ 
-
-  }
-
-});
 
 
 
@@ -215,6 +160,28 @@ $(document).on('click', "#defaulterprintbtn", function(e) {
 
 
     });
+
+
+$(document).on('click', "#defaulterprintbtn", function(e) {
+
+        e.preventDefault();
+
+        var basepath = $('#basepath').val();
+
+        if (validate()) {
+         
+            $('#gstDefaulterFrom').prop('action', basepath+'gstdefaulter/getDefaluterMemberListPrint');
+            $("#gstDefaulterFrom").submit();
+
+        }
+
+
+    });
+
+
+
+
+
 
 
 

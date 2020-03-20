@@ -93,6 +93,7 @@ public function getBillingDefaulterList($member_id,$category,$month,$year,$compa
 							member_master.title_one,
 							member_master.member_name,
 							member_master.member_code,
+							member_master.mobile,
 							member_catogary_master.category_name,
 							
 						")
