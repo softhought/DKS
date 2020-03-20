@@ -556,7 +556,59 @@ public function getBillMasterDataByBillId($bill_id)
         }
 	}
 
-
+	public function getSerialNumber($company,$year,$module){
+        $lastnumber = (int)(0);
+        $tag = "";
+        $noofpaddingdigit = (int)(0);
+        $autoSaleNo="";
+        $yeartag ="";
+        $sql="SELECT
+                id,
+                SERIAL,
+                moduleTag,
+                lastnumber,
+                noofpaddingdigit,
+                module,
+                companyid,
+                yearid,
+                yeartag
+            FROM serialmaster
+            WHERE companyid=".$company." AND yearid=".$year." AND module='".$module."' LOCK IN SHARE MODE";
+        
+                  $query = $this->db->query($sql);
+      if ($query->num_rows() > 0) {
+        $row = $query->row(); 
+        $lastnumber = $row->lastnumber;
+                          $tag = $row->moduleTag;
+                          $noofpaddingdigit = $row->noofpaddingdigit;
+                          $yeartag = $row->yeartag;
+                          
+                          
+      }
+        $digit = (int)(log($lastnumber,10)+1) ;  
+        if($digit==3){
+            $autoSaleNo = "0".$lastnumber."/".$yeartag;
+        }elseif($digit==2){
+            $autoSaleNo = "00".$lastnumber."/".$yeartag;
+        }elseif($digit==1){
+            $autoSaleNo = "000".$lastnumber."/".$yeartag;
+        }else{
+           $autoSaleNo = $lastnumber."/".$yeartag;
+        }
+        $lastnumber = $lastnumber + 1;
+        
+        //update
+        $data = array(
+        'serial' => $lastnumber,
+        'lastnumber' => $lastnumber
+        );
+        $array = array('companyid' => $company, 'yearid' => $year, 'module' => $module);
+        $this->db->where($array); 
+        $this->db->update('serialmaster', $data);
+        
+        return $autoSaleNo;
+        
+    }
 
 
 

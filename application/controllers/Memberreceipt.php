@@ -642,7 +642,7 @@ public function index()
             $jasperphp->load_xml_file($file); 
             $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
             $jasperphp->outpage('I','Receipt-'.date('d_m_Y-His').'.pdf');  
-            // pre($jasperphp);     
+             //pre($jasperphp); exit;    
     
 
             // $page = 'trial_balance/trailWithJasper.php';

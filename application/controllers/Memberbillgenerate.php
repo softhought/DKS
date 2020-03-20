@@ -198,6 +198,9 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
             $outgoing_cgst=0;
             $outgoing_sgst=0;
 
+            /* Member bill Number  */
+            $mem_bill_no = $this->memberBillNo($member_id);
+            
 
             $delete_where = array(
                               
@@ -224,6 +227,10 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
 
 
             $month_subs = $this->monthlySubscription($member_id);
+
+             /*  social sub */
+            $social_subs = $this->socialSubscription($member_id);
+           
 
             /* swiming */
             $swimingData = $this->getFacilityData($member_id,$yearmonth,'SWM');
@@ -314,8 +321,30 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
             $netAmount=$totalAmount-$memberReceiptData->taxable_total;
 
 
+            $module = 'MEMBER BILL PROCESS';
+            if($mem_bill_no == 0){
+                $bill_inv_no =  $this->memberbillmodel->getSerialNumber($company,$year,$module);
+            }else{
+                $bill_inv_no =   $mem_bill_no;
+            }
+
+            // arrear amt calculation
+             
+            if($memberReceiptData->taxable_total >= $month_opening){
+
+                $arrear_amt = 0;
+            }else{
+                $arrear_amt = $month_opening - $memberReceiptData->taxable_total;
+            }
+
+             //current amt
+             $current_amt = $netAmount -  $arrear_amt;
+          
+            //pre($bill_inv_no);exit;
+
             $member_bill_inst = array(
                                         'member_id' => $member_id, 
+                                        'member_bill_no'=> $bill_inv_no,
                                         'bill_date' => $bill_dt, 
                                         'bill_month' => $month, 
                                         'year_id' => $year, 
@@ -344,7 +373,10 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
                                         'min_bill_amt' => $minimum_billing_amt,
                                         'net_amount' => $netAmount,
                                         'outgoing_cgst' => $outgoing_cgst, 
-                                        'outgoing_sgst' => $outgoing_sgst, 
+                                        'outgoing_sgst' => $outgoing_sgst,
+                                        'social_subs'=> $social_subs,
+                                        'arrear_amt'=>$arrear_amt,
+                                        'current_amt'=>$current_amt
                                       );
 
 
@@ -505,12 +537,50 @@ public function getCatAmountDetails($member_id,$yearmonth,$year){
 
 public function monthlySubscription($memberid){
 
-$where = array('member_master.member_id' =>  $memberid);
-return $this->commondatamodel->getSingleRowByWhereCls('member_master',$where)->subscription;
+//$where = array('member_master.member_id' =>  $memberid);
+$where = array('member_subscription.member_id' =>  $memberid);
+//return $this->commondatamodel->getSingleRowByWhereCls('member_aster',$where)->subscription;
+$month_sub = $this->commondatamodel->getSingleRowByWhereCls('member_subscription',$where);
+  if(empty($month_sub)){
 
+    $month_sub = 0;
+  } else{
+    $month_sub = $month_sub->subscription_amount;
+  }
+  return  $month_sub;
 }
 
 
+public function socialSubscription($memberid){
+
+    //$where = array('member_master.member_id' =>  $memberid);
+    $where = array('member_master.member_id' =>  $memberid);
+    //return $this->commondatamodel->getSingleRowByWhereCls('member_aster',$where)->subscription;
+    $social_sub =  $this->commondatamodel->getSingleRowByWhereCls('member_master',$where);
+       if($social_sub == ''){
+           
+        $social_sub = 0;
+       }else{
+        $social_sub = $social_sub->social_subs;
+       }
+       return $social_sub;
+    }
+    public function memberBillNo($memberid){
+
+        //$where = array('member_master.member_id' =>  $memberid);
+        $where = array('member_bill_master.member_id' =>  $memberid);
+        //return $this->commondatamodel->getSingleRowByWhereCls('member_aster',$where)->subscription;
+        $bill_no =  $this->commondatamodel->getSingleRowByWhereCls('member_bill_master',$where);
+       // pre($bill_no);
+           if(empty($bill_no)){
+               
+            $bill_no = 0;
+           }else{
+            $bill_no = $bill_no->member_bill_no;
+           }
+           return $bill_no;
+        }
+       
 
 public function getFacilityData($member_id,$yearmonth,$entry_module){
 
@@ -755,18 +825,20 @@ public function getbillDetailsModelData()
            $company=  $this->companymodel->getCompanyNameById($companyId);
            $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
            $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
-          //  pre($phone);exit;       
-          // pre($memberid);
-          // pre($company);
-          // pre($companylocation);exit;
-          $printDate=date("d-m-Y");            
+           $gst_no =   $this->companymodel->getCompanyById($companyId)->gst_no; 
+          $printDate=date("d-m-Y");  
+          // $image_path = "D:\\xampp\\htdocs\\DKS\\assets\\img\\report-logo-dks.jpg"; 
+           $image_path =  $_SERVER['DOCUMENT_ROOT'].'/DKS/assets/img/report-logo-dks.jpg';
+                  
            //$jasperphp->debugsql=true;
-          $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'bill_id'=>"'".$billid."'",);
-          
+          $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'bill_id'=>"'".$billid."'",'gst_no'=> $gst_no,'image_path'=> $image_path);
+          //pre($jasperphp->arrayParameter);exit;
+         
           $jasperphp->load_xml_file($file); 
           $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+          ob_end_clean();
           $jasperphp->outpage('I','Bill Process-'.date('d_m_Y-His').'.pdf');  
-          // pre($jasperphp);     
+          //pre($jasperphp->outpage);  exit;
   
 
           // $page = 'trial_balance/trailWithJasper.php';
@@ -821,9 +893,10 @@ public function getbillDetailsModelData()
           $printDate=date("d-m-Y");            
            //$jasperphp->debugsql=true;
            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'sel_member'=>$sel_member,'category'=>$category,'month'=>$month,'company_id'=>$companyId,'year_id'=>$yearid);
-         //pre( $jasperphp->arrayParameter);exit;
+          // pre( $jasperphp->arrayParameter);exit;
           $jasperphp->load_xml_file($file); 
           $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+          ob_end_clean();
           $jasperphp->outpage('I','Multiple Bill Process-'.date('d_m_Y-His').'.pdf');  
           // pre($jasperphp);     
   
