@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Paymenttennis extends CI_Controller {
     public function __construct() {
@@ -7,7 +6,8 @@ class Paymenttennis extends CI_Controller {
         $this->load->library('session');
         $this->load->model('commondatamodel','commondatamodel',TRUE);
         $this->load->model('Userauditmodel','audit',TRUE);    
-        $this->load->model('Paymenttennismodel','payment_tennis_model',TRUE);    
+        $this->load->model('Paymenttennismodel','payment_tennis_model',TRUE);
+        $this->load->model('companymodel', '', TRUE);         
     }
 
 public function index()
@@ -41,16 +41,8 @@ public function index()
                 $paymentID = 0;
                 $result['paymentID'] = $paymentID;
                 $result['paymentEditdata'] = [];
-                $where = array('status' => 'ACTIVE STUDENT' );
+                $result['itemEditdata']=[];
                 
-                $result['studentCodeList'] = $this->commondatamodel->getAllRecordWhere('admission_register',$where);
-
-                $result['actobeCreditedList'] = $this->payment_tennis_model->getAcToBeCredited($company);
-                $result['tennisItemList'] = $this->payment_tennis_model->getTennisItemList($company);
-
-                 //gst rate
-                    $result['cgstrate'] = $this->payment_tennis_model->getGSTrate($company,$year,$type='CGST',$usedfor='O');
-                    $result['sgstrate'] = $this->payment_tennis_model->getGSTrate($company,$year,$type='SGST',$usedfor='O');
                 
               //  pre($result['sgstrate']);exit;
             
@@ -64,13 +56,16 @@ public function index()
                 $result['paymentID'] = $paymentID;
                 
                 $whereAry = [
-                    'project_master.project_id' => $paymentID
+                    'payment_master.payment_id' => $paymentID
                 ];
 
                 // getSingleRowByWhereCls(tablename,where params)
-                 $result['projectEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('project_master',$whereAry); 
-                //  pre($result['cbnaatEditdata']);exit;
-                   $result['paymentEditdata'] = [];
+                 $result['paymentEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('payment_master',$whereAry); 
+                
+
+                 $result['itemEditdata'] = $this->payment_tennis_model->getItemDetailsByPaymentId($paymentID);
+                 //pre($result['paymentEditdata']);exit;
+                 
                 
             }
 
@@ -83,7 +78,20 @@ public function index()
               $result['quartermonthList'] = $this->commondatamodel->getAllDropdownData('quarter_month_master');
               $result['fineAccountList'] = $this->commondatamodel->getAllDropdownData('account_master');
 
+              $where = array('status' => 'ACTIVE STUDENT' );
                 
+                $result['studentCodeList'] = $this->commondatamodel->getAllRecordWhere('admission_register',$where);
+
+                $result['actobeCreditedList'] = $this->payment_tennis_model->getAcToBeCredited($company);
+                $result['tennisItemList'] = $this->payment_tennis_model->getTennisItemList($company);
+
+                $result['acTobeDebitedList'] = $this->commondatamodel->getAllDropdownData('payment_mode_details');
+
+                 //gst rate
+                    $result['cgstrate'] = $this->payment_tennis_model->getGSTrate($company,$year,$type='CGST',$usedfor='O');
+                    $result['sgstrate'] = $this->payment_tennis_model->getGSTrate($company,$year,$type='SGST',$usedfor='O');
+
+               // pre($result['actobeCreditedList'] );exit;
 
             $header = "";
             $page = 'dashboard/payment/payment_add_edit.php';
@@ -173,7 +181,7 @@ public function index()
             $formData = $this->input->post('formDatas');
             parse_str($formData, $dataArry);
             
-        
+            $company=$session['companyid'];
         
             $admissionID = trim(htmlspecialchars($dataArry['admissionID']));
             $mode = trim(htmlspecialchars($dataArry['mode']));
@@ -228,6 +236,7 @@ public function index()
                                     'title_one' => $title_one,
                                     'student_name' => $student_name,
                                     'status' => 'ACTIVE STUDENT',
+                                    'company_id' => $company,
                                     'entry_date' => date('Y-m-d')
                      );
             
@@ -389,11 +398,14 @@ public function index()
             $insertData = $this->payment_tennis_model->insertDataTennisPayment($searcharray);
                if($insertData)
                     {
+
+                     $voucherNo= $this->payment_tennis_model->getVoucherNoByPaymentId($insertData);
                         $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => "Saved successfully",
                             "mode" => "ADD",
                             "paymentid" => $insertData,
+                            "voucherno" => $voucherNo
                            
 
                         );
@@ -409,7 +421,27 @@ public function index()
         } else {
 
 
-          $this->updateData($rentbillid, $searcharray);
+           $updateData = $this->payment_tennis_model->UpdateDataTennisPayment($searcharray);
+            if($updateData)
+                    {
+                       $voucherNo= $this->payment_tennis_model->getVoucherNoByPaymentId($updateData);
+                        $json_response = array(
+                            "msg_status" => 1,
+                            "msg_data" => "Updated successfully",
+                            "mode" => "ADD",
+                            "paymentid" => $updateData,
+                             "voucherno" => $voucherNo
+                           
+
+                        );
+                    }
+                    else
+                    {
+                        $json_response = array(
+                            "msg_status" => 1,
+                            "msg_data" => "There is some problem.Try again"
+                        );
+                    }
         }
 
 
@@ -445,10 +477,37 @@ public function index()
            $billData=$this->payment_tennis_model->getBillData($billing_style,$student_id,$month_id,$quarter_id,$year,$company);
 
 
+
+
+           
+
+
            if ($billData) {
-               $json_response = array(
+
+            $paidAmt=0;
+            $fineAmt=0;
+            $totalPay=0;
+
+          $paymentData = $this->payment_tennis_model->getTannisPaymentAmount($billData->bill_id,'RCFS');
+
+          if ($paymentData) {
+
+                $paidAmt=$paymentData->sum_payment_amount;
+                $fineAmt=$paymentData->sum_fine_amt;
+                $totalPay=$paidAmt-$fineAmt;
+
+          }
+
+
+
+            
+           $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => $billData,
+                            "finepaid" => $fineAmt,
+                            "totalPay" => $totalPay,
+                            "total_amount" => ($billData->total_amount-$totalPay),
+
                         );
            }else{
                  $json_response = array(
@@ -581,7 +640,16 @@ public function getbillDetailsModelData()
 
          $data['billData'] = $this->commondatamodel->getSingleRowByWhereCls('bill_master_tennis',$where);
 
-       // pre($data['billData']);exit;
+
+
+          $where_payment = array(
+                                  'payment_master.bill_id' => $bill_id,
+                                  'payment_master.transaction_type' => 'RCFS'
+                                 );
+                
+          $data['paymentList'] = $this->commondatamodel->getAllRecordWhere('payment_master',$where_payment);
+
+         // pre($result['paymentList']);exit;
 
 
 
@@ -638,6 +706,75 @@ public function getbillDetailsModelData()
             redirect('login','refresh');
         }
     } 
+
+
+    public function receiptprintJasper()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {    
+           
+            $receptid = $this->uri->segment(3);   
+            $receptmode = $this->uri->segment(4);
+            if($receptmode == 'ORITM'){
+                $file= APPPATH."views/dashboard/reports/student-receipt/ItemReceipt.jrxml";
+                $file2= APPPATH."views/dashboard/reports/student-receipt/";
+            }else{
+                $file= APPPATH."views/dashboard/reports/student-receipt/StudentReceipt.jrxml";
+            }
+          
+            
+           
+            $this->load->library('jasperphp');
+            $jasperphp = $this->jasperphp->jasper();
+
+            $dbdriver="mysql";
+            // $server="localhost";
+            // $db="teasamrat";
+            // $user="root";
+            // $pass="";
+            
+            $this->load->database();
+            $server=$this->db->hostname;
+            $user=$this->db->username;
+            $pass=$this->db->password;
+            $db=$this->db->database;
+           
+            $companyId = $session['companyid'];
+         
+            
+            //pre($receptid);exit; 
+             $company=  $this->companymodel->getCompanyNameById($companyId);
+             $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
+             $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
+                  
+            // pre($memberid);
+            // pre($company);
+            // pre($companylocation);exit;
+            $image_path =  $_SERVER['DOCUMENT_ROOT'].'/assets/img/report-logo-dks.jpg';
+          //  $image_path =  $_SERVER['DOCUMENT_ROOT'].'/dks/assets/img/report-logo-dks.jpg';
+            $printDate=date("d-m-Y");            
+             //$jasperphp->debugsql=true;
+             if($receptmode == 'ORITM'){
+
+                $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'receptId'=>$receptid,'phone'=> $phone,'image_path'=> $image_path,'SUBREPORT_DIR'=>$file2);
+            }else{
+                $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'receptId'=>$receptid,'phone'=> $phone,'image_path'=> $image_path);
+            }
+           //ss pre($jasperphp->arrayParameter);exit;  
+            $jasperphp->load_xml_file($file); 
+            $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+            $jasperphp->outpage('I','Receipt-'.date('d_m_Y-His').'.pdf');  
+            // pre($jasperphp);     
+    
+
+            // $page = 'trial_balance/trailWithJasper.php';
+            // $this->load->view($page, $result, TRUE);
+
+        } else {
+            redirect('login', 'refresh');
+        }
+    }
 
 function activity_log($activity_module,$action,$method,$master_id,$tablename,$old_description,$description){
 

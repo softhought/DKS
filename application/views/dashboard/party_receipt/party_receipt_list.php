@@ -137,6 +137,9 @@
                          <a href="<?php echo base_url(); ?>partyreceipt/addReceipt/<?php echo $partyreceiptlist->receipt_id; ?>" class="btn tbl-action-btn padbtn">
                       <i class="fas fa-edit"></i> 
                     </a>
+                    <a href="<?php echo base_url(); ?>partyreceipt/partyreceiptprintJasper/<?php echo $partyreceiptlist->receipt_id; ?>" target="_blank" class="btn tbl-action-btn padbtn" style="padding-right:7px;">
+                      <i class="fas fa-print"></i> 
+                    </a>
                         
                     </td>
                

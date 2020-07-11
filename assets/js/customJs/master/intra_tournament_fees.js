@@ -19,7 +19,7 @@ $("#monthblock,#quarterblock").hide();
                 'aTargets': [-1,-2] /* 1st one, start by the right */
             }],
         initComplete: function () {
-            this.api().columns([1,3]).every( function () {
+            this.api().columns([1,3,4,5]).every( function () {
                 var column = this;
                 var select = $('<select class="form_input_text select2"><option value="">Show all</option></select>')
                     .appendTo( $(column.footer()).empty() )
@@ -99,7 +99,10 @@ $("#monthblock,#quarterblock").hide();
                 success: function(result) {
                     $('#loader').hide();  
                     $("#student_list").html(result);
-                     $('.dataTable').DataTable();
+                     //$('.dataTable').DataTable();
+                     $('.dataTable').dataTable( {
+                      "paging": false,
+                    });
 
               //  var tripReportProject = $("#tripReportProject").val();
                $("#response_msg").html("");
@@ -242,7 +245,7 @@ function validateTournamentFees(){
 
     var billing_style =$("#billing_style").val();
        
-     /* 	if (billing_style=='M') {
+      	if (billing_style=='M') {
       		var month =$("#month").val();
       		 if (month=='') {
 		 	   $("#montheerr").addClass("form_error");
@@ -260,7 +263,7 @@ function validateTournamentFees(){
 
 
       		
-      	}*/
+      	}
 
 
         

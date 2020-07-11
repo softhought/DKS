@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BillPrint_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b1184ddd-a855-40e0-a305-be3267f96646">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="BillingStyle" class="java.lang.String"/>
+	<parameter name="YearId" class="java.lang.String"/>
+	<parameter name="student_id" class="java.lang.String"/>
+	<parameter name="QuarterMonth" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+  payment_master.*,
+  bill_master_tennis.`billing_style`
+FROM
+  `payment_master`
+  LEFT JOIN `bill_master_tennis`
+  ON payment_master.`bill_id` = bill_master_tennis.`bill_id`
+WHERE CASE WHEN  bill_master_tennis.`billing_style` = 'Q' THEN
+   payment_master.`fees_quarter` <> $P{QuarterMonth}
+  ELSE  payment_master.`fees_month` <> $P{QuarterMonth} END
+ AND payment_master.`admission_id` = $P{student_id}
+  AND payment_master.`year_id` = $P{YearId}]]>
+	</queryString>
+	<field name="payment_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="payment_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receipt_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="student_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transaction_type" class="java.lang.String">
+		<fieldDescription><![CDATA[ORADM:Other Receipts(Admission),ORITM:Other Receipts(Item),RCFS:Receivable From Student]]></fieldDescription>
+	</field>
+	<field name="payment_mode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fees_quarter" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fees_month" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fees_year" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cheque_bank" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cheque_bank_branch" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cheque_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cheque_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="taxable_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fine_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="clear_fine_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fine_ledger_ac" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[gstmaster:id]]></fieldDescription>
+	</field>
+	<field name="cgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sgst_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[gstmaster:id]]></fieldDescription>
+	</field>
+	<field name="sgst_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="payment_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="voucher_master_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="company_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="admission_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="created_on" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="actobedebited" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="actobecredited" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bill_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[table:bill_master_tennis]]></fieldDescription>
+	</field>
+	<field name="narration" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="security_deposit" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="due_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="billing_style" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="29">
+			<line>
+				<reportElement x="0" y="4" width="555" height="1" uuid="5f72c54b-77c5-43e1-a679-de9988591089"/>
+			</line>
+			<line>
+				<reportElement x="0" y="24" width="555" height="1" uuid="8ad50bc5-1bea-4be4-b013-73dc9a1abeec"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="8" width="84" height="16" uuid="b016d510-b4e5-48bc-bd74-42ed042669ce"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Payment Mode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="387" y="8" width="84" height="16" uuid="71d75958-f0c7-4ddd-a008-782c20a62ad3"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Payment Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="8" width="64" height="16" uuid="70400c98-50e4-40ec-a233-6825d50ab309"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cheque No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="8" width="69" height="16" uuid="e3bb4aa8-28c7-4dd0-b135-22171915e242"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Bank Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="8" width="69" height="16" uuid="0180b967-3d5c-407e-b5ae-d76fa15d78ce"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cheque Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="471" y="8" width="84" height="16" uuid="f191a195-47bd-4559-b3a6-be943148d187"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Payment Amt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="8" width="61" height="16" uuid="24071336-39e2-457f-a5ab-000eaacfa9e7"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Branch]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="84" height="15" uuid="c02a3232-7d45-4f45-849d-ba7b1b73fadb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{payment_mode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="0" width="69" height="15" uuid="d3f48d60-9263-49a1-abb5-0c1b1316143b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheque_bank}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="0" width="71" height="15" uuid="3b8bc09a-0b1b-41f3-8595-63a7db1ea0e4"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheque_bank_branch}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="0" width="64" height="15" uuid="c6353614-d2a9-4b29-9cd8-c4c9a99bac04"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheque_no}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="312" y="0" width="83" height="15" uuid="44952032-c229-4d07-9aaf-d2d7c91f6ea1"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheque_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="395" y="0" width="76" height="15" uuid="30de94c5-d6f4-4a45-b2e8-54511867f464"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{payment_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="459" y="0" width="84" height="15" uuid="7efc2248-a1a5-4d89-b3c0-bc6c189a34e7"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{payment_amount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

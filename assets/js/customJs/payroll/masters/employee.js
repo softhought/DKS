@@ -46,7 +46,8 @@ $(document).ready(function() {
         var month_id = $("#month_id").val();
         var month_name = $("#month_id option:selected").text();
         var basic_salary = $("#basic_salary").val();
-        var salary_da = $("#salary_da").val();
+       // var salary_da = $("#salary_da").val();
+        var traveling = $("#traveling").val();
         var house_rent = $("#house_rent").val();
 
 
@@ -62,7 +63,7 @@ $(document).ready(function() {
                     month_id: month_id,
                     month_name: month_name,
                     basic_salary: basic_salary,
-                    salary_da: salary_da,
+                    traveling: traveling,
                     house_rent: house_rent,
 
                 },
@@ -235,8 +236,68 @@ $(document).ready(function() {
 
 
 
+/* Hra*/
 
-})
+    $(document).on('change input', '#month_id,#basic_salary', function(event) {
+        event.preventDefault();
+        $("#errormsg").text('');
+
+        var month_id = $("#month_id").val();
+        var basic_salary = $("#basic_salary").val();
+
+        if (month_id!='' && basic_salary!='') {
+
+
+
+            $.ajax({
+                type: "POST",
+                url: basepath + 'employee/hra_rate',
+                dataType: "json",
+                
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: {month_id:month_id,basic_salary:basic_salary},
+
+                success: function(result) {
+                    $("#house_rent").val(result.hra);
+
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    // alert(msg);  
+                }
+            }); /*end ajax call*/
+
+
+
+        } // end master validation
+
+
+
+    });
+
+
+
+
+
+
+
+
+});
 
 
 

@@ -41,6 +41,7 @@ class Paymenttennismodel extends CI_Model{
     $this->db->select("*")
         ->from('account_master')
         ->join('group_master','group_master.id=account_master.group_id','INNER')
+        ->order_by('account_master.account_name', 'ASC') 
         ->where($where);
     $query = $this->db->get();
     #echo $this->db->last_query();
@@ -168,7 +169,7 @@ class Paymenttennismodel extends CI_Model{
 
                $voucherMast['voucher_no'] = $receipt_no; 
                $voucherMast['voucher_date'] = date("Y-m-d", strtotime($payment_dt));
-               $voucherMast['narration'] = "Other Receipt Invoice No ".$voucherMast['voucher_no']." Date ".date("d-m-Y", strtotime($payment_dt));  
+               $voucherMast['narration'] = ucfirst($serialmodule)." Invoice No ".$voucherMast['voucher_no']." Date ".date("d-m-Y", strtotime($payment_dt));  
                $voucherMast['cheque_no'] =$searcharray['cheque_no'];         
                $voucherMast['cheque_date'] =$cheque_dt;        
                $voucherMast['bank_name'] = $searcharray['bank'];        
@@ -205,6 +206,49 @@ class Paymenttennismodel extends CI_Model{
         }
     }
 
+/* Update tennis payment */
+
+
+      public function UpdateDataTennisPayment($searcharray){
+       
+       // unset($saleBillMaster['id']);
+          if($searcharray['payment_dt']!=""){
+                $payment_dt = str_replace('/', '-', $searcharray['payment_dt']);
+                $payment_dt = date("Y-m-d",strtotime($payment_dt));
+               }
+               else{
+                 $payment_dt = NULL; 
+               }
+
+
+  
+        try {
+            // $this->db->where('id', $voucherMastId);
+            // $this->db->update('voucher_master' ,$voucherUpd);
+             $this->insertintoVouchrDtl($searcharray['voucherID'],$searcharray); 
+
+             $this->updateintoPaymentMaster($searcharray,$searcharray['voucherID'],$payment_dt,$searcharray['paymentID']);
+           //  echo $this->db->last_query();
+            
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return $searcharray['paymentID'];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+
+
+
+
+
+
+
 
      /*@method insertintoVouchrDtl
      * @date 28-12-2019
@@ -227,6 +271,10 @@ class Paymenttennismodel extends CI_Model{
           
        $debitAccId = $searcharray['actobedebited'];
        $creditAccId = $searcharray['actobecredited'];
+
+       $latefineAccId=$this->getBillingParameterAccount('L',$company,'TC');
+       $dueAccId=$this->getBillingParameterAccount('D',$company,'TC');
+       $securitydepAccId=$this->getBillingParameterAccount('S',$company,'TC');
      
        $tran_type=$searcharray['tran_type'];
 
@@ -334,6 +382,7 @@ class Paymenttennismodel extends CI_Model{
           $oth_rec_sgst_rate=$searcharray['oth_rec_sgst_rate'];
           $oth_rec_sgst_amt=$searcharray['oth_rec_sgst_amt'];
           $oth_rec_netamt=$searcharray['oth_rec_netamt'];
+          $security_deposit=$searcharray['security_deposit'];
 
                        /* For Customer Acc */
                        $vouchrDtlCus['voucher_master_id'] = $vMastId;
@@ -355,6 +404,20 @@ class Paymenttennismodel extends CI_Model{
                        $this->GSTinsertionOnVoucherDetails($vMastId,$oth_rec_cgst_rate,$oth_rec_cgst_amt, "CGST",3);
                        $this->GSTinsertionOnVoucherDetails($vMastId,$oth_rec_sgst_rate,$oth_rec_sgst_amt, "SGST",4);
 
+                       /* for security deposite */
+                       if ($security_deposit!='' &&  $security_deposit!=0) {
+
+                           $vouchrDtlSale['voucher_master_id'] = $vMastId;
+                           $vouchrDtlSale['srl_no'] = 5;
+                           $vouchrDtlSale['tran_tag'] ='Cr' ;
+                           $vouchrDtlSale['account_master_id'] = $securitydepAccId;
+                           $vouchrDtlSale['amount'] = $security_deposit;
+                           $this->db->insert('voucher_detail', $vouchrDtlSale);
+                         
+
+
+                       }
+
 
 
 
@@ -365,28 +428,41 @@ class Paymenttennismodel extends CI_Model{
 
           $receivable_student_amt=$searcharray['receivable_student_amt'];
           $receivable_student_fineamt=$searcharray['receivable_student_fineamt'];
-          $fine_ledger_ac=$searcharray['fine_ledger_ac'];
+         // $fine_ledger_ac=$searcharray['fine_ledger_ac'];
           $receivable_student_cgst_rate=$searcharray['receivable_student_cgst_rate'];
           $receivable_student_cgst_amt=$searcharray['receivable_student_cgst_amt'];
           $receivable_student_sgst_rate=$searcharray['receivable_student_sgst_rate'];
           $receivable_student_sgst_amt=$searcharray['receivable_student_sgst_amt'];
-          $receivable_student_netamt=$searcharray['receivable_student_netamt'];
+          $receivable_student_netamt=$searcharray['receivable_student_paymentamt'];
+          $receivable_student_dueamt=$searcharray['receivable_student_dueamt'];
+
 
           $vsrl_no=1;
                        /* For Customer Acc */
                        $vouchrDtlCus['voucher_master_id'] = $vMastId;
-                       $vouchrDtlCus['srl_no'] = 1;
+                       $vouchrDtlCus['srl_no'] = $vsrl_no++;
                        $vouchrDtlCus['tran_tag'] ='Dr' ;
                        $vouchrDtlCus['account_master_id'] = $debitAccId;
                        $vouchrDtlCus['amount'] = $receivable_student_netamt;   
                        $this->db->insert('voucher_detail', $vouchrDtlCus);
 
+
+                        /* For due Acc*/
+                       if ( $receivable_student_dueamt!='' &&  $receivable_student_dueamt!=0) {
+                           $vouchrDtlSale['voucher_master_id'] = $vMastId;
+                           $vouchrDtlSale['srl_no'] = $vsrl_no++;
+                           $vouchrDtlSale['tran_tag'] ='Dr' ;
+                           $vouchrDtlSale['account_master_id'] = $dueAccId;
+                           $vouchrDtlSale['amount'] = $receivable_student_dueamt;
+                           $this->db->insert('voucher_detail', $vouchrDtlSale);
+                       }
+
                        /* For Fine Acc*/
                        if ( $receivable_student_fineamt!='' &&  $receivable_student_fineamt!=0) {
                            $vouchrDtlSale['voucher_master_id'] = $vMastId;
-                           $vouchrDtlSale['srl_no'] = 5;
+                           $vouchrDtlSale['srl_no'] = $vsrl_no++;
                            $vouchrDtlSale['tran_tag'] ='Cr' ;
-                           $vouchrDtlSale['account_master_id'] = $fine_ledger_ac;
+                           $vouchrDtlSale['account_master_id'] = $latefineAccId;
                            $vouchrDtlSale['amount'] = $receivable_student_fineamt;
                            $this->db->insert('voucher_detail', $vouchrDtlSale);
                        }
@@ -394,14 +470,14 @@ class Paymenttennismodel extends CI_Model{
 
                        /* For Sale Acc */
                        $vouchrDtlSale['voucher_master_id'] = $vMastId;
-                       $vouchrDtlSale['srl_no'] = 2;
+                       $vouchrDtlSale['srl_no'] = $vsrl_no++;;
                        $vouchrDtlSale['tran_tag'] ='Cr' ;
                        $vouchrDtlSale['account_master_id'] = $creditAccId;
                        $vouchrDtlSale['amount'] = $receivable_student_amt;
                        $this->db->insert('voucher_detail', $vouchrDtlSale);
 
-                       $this->GSTinsertionOnVoucherDetails($vMastId,$receivable_student_cgst_rate,$receivable_student_cgst_amt, "CGST",3);
-                       $this->GSTinsertionOnVoucherDetails($vMastId,$receivable_student_sgst_rate,$receivable_student_sgst_amt, "SGST",4);
+                       $this->GSTinsertionOnVoucherDetails($vMastId,$receivable_student_cgst_rate,$receivable_student_cgst_amt, "CGST",$vsrl_no++);
+                       $this->GSTinsertionOnVoucherDetails($vMastId,$receivable_student_sgst_rate,$receivable_student_sgst_amt, "SGST",$vsrl_no++);
 
 
 
@@ -565,6 +641,7 @@ class Paymenttennismodel extends CI_Model{
               $session = $this->session->userdata('user_detail');
               $company=$session['companyid'];
               $year=$session['yearid'];
+              $total_amount="";
               $patment_mst_inst = array();
               $where = array('student_code' =>$searcharray['sel_student_code']);
             
@@ -611,12 +688,21 @@ class Paymenttennismodel extends CI_Model{
               $patment_mst_inst['cgst_amt']=$searcharray['oth_rec_cgst_amt']; 
               $patment_mst_inst['sgst_id']=$searcharray['oth_rec_sgst_rate']; 
               $patment_mst_inst['sgst_amt']=$searcharray['oth_rec_sgst_amt']; 
+              $patment_mst_inst['security_deposit']=$searcharray['security_deposit']; 
               $patment_mst_inst['total_amount']=$searcharray['oth_rec_netamt']; 
+              $patment_mst_inst['payment_amount']=$searcharray['oth_rec_netamt']; 
+
+              $total_amount=$patment_mst_inst['total_amount'];
 
               }else if($searcharray['tran_type']=='RCFS'){
 
-              $patment_mst_inst['taxable_amount']=$searcharray['receivable_student_amt']; 
-              $patment_mst_inst['fine_amt']=$searcharray['receivable_student_fineamt'];  
+             
+              $patment_mst_inst['taxable_amount']=$searcharray['receivable_student_taxable']; 
+              $patment_mst_inst['fine_amt']=$searcharray['receivable_student_fineamt']; 
+              if ($patment_mst_inst['fine_amt']!='') {
+                 $patment_mst_inst['fine_ledger_ac']=$searcharray['fine_ledger_ac'];  
+              } 
+             
               $patment_mst_inst['clear_fine_amt']=$searcharray['clear_fine_amt'];  
               $patment_mst_inst['cgst_id']=$searcharray['receivable_student_cgst_rate']; 
               $patment_mst_inst['cgst_amt']=$searcharray['receivable_student_cgst_amt']; 
@@ -624,7 +710,10 @@ class Paymenttennismodel extends CI_Model{
               $patment_mst_inst['sgst_amt']=$searcharray['receivable_student_sgst_amt']; 
               $patment_mst_inst['total_amount']=$searcharray['receivable_student_netamt']; 
               $patment_mst_inst['payment_amount']=$searcharray['receivable_student_paymentamt']; 
+              $patment_mst_inst['due_amount']=$searcharray['receivable_student_netamt']-$searcharray['receivable_student_paymentamt']; 
               $patment_mst_inst['bill_id']=$searcharray['bill_id']; 
+
+               $total_amount=$patment_mst_inst['payment_amount'];
 
               }
 
@@ -637,6 +726,29 @@ class Paymenttennismodel extends CI_Model{
                $this->insertintoSellItemDetails($searcharray,$payment_id);
               }
 
+
+              /* send sms */
+              $studentMobile = $this->commondatamodel->getSingleRowByWhereCls('admission_register',$where)->phone_one;
+              $sms_message="Payment of Rs.".$total_amount." has been credited(subject to realisation) to coaching student's ".$searcharray['sel_student_code']." on ".date('d-m-Y');
+
+                      if ($searcharray['tran_type']!='ORITM') {
+                      
+                         if($studentMobile!=''){
+
+                           $module='Coaching Student Receipt';
+
+                          
+                              send_sms($studentMobile,$sms_message,$module);
+
+                          }
+
+                      }
+
+
+
+
+
+
               /* insert activity data */
               $activity_description = json_encode($patment_mst_inst);
               $this->insertPaymentActivity($activity_description,NULL,$payment_id,'Insert');
@@ -644,6 +756,113 @@ class Paymenttennismodel extends CI_Model{
               return $payment_id; 
            
      }
+
+    /* @method updateintoPaymentMaster
+     * @date 30-12-2019
+     * By Shankha
+     */
+     public function updateintoPaymentMaster($searcharray,$vMastId,$payment_dt,$paymentID){
+              $session = $this->session->userdata('user_detail');
+              $company=$session['companyid'];
+              $year=$session['yearid'];
+              $patment_mst_inst = array();
+              $where = array('student_code' =>$searcharray['sel_student_code']);
+            
+               if($searcharray['cheque_dt']!=""){
+                $cheque_dt = str_replace('/', '-', $searcharray['cheque_dt']);
+                $cheque_dt = date("Y-m-d",strtotime($cheque_dt));
+               }
+               else{
+                 $cheque_dt = NULL; 
+               }
+
+
+              
+           
+              $admission_id = $this->commondatamodel->getSingleRowByWhereCls('admission_register',$where)->admission_id;
+
+              $patment_mst_upd['voucher_master_id']=$vMastId;
+              $patment_mst_upd['payment_date']=$payment_dt;
+             
+              $patment_mst_upd['student_code']=$searcharray['sel_student_code'];
+             
+              $patment_mst_upd['admission_id']=$admission_id;
+              $patment_mst_upd['transaction_type']=$searcharray['tran_type'];
+              $patment_mst_upd['payment_mode']=$searcharray['paymentmode'];
+              $patment_mst_upd['actobedebited']=$searcharray['actobedebited'];
+              $patment_mst_upd['actobecredited']=$searcharray['actobecredited'];
+              $patment_mst_upd['fees_quarter']=$searcharray['fees_quarter'];
+              $patment_mst_upd['fees_month']=$searcharray['fees_month'];
+              $patment_mst_upd['fees_year']=$searcharray['fees_year'];
+              $patment_mst_upd['cheque_bank']=$searcharray['bank'];
+              $patment_mst_upd['cheque_bank_branch']=$searcharray['branch'];
+              $patment_mst_upd['cheque_no']=$searcharray['cheque_no'];
+              $patment_mst_upd['cheque_date']=$cheque_dt;
+              $patment_mst_upd['voucher_master_id']=$vMastId;
+              $patment_mst_upd['company_id']=$company;
+              $patment_mst_upd['year_id']=$year;
+              $patment_mst_upd['created_on']=date('Y-m-d');
+              $patment_mst_upd['narration']=$searcharray['narration'];
+
+              if ($searcharray['tran_type']=='ORADM') {
+
+              $patment_mst_upd['taxable_amount']=$searcharray['oth_rec_amt']; 
+              $patment_mst_upd['cgst_id']=$searcharray['oth_rec_cgst_rate']; 
+              $patment_mst_upd['cgst_amt']=$searcharray['oth_rec_cgst_amt']; 
+              $patment_mst_upd['sgst_id']=$searcharray['oth_rec_sgst_rate']; 
+              $patment_mst_upd['sgst_amt']=$searcharray['oth_rec_sgst_amt']; 
+              $patment_mst_upd['total_amount']=$searcharray['oth_rec_netamt'];
+              $patment_mst_upd['payment_amount']=$searcharray['oth_rec_netamt'];
+              $patment_mst_upd['security_deposit']=$searcharray['security_deposit'];  
+
+              }else if($searcharray['tran_type']=='RCFS'){
+
+             
+              $patment_mst_upd['taxable_amount']=$searcharray['receivable_student_taxable']; 
+              $patment_mst_upd['fine_amt']=$searcharray['receivable_student_fineamt']; 
+              if ($patment_mst_upd['fine_amt']!='') {
+                 $patment_mst_upd['fine_ledger_ac']=$searcharray['fine_ledger_ac'];  
+              } 
+             
+              $patment_mst_upd['clear_fine_amt']=$searcharray['clear_fine_amt'];  
+              $patment_mst_upd['cgst_id']=$searcharray['receivable_student_cgst_rate']; 
+              $patment_mst_upd['cgst_amt']=$searcharray['receivable_student_cgst_amt']; 
+              $patment_mst_upd['sgst_id']=$searcharray['receivable_student_sgst_rate']; 
+              $patment_mst_upd['sgst_amt']=$searcharray['receivable_student_sgst_amt']; 
+              $patment_mst_upd['total_amount']=$searcharray['receivable_student_netamt']; 
+              $patment_mst_upd['payment_amount']=$searcharray['receivable_student_paymentamt'];
+              $patment_mst_upd['due_amount']=$searcharray['receivable_student_netamt']-$searcharray['receivable_student_paymentamt'];  
+              $patment_mst_upd['bill_id']=$searcharray['bill_id']; 
+
+              }
+
+
+
+              $this->db->where('payment_id', $paymentID);
+              $this->db->update('payment_master' ,$patment_mst_upd);
+
+
+
+              if ($searcharray['tran_type']=='ORITM') {
+
+                $this->db->where('payment_master_id', $paymentID);
+                $this->db->delete('sell_item_details');
+               $this->insertintoSellItemDetails($searcharray,$paymentID);
+              }
+
+              /* insert activity data */
+              $activity_description = json_encode($patment_mst_upd);
+              $this->insertPaymentActivity($activity_description,NULL,$paymentID,'Update');
+             
+              return $paymentID; 
+           
+     }
+
+
+
+
+
+
 
 
     /* @method insertintoSellItemDetails
@@ -688,9 +907,31 @@ class Paymenttennismodel extends CI_Model{
                 $patment_mst_upd['cgst_amt']=$totalcgstAmt; 
                 $patment_mst_upd['sgst_amt']=$totalsgstAmt; 
                 $patment_mst_upd['total_amount']=$totalNetAmt; 
+                $patment_mst_upd['payment_amount']=$totalNetAmt; 
 
                 $where_payment_mst = array('payment_master.payment_id' => $payment_id );
                 $this->db->update('payment_master', $patment_mst_upd,$where_payment_mst);
+
+
+                  $where = array('student_code' =>$searcharray['sel_student_code']);
+            
+                /* send sms */
+              $studentMobile = $this->commondatamodel->getSingleRowByWhereCls('admission_register',$where)->phone_one;
+              $sms_message="Payment of Rs.".$totalNetAmt." has been credited(subject to realisation) to coaching student's ".$searcharray['sel_student_code']." on ".date('d-m-Y');
+
+                      
+                      
+                         if($studentMobile!=''){
+
+                           $module='Coaching Student Receipt';
+
+                          
+                              send_sms($studentMobile,$sms_message,$module);
+
+                          }
+
+                    
+
 
 
 
@@ -768,6 +1009,129 @@ $session = $this->session->userdata('user_detail');
 
 
 
+public function getItemDetailsByPaymentId($payment_id)
+  {
+    $data = array();
+    $where = array(
+                    'sell_item_details.payment_master_id' =>$payment_id,
+                  );
+    $this->db->select("
+                        sell_item_details.*,
+                        tennis_item_master.item_name,
+                        tennis_item_master.hsn_no,
+                        cgst.rate AS cgst_rate,
+                        sgst.rate AS sgst_rate
+                        ")
+        ->from('sell_item_details')
+        ->join('tennis_item_master','tennis_item_master.item_id=sell_item_details.tennis_item_id','INNER')
+        ->join('gstmaster as cgst','cgst.id=sell_item_details.cgst_rate_id','left')
+        ->join('gstmaster as sgst','sgst.id=sell_item_details.sgst_rate_id','left')
+        ->where($where);
+    $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+  }
+
+
+public function getTannisPaymentAmount($bill_id,$tag)
+  {
+    $data = array();
+    $where = array(
+                    'bill_id' => $bill_id, 
+                    'transaction_type' => $tag, 
+                  );
+    $this->db->select("
+                  COALESCE(SUM(payment_master.payment_amount),0) as sum_payment_amount,
+                  COALESCE(SUM(payment_master.fine_amt),0) as sum_fine_amt
+                        ")
+        ->from('payment_master')
+        ->where($where)
+        ->limit(1);
+    $query = $this->db->get();
+    
+    #echo "<br>".$this->db->last_query();
+    
+    if($query->num_rows()> 0)
+    {
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+    else
+    {
+            return $data;
+        }
+  }
+
+
+public function getBillingParameterAccount($tag,$company,$module_for)
+  {
+    $data = array();
+    $where = array(
+                    'tag' => $tag, 
+                    'company_id' => $company, 
+                    'module_for' => $module_for, 
+                  );
+    $this->db->select("*")
+        ->from('billing_parameter')
+        ->where($where)
+        ->limit(1);
+    $query = $this->db->get();
+    
+    #echo "<br>".$this->db->last_query();
+    
+    if($query->num_rows()> 0)
+    {
+           $row = $query->row();
+           return $data = $row->account_id;
+             
+        }
+    else
+    {
+            return $data;
+        }
+  }
+
+
+  public function getVoucherNoByPaymentId($payment_id)
+  {
+    $data = array();
+    $where = array(
+                    'payment_id' => $payment_id
+                  );
+    $this->db->select("*")
+        ->from('payment_master')
+        ->join('voucher_master','voucher_master.id=payment_master.voucher_master_id','INNER')
+        ->where($where)
+        ->limit(1);
+    $query = $this->db->get();
+    
+    #echo "<br>".$this->db->last_query();
+    
+    if($query->num_rows()> 0)
+    {
+           $row = $query->row();
+           return $data = $row->voucher_no;
+             
+        }
+    else
+    {
+            return $data;
+        }
+  }
 
     
 

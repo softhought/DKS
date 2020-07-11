@@ -1,12 +1,12 @@
- <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Memberbillgenerate extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('memberbillmodel','memberbillmodel',TRUE);
-        $this->load->model('companymodel', '', TRUE);   
+        $this->load->model('companymodel', '', TRUE);
+        $this->load->model('memberfacilitymodel','memberfacilitymodel',TRUE);   
        
     }
 
@@ -30,8 +30,8 @@ public function index()
         $orderby_cat='category_name';
         $result['catogaryList'] = $this->commondatamodel->getAllRecordWhereOrderBy('member_catogary_master',[],$orderby_cat);
 
-        $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
-        $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+      //  $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
+        $result['memberList'] = $this->memberbillmodel->getallmemberlist();
          
        // pre($result['billList']);exit;
 
@@ -81,10 +81,10 @@ public function addBill(){
         $result['studentlist'] = [];
 
         $orderby_cat='category_name';
-              $result['catogaryList'] = $this->commondatamodel->getAllRecordWhereOrderBy('member_catogary_master',[],$orderby_cat);
+        $result['catogaryList'] = $this->commondatamodel->getAllRecordWhereOrderBy('member_catogary_master',[],$orderby_cat);
 
-              //$result['memberlist'] = $this->memberbillmodel->getAllActiveMemberByCategory();
-              $result['memberlist'] =[];
+        //$result['memberlist'] = $this->memberbillmodel->getAllActiveMemberByCategory();
+        $result['memberlist'] =[];
 
        //  pre($result['studentlist']);exit;
 
@@ -198,8 +198,8 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
             $outgoing_cgst=0;
             $outgoing_sgst=0;
 
-            /* Member bill Number  */
-            $mem_bill_no = $this->memberBillNo($member_id);
+              /* Member bill Number  */
+              $mem_bill_no = $this->memberBillNo($member_id,$month,$year,$company);
             
 
             $delete_where = array(
@@ -209,7 +209,7 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
                                 'member_bill_master.company_id' => $company,
                                 'member_bill_master.member_id' => $member_id,
                              );
-
+           
 
              $deleteData = $this->commondatamodel->deleteTableData('member_bill_master',$delete_where);
 
@@ -220,16 +220,23 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
 
 
 
+            /**/
 
+            $result['subscriptionGst'] = $this->memberfacilitymodel->getFacilityDataByEntryModule('MEMSUBSCRIPTION');
+            $result['socialsubscriptionGst'] = $this->memberfacilitymodel->getFacilityDataByEntryModule('MEMSOCIALSUBSCRIPTION');
 
 
 
 
 
             $month_subs = $this->monthlySubscription($member_id);
+            $outgoing_cgst+=($month_subs*$result['subscriptionGst']->cgst_rate)/100;
+            $outgoing_sgst+=($month_subs*$result['subscriptionGst']->sgst_rate)/100;
 
              /*  social sub */
             $social_subs = $this->socialSubscription($member_id);
+            $outgoing_cgst+=($social_subs*$result['socialsubscriptionGst']->cgst_rate)/100;
+            $outgoing_sgst+=($social_subs*$result['socialsubscriptionGst']->sgst_rate)/100;
            
 
             /* swiming */
@@ -312,7 +319,9 @@ $result['memberlist'] = $this->memberbillmodel->getAllActiveMembercode($category
 
           
 
-            $taxableAmount=($month_opening+$month_subs+$barData->taxable_total+$catData->taxable_total+$swimingData->taxable_total+$gymData->taxable_total+$locData->taxable_total+$hrdData->taxable_total+$guestData->taxable_total+$towelData->taxable_total+$benvolentData->taxable_total+$fixedHardCourtData->taxable_total+$cardplayData->taxable_total+$developmentData->taxable_total+$pujacontributionData->taxable_total+$correctionData->taxable_total+$minimum_billing_amt);
+            $taxableAmount=($month_opening+$month_subs+$barData->taxable_total+$catData->taxable_total+$swimingData->taxable_total+$gymData->taxable_total+$locData->taxable_total+$hrdData->taxable_total+$guestData->taxable_total+$towelData->taxable_total+$benvolentData->taxable_total+$fixedHardCourtData->taxable_total+$cardplayData->taxable_total+$developmentData->taxable_total+$pujacontributionData->taxable_total+$correctionData->taxable_total+$minimum_billing_amt+$social_subs);
+
+      
 
             $gstTotal=($barData->cgst_total+$barData->sgst_total+$catData->cgst_total+$catData->sgst_total+$outgoing_cgst+$outgoing_sgst);
 
@@ -565,10 +574,17 @@ public function socialSubscription($memberid){
        }
        return $social_sub;
     }
-    public function memberBillNo($memberid){
+    public function memberBillNo($member_id,$month,$year,$company){
 
         //$where = array('member_master.member_id' =>  $memberid);
-        $where = array('member_bill_master.member_id' =>  $memberid);
+        $where = array(
+                              
+            'member_bill_master.bill_month' => $month,
+            'member_bill_master.year_id' => $year,
+            'member_bill_master.company_id' => $company,
+            'member_bill_master.member_id' => $member_id,
+         );
+      
         //return $this->commondatamodel->getSingleRowByWhereCls('member_aster',$where)->subscription;
         $bill_no =  $this->commondatamodel->getSingleRowByWhereCls('member_bill_master',$where);
        // pre($bill_no);
@@ -828,7 +844,7 @@ public function getbillDetailsModelData()
            $gst_no =   $this->companymodel->getCompanyById($companyId)->gst_no; 
           $printDate=date("d-m-Y");  
           // $image_path = "D:\\xampp\\htdocs\\DKS\\assets\\img\\report-logo-dks.jpg"; 
-           $image_path =  $_SERVER['DOCUMENT_ROOT'].'/DKS/assets/img/report-logo-dks.jpg';
+           $image_path =  $_SERVER['DOCUMENT_ROOT'].'/assets/img/report-logo-dks.jpg';
                   
            //$jasperphp->debugsql=true;
           $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'bill_id'=>"'".$billid."'",'gst_no'=> $gst_no,'image_path'=> $image_path);
@@ -885,14 +901,16 @@ public function getbillDetailsModelData()
          
            $company=  $this->companymodel->getCompanyNameById($companyId);
            $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
-           $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
+           $phone =    $this->companymodel->getCompanyById($companyId)->phone;
+           $gst_no =   $this->companymodel->getCompanyById($companyId)->gst_no;  
           //  pre($phone);exit;       
           // pre($memberid);
           // pre($company);
           // pre($companylocation);exit;
-          $printDate=date("d-m-Y");            
+          $printDate=date("d-m-Y");  
+          $image_path =  $_SERVER['DOCUMENT_ROOT'].'/assets/img/report-logo-dks.jpg';          
            //$jasperphp->debugsql=true;
-           $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'sel_member'=>$sel_member,'category'=>$category,'month'=>$month,'company_id'=>$companyId,'year_id'=>$yearid);
+           $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'phone'=> $phone,'sel_member'=>$sel_member,'category'=>$category,'month'=>$month,'company_id'=>$companyId,'year_id'=>$yearid,'gst_no'=> $gst_no,'image_path'=> $image_path);
           // pre( $jasperphp->arrayParameter);exit;
           $jasperphp->load_xml_file($file); 
           $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);

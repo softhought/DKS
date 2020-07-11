@@ -27,6 +27,8 @@
             <div class="card-header box-shdw">
               <h3 class="card-title">Member Receipt Register</h3>
                <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+               <a href="<?php echo base_url(); ?>memberbillgenerate" class="btn btn-default btnpos">
+             <i class="fas fa-clipboard-list"></i>Bill Process List </a> 
                   <a href="<?php echo base_url(); ?>memberreceipt/addReceipt" class="btn btn-info btnpos">
                   <i class="fas fa-plus"></i> Add </a> 
                 </div>
@@ -106,7 +108,7 @@
                     <th>Receipt no</th>
                     <th>Receipt dt.</th>
                     <th>Member Code</th>
-                    <th>Member Name</th>
+                    <th>Name</th>
                   
                     <th>Total Amt</th>
                     <th>Action</th>
@@ -129,7 +131,7 @@
                    <td><?php echo $memberreceiptlist->mem_receipt_no; ?></td>
                    <td><?php echo date("d-m-Y", strtotime($memberreceiptlist->receipt_date)); ?></td>
                    <td><?php echo $memberreceiptlist->member_code; ?></td>
-                   <td><?php echo $memberreceiptlist->member_name; ?></td>
+                   <td><?php echo $memberreceiptlist->name; ?></td>
                 
                   
                    <td align="right"><?php echo $memberreceiptlist->total_amount; ?></td>
@@ -139,6 +141,10 @@
                     </a>
                     <a href="<?php echo base_url(); ?>memberreceipt/receiptprintJasper/<?php echo $memberreceiptlist->receipt_id; ?>" target="_blank" class="btn tbl-action-btn padbtn" style="padding-right:7px;">
                       <i class="fas fa-print"></i> 
+                    </a>
+
+                     <a href="javascript:;"  class="btn tbl-action-btn padbtn delReceipt"  style="padding-right:7px;" data-paymentid="<?php echo $memberreceiptlist->receipt_id; ?>">
+                      <i class="fas fa-trash"> </i> 
                     </a>
                         
                     </td>

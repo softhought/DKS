@@ -62,7 +62,9 @@ public function getAllActiveMemberByCategory($category){
         			   );
 
         $this->db->select("member_master.*")
-                 ->from('member_master')
+				 ->from('member_master')
+				 ->where("member_code NOT LIKE 'D%'")
+				 ->where("member_code NOT LIKE 'B%'")
                  ->where($where)
                  ->order_by("member_code");
         $query = $this->db->get();
@@ -492,10 +494,13 @@ public function getMemberBillMasterData($member_id,$category,$month,$year,$compa
 				->join('member_master','member_master.member_id = member_bill_master.member_id','INNER')
 				->join('month_master','month_master.id = member_bill_master.bill_month','INNER')
 				->join('member_catogary_master','member_catogary_master.cat_id = member_master.category','INNER')
+				->where("member_code NOT LIKE 'D%'")
+                ->where("member_code NOT LIKE 'B%'")
 				->where($where)
 				->where($where_member)
 				->where($where_month)
-				->where($where_category);
+				->where($where_category)
+				->order_by('member_bill_master.bill_id','desc');
 		$query = $this->db->get();
 		
 		#echo "<br>".$this->db->last_query();exit;
@@ -611,7 +616,34 @@ public function getBillMasterDataByBillId($bill_id)
     }
 
 
-
+	public function getallmemberlist()
+    {
+      $data = array();
+      $this->db->select("member_id,member_code")
+          ->from('member_master')
+          ->where("status",'ACTIVE MEMBER')
+          ->where("member_code NOT LIKE 'D%'")
+          ->where("member_code NOT LIKE 'B%'")         
+          ->order_by('member_code', 'asc');
+         
+      $query = $this->db->get();
+      
+     #echo $this->db->last_query();exit;
+      
+      if($query->num_rows()> 0)
+      {
+          foreach ($query->result() as $rows)
+          {
+              $data[] = $rows;
+          }
+          return $data;
+               
+          }
+      else
+      {
+              return $data;
+          }
+    }
 
 
 

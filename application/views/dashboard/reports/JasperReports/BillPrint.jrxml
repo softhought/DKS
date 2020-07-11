@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BillPrint" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65b67e23-472c-4c5e-913e-6337c3d2c6e4">
-	<property name="ireport.zoom" value="1.0245201830476058"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="147"/>
 	<parameter name="BillingStyle" class="java.lang.String"/>
 	<parameter name="QuarterMonth" class="java.lang.Integer"/>
 	<parameter name="StudentId" class="java.lang.String"/>
@@ -11,8 +11,12 @@
 	<parameter name="CompanyAddress" class="java.lang.String"/>
 	<parameter name="CompanyPhone" class="java.lang.String"/>
 	<parameter name="ofc_time" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\xamp\\htdocs\\DKS\\application\\views\\dashboard\\reports\\JasperReports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sql" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[call usp_OutsatandingPayble($P{BillingStyle},$P{QuarterMonth},$P{StudentId},$P{YearId})]]>
+		<![CDATA[$P{sql}]]>
 	</queryString>
 	<field name="bill_id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -68,6 +72,15 @@
 	<field name="narration" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="discount_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_amt_before_discount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="discount_narration" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="billingDate" class="java.lang.String"/>
 	<field name="lastDay" class="java.lang.String"/>
 	<field name="month_quarter" class="java.lang.String"/>
@@ -89,7 +102,15 @@
 	<field name="student_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="address" class="java.lang.String"/>
+	<field name="address_one" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_two" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_three" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -111,16 +132,16 @@
 				<text><![CDATA[Address]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="364" y="41" width="183" height="20" uuid="c818bbff-5154-45bf-8308-16ab906083b2"/>
+				<reportElement x="364" y="41" width="186" height="20" uuid="c818bbff-5154-45bf-8308-16ab906083b2"/>
 				<textFieldExpression><![CDATA[$F{student_code}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="364" y="61" width="183" height="20" uuid="3ec5d086-26e4-4176-b87b-47d6a65eba06"/>
+				<reportElement x="364" y="61" width="185" height="20" uuid="3ec5d086-26e4-4176-b87b-47d6a65eba06"/>
 				<textFieldExpression><![CDATA[$F{student_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="364" y="81" width="183" height="20" uuid="8fb33684-2c0e-4f02-93b3-7dd9239f2d89"/>
-				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+				<reportElement positionType="Float" x="364" y="82" width="186" height="20" uuid="8fb33684-2c0e-4f02-93b3-7dd9239f2d89"/>
+				<textFieldExpression><![CDATA[$F{address_one}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="355" y="41" width="10" height="20" uuid="7e0bd868-65c0-4352-9d61-79fd6a8908d9"/>
@@ -173,15 +194,23 @@
 				<reportElement x="17" y="85" width="57" height="20" uuid="4ee36a71-e04d-4c23-9b12-3d96ec2ba659"/>
 				<text><![CDATA[Phone  :]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="366" y="101" width="184" height="20" uuid="3bd47fbe-ea47-49cf-8a3e-fdadba581cea"/>
+				<textFieldExpression><![CDATA[$F{address_two}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="366" y="121" width="184" height="20" uuid="9cc11ba8-643d-4609-8a0d-f227f9ff22c8"/>
+				<textFieldExpression><![CDATA[$F{address_three}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="12" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="343" splitType="Stretch">
+		<band height="261" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement x="291" y="93" width="253" height="88" uuid="0a37e138-2972-484a-a321-be3aa53be892"/>
+				<reportElement x="291" y="92" width="253" height="88" uuid="0a37e138-2972-484a-a321-be3aa53be892"/>
 			</rectangle>
 			<line>
 				<reportElement x="291" y="114" width="253" height="1" uuid="54decbc6-2b05-4dac-a588-942b07a793f0"/>
@@ -257,170 +286,193 @@
 				<text><![CDATA[Hard Cout Extra]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="117" width="117" height="20" uuid="4551f938-3dd2-469b-a78b-f96b834f11ce"/>
+				<reportElement x="11" y="138" width="117" height="20" uuid="4551f938-3dd2-469b-a78b-f96b834f11ce"/>
 				<text><![CDATA[Correction]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="138" width="117" height="20" uuid="3a19d985-67ed-4917-8bc5-48f2fd64fdd4"/>
+				<reportElement x="11" y="159" width="117" height="20" uuid="3a19d985-67ed-4917-8bc5-48f2fd64fdd4"/>
 				<text><![CDATA[Intra. Tournament Fees]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="159" width="117" height="20" uuid="9ffea363-17f5-44c7-84ac-224e4b913cc3"/>
+				<reportElement x="11" y="180" width="117" height="20" uuid="9ffea363-17f5-44c7-84ac-224e4b913cc3"/>
 				<text><![CDATA[Total Amount]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="11" y="200" width="269" height="17" uuid="dd0c3a63-a869-4f4a-b58f-4e0b77cac4b8"/>
+				<reportElement x="11" y="219" width="255" height="17" uuid="dd0c3a63-a869-4f4a-b58f-4e0b77cac4b8"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0.00">
 				<reportElement x="156" y="54" width="100" height="20" uuid="36e2d512-1679-438f-81c3-e32d4612f693"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{opening_bal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="156" y="75" width="100" height="20" uuid="74f563d1-aff7-4ebe-8d5e-fcdfad4c2d9f"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{subscription_fee}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="156" y="96" width="100" height="20" uuid="e4718da5-f69b-487a-9dc1-f625724f8b32"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{hard_cout_fee}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="156" y="117" width="100" height="20" uuid="a3075a08-74c3-4c1c-a946-14ccb6a9dabd"/>
+				<reportElement x="156" y="138" width="100" height="20" uuid="a3075a08-74c3-4c1c-a946-14ccb6a9dabd"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{correction}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="156" y="138" width="100" height="20" uuid="c9190f61-12c3-42cd-8379-03a800d174d9"/>
+				<reportElement x="156" y="159" width="100" height="20" uuid="c9190f61-12c3-42cd-8379-03a800d174d9"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{intra_tournament_fee}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="156" y="159" width="100" height="20" uuid="6ca86feb-c3c2-4f29-b26d-eeb7b11d8a85"/>
+				<reportElement x="156" y="180" width="100" height="20" uuid="6ca86feb-c3c2-4f29-b26d-eeb7b11d8a85"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="299" y="120" width="240" height="20" uuid="e6e83d05-bc95-4d49-a124-8aad7ae3d840"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Payment in the 2nd month late fee  :  Rs. 300/-]]></text>
+				<text><![CDATA[Payment in the 2nd month late fee  :  Rs. 0.00/-]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="299" y="141" width="240" height="20" uuid="dbb6509a-48ab-4ab8-8f78-f16c70447a8f"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Payment in the 3rd month late fee  :  Rs. 500/-]]></text>
+				<text><![CDATA[Payment in the 3rd month late fee  :  Rs. 0.00/-]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="299" y="163" width="240" height="12" uuid="f4f89fcc-1c82-4ee3-a6da-56bbedbd8334"/>
-				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Failure of payment in the quater name will be deleted]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="17" y="202" width="159" height="14" uuid="ad693e80-9311-4d18-97b7-fb5d72eb2e84"/>
+				<reportElement x="17" y="221" width="159" height="14" uuid="ad693e80-9311-4d18-97b7-fb5d72eb2e84"/>
 				<textElement verticalAlignment="Top"/>
 				<text><![CDATA[Outstanding Payable Till Date  :]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
-				<reportElement x="176" y="202" width="100" height="14" uuid="4a7c8b86-d669-4bee-8a89-a812d0263c90"/>
-				<textElement verticalAlignment="Top"/>
+				<reportElement x="164" y="221" width="92" height="14" uuid="4a7c8b86-d669-4bee-8a89-a812d0263c90"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
 			</textField>
 			<elementGroup/>
-			<rectangle>
-				<reportElement x="0" y="270" width="555" height="69" uuid="ec7b94ab-f7b1-41d9-b81a-27f5ab1b4d27"/>
-				<graphicElement>
-					<pen lineStyle="Solid"/>
-				</graphicElement>
-			</rectangle>
 			<textField>
-				<reportElement x="3" y="280" width="189" height="16" uuid="72f0e921-f100-4ccf-a6de-833f6abc57da"/>
+				<reportElement x="183" y="242" width="189" height="16" uuid="72f0e921-f100-4ccf-a6de-833f6abc57da"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{month_id}==0 ? "Previous Quater Payment Details :" : "Previous Month Payment Details :" )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{month_id}==0 ? "Previous Quarter Payment Details " : "Previous Month Payment Details " )]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="3" y="300" width="89" height="15" uuid="1912914d-b768-45a7-82d6-6c15191683d7"/>
-				<text><![CDATA[Subs & Oths Amt.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="3" y="316" width="89" height="15" uuid="813e64a9-a740-4e92-b723-bb443d86970a"/>
-				<text><![CDATA[Pay Date]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="171" y="300" width="67" height="15" uuid="f950d5ec-0490-4d72-ab6b-f3f0c4a2ce2b"/>
-				<text><![CDATA[Cheque Dt.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="171" y="316" width="67" height="15" uuid="ec2ddc59-776b-4a62-b3de-9a13924556d4"/>
-				<text><![CDATA[Cheque No.]]></text>
-			</staticText>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="92" y="300" width="72" height="15" uuid="d318cd70-d4b0-4d5f-ac94-52bde03a66e6"/>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="92" y="316" width="72" height="15" uuid="e4dbb3ac-c623-4701-a228-0999d3438ed9"/>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="239" y="300" width="72" height="15" uuid="d9ac4fd9-1ff5-4239-a0b0-145b4c45504d"/>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="239" y="316" width="72" height="15" uuid="4eb73577-9478-4927-9cd4-fa599bd68525"/>
-			</textField>
-			<staticText>
-				<reportElement x="323" y="315" width="67" height="15" uuid="a9f2957a-4540-46fe-978f-5dd45ddeecd3"/>
-				<text><![CDATA[Bank Name]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="391" y="315" width="72" height="15" uuid="2dfa9e57-02a5-4dd2-954f-199882e2d5a6"/>
-			</textField>
-			<staticText>
-				<reportElement x="326" y="280" width="100" height="16" uuid="42306368-4705-4e07-86bc-3df798175c3d"/>
-				<text><![CDATA[Pay Mode]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="426" y="93" width="100" height="20" uuid="7a7a79c3-8ee7-401e-ba10-ef16bbb6caaf"/>
 				<textFieldExpression><![CDATA[$F{lastDay}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="156" y="117" width="100" height="20" uuid="f464184f-a276-4c90-8b5b-90d59ca56ce5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[($F{discount_amt} > 0 ? $F{discount_amt} :"0.00"  )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="299" y="156" width="240" height="17" uuid="644e8f29-ea5d-4217-83ce-48a0a376561f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{month_id}==0 ? "Failure of payment in the quarter name will be deleted " : "Failure of payment in the month name will be deleted " )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="117" width="117" height="20" uuid="95965dc7-5c22-4a40-a360-ba20e78cdb4d"/>
+				<text><![CDATA[Discount]]></text>
+			</staticText>
+		</band>
+		<band height="173">
+			<subreport>
+				<reportElement positionType="Float" x="1" y="0" width="553" height="173" uuid="0b8c0815-f512-4852-b1b6-26fb29aaebf5"/>
+				<subreportParameter name="BillingStyle">
+					<subreportParameterExpression><![CDATA[$P{BillingStyle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="YearId">
+					<subreportParameterExpression><![CDATA[$P{YearId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="student_id">
+					<subreportParameterExpression><![CDATA[$F{student_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="month_id">
+					<subreportParameterExpression><![CDATA[$F{month_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="QuarterMonth">
+					<subreportParameterExpression><![CDATA[$P{QuarterMonth}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "BillPrint_subreport1.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="50">
+		<band height="100">
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="12" width="390" height="11" uuid="5f7d9012-7fe8-419a-a768-7324373a0abf"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="63" width="390" height="11" uuid="5f7d9012-7fe8-419a-a768-7324373a0abf"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[1. THIS IS A COMPUTER GENERATED BILL. SIGNATURE IS NOT REQUIRED FOR AUTHENTICATION.]]></text>
+				<text><![CDATA[3. THIS IS A COMPUTER GENERATED BILL. SIGNATURE IS NOT REQUIRED FOR AUTHENTICATION.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="23" width="311" height="11" uuid="4fe98e80-6780-4d5b-8021-7e3e7320fa5e"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="75" width="311" height="11" uuid="4fe98e80-6780-4d5b-8021-7e3e7320fa5e"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[2. COACHING SUBSCRIPTION CHARGED IN ADVANCE.]]></text>
+				<text><![CDATA[4. COACHING SUBSCRIPTION CHARGED IN ADVANCE.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" mode="Transparent" x="0" y="35" width="311" height="11" uuid="04e7f671-6db8-4259-a38d-9e27f429c820"/>
+				<reportElement positionType="FixRelativeToBottom" mode="Transparent" x="0" y="87" width="311" height="11" uuid="04e7f671-6db8-4259-a38d-9e27f429c820"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[3. PLEASE WRITE NAME & STUDENT CODE REVERSE SIDE OF THE CHEQUE.]]></text>
+				<text><![CDATA[5. PLEASE WRITE NAME & STUDENT CODE REVERSE SIDE OF THE CHEQUE.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="1" y="0" width="100" height="11" uuid="087165a4-c909-4f79-9238-f196e876234c"/>
+				<reportElement positionType="FixRelativeToBottom" x="1" y="11" width="100" height="11" uuid="087165a4-c909-4f79-9238-f196e876234c"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Note :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="407" y="4" width="132" height="13" uuid="282fcbd2-27b3-4083-a742-7427c3e9dd9b"/>
+				<reportElement x="407" y="12" width="132" height="13" uuid="282fcbd2-27b3-4083-a742-7427c3e9dd9b"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Hony. Treasurer]]></text>
 			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="24" width="141" height="11" uuid="8c0db54d-0290-406f-bedc-fb20bfb9791f"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1. BANK DETAILS FOR PAYMENT :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="139" y="24" width="372" height="11" uuid="dfac8161-0be9-4fe9-b335-6929c3b51b40"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[A/C-722200301000012, BANK NAME- VIJAYA BANK, BRANCH-R B AVENUE, IFSC-VIJB0007222.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="37" width="548" height="11" uuid="90a8c965-8ab7-45ba-a234-b4094d448dad"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2. COACHING STUDENTS MAKING NEFT PAYMENT, PLEASE SMS OR WHATSAPP THE UTR NO. ALONG YOUR STUDENT MEMBERSHIP NO. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="1" y="50" width="477" height="11" uuid="02ad55d7-5167-495c-bfdf-d73aa4558556"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[     DETAILS (TO ENABLE US TO CREDIT THE AMOUNT TO YOUR ACCOUNT), TO THE FOLLOWING NUMBER  9231578141.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="c1ce5f29-b46b-4ab8-82eb-40ca5bc67471"/>
+			</line>
 		</band>
 	</columnFooter>
 	<pageFooter>

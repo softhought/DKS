@@ -77,6 +77,8 @@
             <div class="card-header box-shdw">
               <h3 class="card-title">Member Receipt</h3>
               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>memberbillgenerate" class="btn btn-default btnpos">
+             <i class="fas fa-clipboard-list"></i>Bill Process List </a> 
                  <a href="<?php echo base_url(); ?>memberreceipt" class="btn btn-info btnpos"><i class="fas fa-clipboard-list"></i> List </a>
               </div> 
 
@@ -191,7 +193,7 @@
                                <option value="<?php echo $actobecredited->account_id;?>"
                                 <?php 
                                if($bodycontent['mode'] == 'EDIT'){ 
-                                if($bodycontent['receiptEditdata']->dr_ac_id==$actobecredited->id){echo "selected";}
+                                if($bodycontent['receiptEditdata']->cr_ac_id==$actobecredited->account_id){echo "selected";}
                               }
                               ?>
                                ><?php echo $actobecredited->account_name;?></option>
@@ -283,6 +285,37 @@
                  <div class="col-md-4" id="receivable_block">
                     <h3 class="form-block-subtitle"><i class="fas fa-angle-double-right"></i> Regular</h3>
 
+                     <div class="form-group ">
+                            <label for="code">Transaction related to</label>
+                            <div id="resetmemberlist">
+                             <div class="input-group input-group-sm" id="sel_tran_relatederr">
+                              <select class="form-control select2" name="sel_tran_related" id="sel_tran_related" >
+                              <option value="M"
+                               <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->tran_type=='ORITM'){
+                                   if($bodycontent['receiptEditdata']->tran_related =="M"){echo "selected";}
+                                }
+                               
+                              }
+                              ?>
+                              >Member</option>
+                              <option value="O"  <?php 
+                               if($bodycontent['mode'] == 'EDIT'){ 
+                                if($bodycontent['receiptEditdata']->tran_type=='ORITM'){
+                                   if($bodycontent['receiptEditdata']->tran_related =="O"){echo "selected";}
+                                }
+                               
+                              }
+                              ?>
+                              >Other</option>
+                          
+                             
+                            </select>
+                            </div></div>
+
+                          </div>
+
              
                           <div class="form-group ">
                             <label for="code">Member Code</label>
@@ -320,7 +353,7 @@
                             <input type="text" class="form-control forminputs " id="member_name" name="member_name" placeholder="" autocomplete="off" value="<?php 
                                if($bodycontent['mode'] == 'EDIT'){ 
                                 if($bodycontent['receiptEditdata']->tran_type=='RCFM' || $bodycontent['receiptEditdata']->tran_type=='ORITM'){
-                                  echo $bodycontent['receiptEditdata']->title_one." ".$bodycontent['receiptEditdata']->member_name;
+                                  echo $bodycontent['receiptEditdata']->name;
                                 }  
                               }
                               ?>" readonly    >

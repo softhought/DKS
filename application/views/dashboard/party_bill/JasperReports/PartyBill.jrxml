@@ -10,7 +10,7 @@
 		<defaultValueExpression><![CDATA["D:\\xampp\\htdocs\\DKS\\application\\views\\dashboard\\party_bill\\JasperReports\\New folder\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
+		<![CDATA[SELECT tab.*,SUM(member_receipt.`total_amount`) AS receiptamt FROM (SELECT
   party_bill_master.*,
   member_master.`member_code`,
  `member_master`.`member_name`,
@@ -22,11 +22,11 @@
   SUM(catsgstamt) AS catsgstamt,
   SUM(barnetamount) AS barnetamount,
   SUM(catnetamount) AS catnetamount,
-  member_receipt.`total_amount` as receiptamt,  DATE_FORMAT(party_bill_master.`party_date`,'%d/%m/%Y') AS partydt,
-get_gstpercentage(party_bill_master.hall_cgst_id) as hallcgst,
-get_gstpercentage(party_bill_master.hall_sgst_id) as hallsgst,
-get_gstpercentage(party_bill_master.guest_cgst_id) as guestcgst,
-get_gstpercentage(party_bill_master.guest_sgst_id) as guestsgst
+  DATE_FORMAT(party_bill_master.`party_date`,'%d/%m/%Y') AS partydt,
+get_gstpercentage(party_bill_master.hall_cgst_id) AS hallcgst,
+get_gstpercentage(party_bill_master.hall_sgst_id) AS hallsgst,
+get_gstpercentage(party_bill_master.guest_cgst_id) AS guestcgst,
+get_gstpercentage(party_bill_master.guest_sgst_id) AS guestsgst
 FROM
   (SELECT
     `pbd1`.`bill_mst_id`,
@@ -57,9 +57,9 @@ FROM
   INNER JOIN `party_bill_master`
     ON t1.bill_mst_id = party_bill_master.`id`
   INNER JOIN `member_master`
-    ON party_bill_master.`member_id` = `member_master`.`member_id`
-  LEFT JOIN `member_receipt`
-  ON  party_bill_master.`member_id` = `member_receipt`.`member_id`]]>
+    ON party_bill_master.`member_id` = `member_master`.`member_id`) tab
+   LEFT JOIN `member_receipt`
+  ON  tab.`member_id` = `member_receipt`.`member_id`]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -195,12 +195,12 @@ FROM
 	<field name="catsgstamt" class="java.math.BigDecimal"/>
 	<field name="barnetamount" class="java.math.BigDecimal"/>
 	<field name="catnetamount" class="java.math.BigDecimal"/>
-	<field name="receiptamt" class="java.math.BigDecimal"/>
 	<field name="partydt" class="java.lang.String"/>
 	<field name="hallcgst" class="java.math.BigDecimal"/>
 	<field name="hallsgst" class="java.math.BigDecimal"/>
 	<field name="guestcgst" class="java.math.BigDecimal"/>
 	<field name="guestsgst" class="java.math.BigDecimal"/>
+	<field name="receiptamt" class="java.math.BigDecimal"/>
 	<variable name="hallGstRate" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{hallcgst}+$F{hallsgst}]]></variableExpression>
 	</variable>
@@ -717,7 +717,7 @@ FROM
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{receiptamt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{receiptamt} == "" ? "0.00" : $F{receiptamt} )]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="407" y="154" width="54" height="13" uuid="b3b75d9e-2767-4ab1-9ace-c1da414e5042"/>

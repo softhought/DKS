@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BillProcess" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="44c774bd-5ea4-410f-be5d-4dad2be2caae">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CompanyName" class="java.lang.String"/>
+	<parameter name="CompanyAddress" class="java.lang.String"/>
+	<parameter name="phone" class="java.lang.String"/>
+	<parameter name="bill_id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+  `member_bill_master`.*,
+  `member_master`.`title_one`,
+  `member_master`.`member_name`,
+  `member_master`.`member_code`,
+   member_master.address_one,
+   member_master.address_two,
+   member_master.address_three,
+  `member_catogary_master`.`category_name`,
+  `month_master`.`month_name`,
+  `month_master`.`short_name`,
+  date_format(member_bill_master.bill_date,'%d/%m/%Y') as billdate
+FROM
+  `member_bill_master`
+  INNER JOIN `member_master`
+    ON `member_master`.`member_id` = `member_bill_master`.`member_id`
+  INNER JOIN `month_master`
+    ON `month_master`.`id` = `member_bill_master`.`bill_month`
+  INNER JOIN `member_catogary_master`
+    ON `member_catogary_master`.`cat_id` = `member_master`.`category`
+WHERE `member_bill_master`.`bill_id` = $P{bill_id}
+LIMIT 1]]>
+	</queryString>
+	<field name="bill_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bill_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bill_month" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="month_open" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="month_subs" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bar_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bar_cgst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bar_sgst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bar_igst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cat_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cat_cgst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cat_sgst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cat_igst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="swimming" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gym" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="locker_charge" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hard_court_extra" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guest_charge" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="towel_charge" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ben_fund" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fixed_hard" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="card_play" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="development_charge" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="puja_contribution" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="corrections" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receipt_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="min_bill_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="reminder" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="misc" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="other_amt1" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="other_amt2" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="other_amt3" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="other_amt4" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="arrear_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="current_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="social_subs" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bar_vat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cess_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="serv_tax_min_bill" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="outgoing_cgst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="outgoing_sgst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="outgoing_igst" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="company_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="title_one" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="member_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_one" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_two" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address_three" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="category_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="month_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="short_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="billdate" class="java.lang.String"/>
+	<variable name="bargst" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{bar_cgst}+$F{bar_sgst}]]></variableExpression>
+	</variable>
+	<variable name="outgoing_gst" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{outgoing_cgst}+$F{outgoing_sgst}]]></variableExpression>
+	</variable>
+	<variable name="cat_gst" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{cat_cgst}+$F{cat_sgst}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="176" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="258" y="3" width="39" height="22" forecolor="#FFFFFF" backcolor="#FF9933" uuid="71a08f4f-4e6d-47c2-9baa-9578a15a1b7d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[BILL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="116" width="71" height="20" uuid="22938d58-2ee8-4046-91cf-953ac1711bbd"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Inv.Date  :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="259" y="-147" width="1" height="90" uuid="a8d61b81-4f52-4d8d-a398-7f0fb4d1da7c"/>
+			</line>
+			<textField>
+				<reportElement positionType="Float" x="3" y="-144" width="149" height="18" isPrintWhenDetailOverflows="true" uuid="9030ad91-38bb-4d37-86f4-939423af6687"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="3" y="-125" width="252" height="20" uuid="6607cbfa-91e8-479d-bd99-bb37d9eb3643"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyAddress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="3" y="-98" width="251" height="20" uuid="e326fb53-4c43-4cb8-a03b-a2c22f75e884"/>
+				<textElement>
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Phone : "+$P{phone}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="361" y="-75" width="185" height="18" uuid="b107b376-ae4c-4d83-a7b0-29c197258ddb"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address_three}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="361" y="-92" width="185" height="17" uuid="b2e57f2b-c8be-44e2-8584-e9e11364fe1b"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address_two}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="359" y="-109" width="187" height="17" uuid="3deb82c3-5a94-4469-a562-9768104bf627"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address_one}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="271" y="-109" width="90" height="17" uuid="3c687e03-47fa-455b-9ff2-64313d8a57df"/>
+				<textElement>
+					<font fontName="Arial Black" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Address        :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="361" y="-125" width="185" height="16" uuid="5b61ff04-4b46-4efd-bf68-13be7719dae9"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title_one}+" "+$F{member_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="271" y="-125" width="90" height="16" uuid="b95f8bbd-f960-455f-9d57-72b2da6c7908"/>
+				<textElement>
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<text><![CDATA[Mem. Name  :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="361" y="-143" width="185" height="18" uuid="a0451a99-1a67-4976-b9f6-8ecaeb11d576"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{member_code}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="-147" width="555" height="1" uuid="65d9b679-a258-455c-91dd-6fe7d8ebf704"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement positionType="Float" x="1" y="-79" width="259" height="1" isPrintWhenDetailOverflows="true" uuid="f09d12b5-9eb7-4a03-9ff4-19b94a5a0e0d"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="271" y="-143" width="90" height="18" uuid="3cb391b0-29ab-4364-af32-882d7d659cd3"/>
+				<textElement>
+					<font fontName="Arial Black" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mem. Code   : ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="550" splitType="Stretch">
+			<line>
+				<reportElement x="293" y="58" width="261" height="2" uuid="59dbcc81-6ae3-4b79-8df6-08d5f46158b5"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="294" y="41" width="121" height="18" uuid="edf17a7d-d3f9-4af8-bf91-730bc716836b"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Subscription / Coaching]]></text>
+			</staticText>
+			<line>
+				<reportElement x="294" y="79" width="261" height="1" uuid="6d9ec1a3-9968-4e9c-b568-bd19a4697b5d"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="62" width="100" height="18" uuid="fe699c25-1308-414b-851b-2ca34b25aa0b"/>
+				<text><![CDATA[Canteen]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="99" width="263" height="1" uuid="797fa14f-6658-46d6-9ba5-2794741b76e8"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="83" width="100" height="18" uuid="bec3c7e9-4e68-44bd-b1d4-d2acb2257e5c"/>
+				<text><![CDATA[BAR]]></text>
+			</staticText>
+			<line>
+				<reportElement x="294" y="119" width="261" height="1" uuid="8092d2b0-0e60-489f-a3e8-9162a62b6697"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="103" width="100" height="18" uuid="7e211ff2-21c3-48c3-9770-43c875509249"/>
+				<text><![CDATA[GYM]]></text>
+			</staticText>
+			<line>
+				<reportElement x="294" y="138" width="261" height="1" uuid="dfd382c3-1216-48cd-940c-556befa859a2"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="122" width="100" height="18" uuid="13be13db-9fb0-46bc-ae37-9d182e43664d"/>
+				<text><![CDATA[Hard Court Extra]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="157" width="261" height="1" uuid="61756310-a47c-4e1f-8be8-fed80561a3c4"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="139" width="100" height="18" uuid="313b4d88-5ff1-4274-bde6-60f138909148"/>
+				<text><![CDATA[Towel]]></text>
+			</staticText>
+			<line>
+				<reportElement x="294" y="178" width="261" height="1" uuid="5b234e8e-2dbd-4c00-866c-e9ae63c0f6a4"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="160" width="100" height="18" uuid="e6121c5d-49f1-437b-b9d9-1fc54184547e"/>
+				<text><![CDATA[Fixed Tennis]]></text>
+			</staticText>
+			<line>
+				<reportElement x="294" y="198" width="261" height="1" uuid="a96741b5-90f2-4eeb-95c5-21799edbde5c"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="182" width="100" height="18" uuid="a1d24879-2e6a-4235-b279-49641a45d756"/>
+				<text><![CDATA[Swimming]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="216" width="262" height="1" uuid="ee54af75-3044-4721-9832-e8ae3c29e52f"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="201" width="100" height="18" uuid="0d74c305-4114-498b-8e4d-b96dd98cd3bd"/>
+				<text><![CDATA[Guest]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="235" width="262" height="1" uuid="7e1a3083-3d6d-45c3-8f1d-e3cc7585b765"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="219" width="100" height="18" uuid="382dc946-dbfd-4f35-935f-cf28ec52fa17"/>
+				<text><![CDATA[Card Playing]]></text>
+			</staticText>
+			<line>
+				<reportElement x="294" y="253" width="261" height="1" uuid="d9102c5c-04c2-4e45-bed1-48e85222b30a"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="295" y="237" width="100" height="18" uuid="7c807682-830c-4154-97fd-98fd2218abaf"/>
+				<text><![CDATA[Ben. Fund]]></text>
+			</staticText>
+			<line>
+				<reportElement x="295" y="272" width="260" height="1" uuid="abb52c4e-5819-4c98-b861-731cfb31985f"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="295" y="256" width="100" height="18" uuid="f99598c9-28b2-4d20-b4cc-2e47a615215f"/>
+				<text><![CDATA[GST (CAT)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="292" width="262" height="1" uuid="047eb7e0-dc43-4242-ad07-c2bee326cc8c"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="275" width="138" height="18" uuid="e75ca442-640f-4646-9b9c-da0c7263ff14"/>
+				<text><![CDATA[GST On Outgoing Charges]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="311" width="262" height="1" uuid="4454f552-fe89-4024-bd46-2ebea93450a6"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="295" width="100" height="18" uuid="be33ebe0-33d7-46e8-ae40-5e98b68d198a"/>
+				<text><![CDATA[Locker Hire Charges]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="330" width="262" height="1" uuid="ca6cbe8a-b69e-4231-a710-986ba1cb760c"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="314" width="100" height="18" uuid="e223cd6c-c750-48dc-9b1f-d3a871b2183b"/>
+				<text><![CDATA[GST(BAR)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="349" width="262" height="1" uuid="073f35ff-dee3-450d-aec5-216aae9fc1e2"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="333" width="100" height="18" uuid="3851fab4-ec27-43b5-8753-2c653bbb25b9"/>
+				<text><![CDATA[Receipts]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="368" width="262" height="1" uuid="a9e2b710-fe43-4fa5-b07f-d3adea0becc6"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="352" width="100" height="18" uuid="82497010-8908-4563-abc2-bf3123c4fb95"/>
+				<text><![CDATA[Correction(s)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="387" width="262" height="1" uuid="6f0d1da8-ac2f-46b5-bcec-673830b2222c"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="295" y="371" width="100" height="18" uuid="8290b51c-5298-4ce9-84bc-540b1a9940dc"/>
+				<text><![CDATA[Misc]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="406" width="262" height="1" uuid="6e0d2239-1f18-485b-8366-78c90ede9975"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="390" width="100" height="18" uuid="4c9eea95-8ffb-4983-9c1f-499054114a59"/>
+				<text><![CDATA[Min. Billing]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="426" width="261" height="1" uuid="55acbd8d-19cf-43b9-bdb7-cf3d867f67a1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="293" y="410" width="100" height="18" uuid="38c38d2b-8115-4485-a800-516e602b2d57"/>
+				<text><![CDATA[Puja Contr For Staff]]></text>
+			</staticText>
+			<line>
+				<reportElement x="294" y="446" width="260" height="1" uuid="77ff307c-45c0-4fe5-a391-25ac1000d4a6"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="428" width="100" height="20" uuid="c48ab32e-78e7-4a5e-bdcb-6c5de9d56f44"/>
+				<text><![CDATA[Devlopment Fees]]></text>
+			</staticText>
+			<line>
+				<reportElement x="293" y="465" width="261" height="1" uuid="8634fca2-1f9f-41ed-a00b-20d35e498f4a"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="294" y="449" width="100" height="18" uuid="316bac9d-8b45-464c-82c1-084965abec3b"/>
+				<text><![CDATA[Social Subscription]]></text>
+			</staticText>
+			<line>
+				<reportElement x="283" y="15" width="1" height="459" uuid="173470a1-2934-4bda-9131-c1b7b99a7d36"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="315" y="486" width="100" height="20" uuid="dafb5221-4a7b-4eff-ba97-4ad60356b7f3"/>
+				<text><![CDATA[Net Payable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="506" width="100" height="20" uuid="e9f122a7-0b7d-4908-a711-329dcc24178d"/>
+				<text><![CDATA[Arrear]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="526" width="100" height="20" uuid="86cc531b-d594-46bc-8fef-5250f6b4327c"/>
+				<text><![CDATA[Current]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="18" width="103" height="18" uuid="9b250e61-8a68-4e30-abbc-90a1caeb89f5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{month_open}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="42" width="103" height="18" uuid="7631de99-6b9c-4784-a826-0c5bab159f45"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{month_subs}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="62" width="103" height="19" uuid="f4588477-3113-482e-afa1-35cfa1e54023"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cat_amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="83" width="103" height="18" uuid="3072738a-5ef4-4057-8bc4-a4a1ffbe5714"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{bar_amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="104" width="101" height="13" uuid="ab91eb3e-7795-4eac-a8e0-15d8c633f992"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{gym}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="124" width="101" height="18" uuid="5b9e347e-99ae-4413-8ed1-04e455c4199f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hard_court_extra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="143" width="100" height="17" uuid="566caf57-1e46-45a7-972b-21acadab48f0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{towel_charge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="446" y="162" width="100" height="18" uuid="4c135e87-428b-43ae-9401-fbf3fa2b146b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fixed_hard}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="184" width="100" height="16" uuid="58cdb5c2-7215-49fe-bc75-90b547e6f1d6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{swimming}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="221" width="100" height="16" uuid="c24b43ed-94bc-4a24-9303-0e2b10fab787"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{card_play}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="203" width="100" height="16" uuid="e26e7c47-f337-48e7-b0b1-659c6c1ab971"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{guest_charge}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="237" width="100" height="16" uuid="be7410b3-92a1-4944-9da2-624fdc482827"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ben_fund}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="311" width="100" height="17" uuid="5406cae8-d210-4669-8861-ad0539dc9dbe"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{bar_cgst}+$F{bar_sgst}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="275" width="100" height="17" uuid="1f2f22bd-b465-41b9-a660-ae4a05c61d6f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{outgoing_cgst}+$F{outgoing_sgst}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="295" width="101" height="20" uuid="e65deab8-b407-4577-949d-298c13cc896e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{locker_charge}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="446" y="254" width="100" height="18" uuid="850d579e-0600-4b5d-bde6-9ce816ca644c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cat_cgst}+$F{cat_sgst}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="447" y="333" width="100" height="17" uuid="f86a1e28-3a94-45a0-aac4-ca57ab35625e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{receipt_amt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="449" y="352" width="100" height="16" uuid="bf08b516-d40c-44bf-8783-d9d5ba9df16b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{corrections}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement x="449" y="371" width="100" height="16" uuid="430d18df-734d-438d-b086-103a26ad5bb3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{misc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="449" y="389" width="100" height="17" uuid="0a7ca551-c1f2-40d7-983d-08eca845bdd7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{min_bill_amt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" x="446" y="410" width="103" height="18" uuid="d89ec2d3-9423-4666-9fe8-b7ba947ab913"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{puja_contribution}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="415" y="428" width="132" height="20" uuid="8f6a282b-12ec-4332-bd55-fd9180848dfc"/>
+				<textFieldExpression><![CDATA[$F{development_charge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="-63" width="84" height="20" uuid="bef68c6b-b2e7-4e78-a261-03d5c4351547"/>
+				<textFieldExpression><![CDATA[$F{billdate}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="288" y="34" width="261" height="1" uuid="d7e4437c-032a-4173-bf29-660db2589a77"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="3" y="13" width="553" height="1" uuid="92be744d-613f-4598-bfb8-d039eae6be2e"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="32" width="281" height="2" uuid="6c651caa-6365-4578-9d91-3340f0ee8c21"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="16" width="66" height="18" uuid="58e69363-b3ae-4ecf-9e74-9696c9e90929"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[GSTIN NO  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="42" width="98" height="14" uuid="dcc09b2b-3482-4853-a507-a99fbee2cadd"/>
+				<text><![CDATA[**       Canteen       **]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="56" width="99" height="14" uuid="6d789f88-703c-4ef9-a258-aa1182b81de6"/>
+				<text><![CDATA[**         Bar             **]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="70" width="100" height="15" uuid="637b2bc2-5aaf-4a50-83ae-6e5763b55782"/>
+				<text><![CDATA[**       Gym             **]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="85" width="99" height="13" uuid="7c9643c2-96d7-4d3b-9a57-db6988e9dbd9"/>
+				<text><![CDATA[**  Hard Court Ex  **]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="100" width="98" height="15" uuid="725f8a78-8391-4776-b244-f1188458870a"/>
+				<text><![CDATA[**  Fixed Tennis    **]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="114" width="99" height="15" uuid="2ab191b2-d85f-4359-a98e-f1c0d6b48cd4"/>
+				<text><![CDATA[**    Swimming      **]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="133" y="42" width="100" height="13" uuid="f7ac315e-4228-4d0b-9f2c-5ef4253e0bb4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cat_amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="133" y="57" width="100" height="15" uuid="cbfbb4e3-982a-432f-9a3d-c01a8ee16e78"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{bar_amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="133" y="70" width="100" height="17" uuid="0ab5ac1f-6766-406b-beed-90761be5405e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{gym}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="83" width="100" height="13" uuid="9b404c50-30c9-44db-900f-fb81f10bd0bc"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hard_court_extra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="96" width="100" height="17" uuid="d9fdb601-3a23-4348-a37e-3ad6747ba654"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fixed_hard}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="111" width="100" height="15" uuid="757c06b0-2bd7-4f8b-adc0-91ccd10bcf37"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{swimming}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="288" y="16" width="100" height="18" uuid="17462a1d-3386-4617-a50f-721b01f2abed"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Opening Balance  ]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="95" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="8" y="10" width="30" height="15" uuid="a0c61e0a-370e-4040-889b-e087fba08920"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Note]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="22" y="25" width="533" height="17" uuid="93cdf8d8-03c8-4a34-8629-58b674717890"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[1. THIS IS A COMPUTER GENERATED BILL ... SIGNATURE IS NOT REQUIRED....]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="22" y="38" width="533" height="13" uuid="2aa0284e-e4e2-41aa-a0fc-27c4b2e5df08"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[     FOR AUTHENTICATION.. E-MAIL ID  ---  dkstennis@gmail.com..]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="51" width="533" height="15" uuid="34eea20e-7e43-4bc3-92d9-c50db51035ac"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[2. SUBS/COACHING FEES CHARGED IN ADVANCE DEC-2019...]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="65" width="532" height="17" uuid="3d112987-ba90-4cea-bb06-0dec4d74bbcd"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[3. WEB SIDE ---WWW.dks1928.com // OFFICE HOUR => 11 A.M TO 8 P.M]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="4" width="555" height="1" uuid="f71a950f-0113-45f3-9b44-32f14cad1f22"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

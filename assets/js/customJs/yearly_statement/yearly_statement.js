@@ -73,6 +73,26 @@ $(document).on('change','#sel_member_code',function(){
 });
 
 
+$(document).on('click', "#yearlystatementprintbtn", function(e) {
+
+        e.preventDefault();
+
+        var basepath = $('#basepath').val();alert()
+
+        if (validate()) {
+         
+            $('#yearlystaentFrom').prop('action', basepath+'yearlystatement/print_yearlystatement');
+            $("#yearlystaentFrom").submit();
+
+        }
+
+
+    });
+
+
+
+
+
 $(document).on('click', "#printbtn", function(e) {
         e.preventDefault();
 

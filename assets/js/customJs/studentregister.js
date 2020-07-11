@@ -101,9 +101,68 @@ $(document).on('submit','#stdentregisterForm',function(event)
 
 
 
+    $('#billing_st').on('change',function(e){
+        e.preventDefault();
+
+        var billing_style =$("#billing_st").val();
+        
+       
+             
+            $("#response_msg").html("Processing please wait...");
+            $('#loader').show();
+           
+            
+            var urlpath = basepath + 'studentregister/studentListview';
+            $("#studentlist").html('');
+            $.ajax({        
+                type: "POST",
+                url: urlpath,
+                data:{billing_style:billing_style},
+                dataType: "html",            
+                success: function(result) {
+                    $('#loader').hide();  
+                    $("#studentlist").html(result);
+                   //  $('.dataTable').DataTable();
+                    $('.dataTable').DataTable();
+
+        
+
+              //  var tripReportProject = $("#tripReportProject").val();
+               $("#response_msg").html("");
+            
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    // alert(msg);  
+                }
+            });
+             
+    });
 
 
-});
+
+
+
+
+
+
+
+});  // end of document ready
 
 function readURL(input){
 

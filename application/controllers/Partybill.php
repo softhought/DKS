@@ -62,7 +62,7 @@ public function addPartyBill(){
                 $result['partybillEditdata'] = [];
                 $result['catItemList'] = [];
                 $result['barItems'] = [];
-               
+                $result['memberCodeList'] = $this->partybillmodel->partybookingmembercode();
             
             }
             else
@@ -81,8 +81,8 @@ public function addPartyBill(){
 
                  $result['catItemList'] = $this->partybillmodel->getPartyBillDetails($partybillID,'CAT');
                  $result['barItems'] = $this->partybillmodel->getPartyBillDetails($partybillID,'BAR');
-
-                // pre($result['partybillEditdata']);exit;
+                 $result['memberCodeList'] = $this->partybillmodel->getallpartymemberforupdate($result['partybillID']);
+                // pre($result['memberCodeList']);exit;
 
                 
             }
@@ -90,7 +90,8 @@ public function addPartyBill(){
               $where_year = array('financialyear.year_id' => $year);
               $result['acyear'] = $this->commondatamodel->getSingleRowByWhereCls('financialyear',$where_year)->year;
 
-              $result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
+             // $result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
+             
                    //gst rate
                     $result['cgstrate'] = $this->payment_tennis_model->getGSTrate($company,$year,$type='CGST',$usedfor='O');
                     $result['sgstrate'] = $this->payment_tennis_model->getGSTrate($company,$year,$type='SGST',$usedfor='O');
@@ -694,8 +695,8 @@ public function partybill_action(){
             // pre($companylocation);exit;
             $printDate=date("d-m-Y");            
              //$jasperphp->debugsql=true;
-            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'memberid'=>"'".$memberid."'",'SUBREPORT_DIR'=>$subreportfile);
-            
+            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'memberid'=>$memberid,'SUBREPORT_DIR'=>$subreportfile);
+           // pre($jasperphp->arrayParameter);exit;
             $jasperphp->load_xml_file($file); 
             $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
             $jasperphp->outpage('I','Bill Details-'.date('d_m_Y-His'));  

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SalaryPaySlip" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0fb264a1-13bb-4e31-80dd-18d00034f10e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CompanyName" class="java.lang.String"/>
+	<parameter name="CompanyAddress" class="java.lang.String"/>
+	<parameter name="monthid" class="java.lang.String"/>
+	<parameter name="deptid" class="java.lang.String"/>
+	<parameter name="empid" class="java.lang.String"/>
+	<parameter name="phone" class="java.lang.String"/>
+	<parameter name="printDate" class="java.lang.String"/>
+	<parameter name="company_id" class="java.lang.String"/>
+	<parameter name="yearid" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[CALL `usp_GetSalarySlip`($P{company_id},$P{yearid},$P{monthid},$P{deptid},$P{empid})]]>
+	</queryString>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pf_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="esi_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="joining_date" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="designation_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dept_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="short_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sal_mast_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="employee_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="month_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="attendance" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="basic" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chg_basic" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hra" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="travelling" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="incentive_bar_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tennis_exp_amt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pf_ded" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="esi_ded" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pt_ded" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="loan_ded" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lip_ded" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_deduction" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_payable" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="company_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wordamt" class="java.lang.String"/>
+	<field name="salarymonthyear" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="3"/>
+	</pageHeader>
+	<detail>
+		<band height="266" splitType="Stretch">
+			<textField>
+				<reportElement x="198" y="0" width="158" height="28" uuid="2bfefd12-2d30-4b9d-9641-35e20f884e79"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="213" y="26" width="205" height="16" uuid="64f47a00-d587-4d65-b608-d2ecf4d0f86c"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Phone : "+$P{phone}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="111" width="555" height="1" uuid="5438cc7c-6fa9-4350-b928-b5796db4bea0"/>
+			</line>
+			<line>
+				<reportElement x="0" y="128" width="555" height="1" uuid="8b416b2d-4b6c-4724-bc65-1ac1366889d8"/>
+			</line>
+			<textField>
+				<reportElement x="290" y="79" width="265" height="15" uuid="a7ad8241-38f1-494c-bee7-ab79bac835e5"/>
+				<textFieldExpression><![CDATA["PF Number        :   "+$F{pf_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="95" width="241" height="13" uuid="b5bfa52d-37bc-477e-bb0c-a21928b52f1b"/>
+				<textFieldExpression><![CDATA["ESI Number      :    "+$F{esi_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="179" y="14" width="217" height="16" uuid="ab9647fb-0309-453a-8a62-e74f4b35ab58"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[93/1B, Rashbehari Avenue, Kolkata - 700029]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="62" width="241" height="16" uuid="601a41c6-a026-42f5-9fc6-3eee69dc1709"/>
+				<textFieldExpression><![CDATA["Name                 :    "+$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="62" width="265" height="16" uuid="04380628-9287-49e4-a0a5-d28015c646d5"/>
+				<textFieldExpression><![CDATA["Department        :    "+$F{dept_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="79" width="241" height="15" uuid="cd3d7705-1ea1-440a-bcb4-bc6fa20e70d0"/>
+				<textFieldExpression><![CDATA["Designation       :    "+$F{designation_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="95" width="265" height="13" uuid="aa3df9b2-1489-44a0-81d9-fa1564f63d75"/>
+				<textFieldExpression><![CDATA["Date Of Joining  :   "+$F{joining_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="113" width="60" height="14" uuid="937ae721-eb50-4d91-a617-0b5e096af5d4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Earnings]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="225" width="555" height="1" uuid="8d5695d5-f46f-4be3-8e82-448032969c5b"/>
+			</line>
+			<line>
+				<reportElement x="0" y="207" width="555" height="1" uuid="c1678d15-3e31-43c1-b14e-d373e315acab"/>
+			</line>
+			<line>
+				<reportElement x="277" y="111" width="1" height="113" uuid="3faf6403-9cd1-4d66-8100-841c488ac2e2"/>
+			</line>
+			<staticText>
+				<reportElement x="229" y="113" width="48" height="14" uuid="579b1b81-e76e-4294-bc92-72823bbaceef"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="113" width="100" height="14" uuid="d4767537-f8d1-4179-a258-203d0e2a4f6f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deduction]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="507" y="113" width="48" height="14" uuid="b368a36b-aaaa-4585-a7cd-c95d8668a700"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="210" width="100" height="15" uuid="d486a101-77d3-4888-9fea-b74bcbdee64e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Earnings]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="210" width="109" height="14" uuid="3bbd964e-75b9-46b9-a3d9-e40e14464a89"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Deduction]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="129" width="117" height="15" uuid="b6db65b1-ddc7-4822-afa4-a87dde7a2950"/>
+				<text><![CDATA[Basic Pay]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="177" y="129" width="100" height="15" uuid="de277e56-9bd6-44f4-92b7-a8a08fcc2e53"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{basic}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="145" width="117" height="15" uuid="f44e4288-315f-4cc3-9eda-fe1563a93918"/>
+				<text><![CDATA[House Rent Allowance]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="177" y="145" width="100" height="15" uuid="b0c2c8f9-efda-4d34-8e92-01f41c875c6a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hra}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="161" width="117" height="15" uuid="7a83ed89-415c-4787-b02d-53c76d02051f"/>
+				<text><![CDATA[Travelling Allowance]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="178" y="161" width="99" height="15" uuid="18db84b7-58e3-4edf-a9d6-c32650b11406"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{travelling}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="177" y="210" width="100" height="14" uuid="a50e243b-671b-45ac-b9d2-2c988c39cf4b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{gross}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="281" y="145" width="118" height="15" uuid="85fcc06e-15f5-4b5c-a1e0-5a816b32c455"/>
+				<text><![CDATA[ESI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="129" width="118" height="15" uuid="ced1b4b2-dbbf-4b4b-8253-6120dc2fb1be"/>
+				<text><![CDATA[Provident Fund]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="161" width="118" height="15" uuid="bbd449e8-011a-4481-a96c-156dd3088d4c"/>
+				<text><![CDATA[Professional Tax]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="176" width="118" height="15" uuid="7022a2a2-e80d-4e04-9824-096a799008e4"/>
+				<text><![CDATA[Loan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="191" width="118" height="15" uuid="65a98097-16dd-4110-a583-35fd52495d10"/>
+				<text><![CDATA[Lip]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="129" width="100" height="15" uuid="181a5b80-c7db-4205-895a-e68fc42aec3b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{pf_ded}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="145" width="100" height="15" uuid="092a917f-cbe5-4da3-b9f3-b1eea3554521"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{esi_ded}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="161" width="100" height="14" uuid="681b40d2-ba7b-491b-a199-bf7e8ece1ff4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{pt_ded}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="177" width="100" height="13" uuid="ec9b03d5-b4e7-4eb7-a609-2fc98877691e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{loan_ded}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="192" width="100" height="14" uuid="0cf735b5-e077-4a95-8184-43b519aad877"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{lip_ded}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="210" width="100" height="14" uuid="b50fac16-1252-4dc3-8106-8243c585fdaf"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{total_deduction}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="226" width="109" height="15" uuid="66b0b9e4-f5b9-4b72-ae19-242f17207a4f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Net Pay]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="177" y="226" width="100" height="16" uuid="cdc968b2-fa92-477c-9d0e-061aa2732c99"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{net_payable}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="254" width="555" height="12" uuid="b26d8125-38d1-4bc5-92be-e5222f2e1301"/>
+				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="177" y="42" width="378" height="20" uuid="b18c6b9e-e245-45c1-89ac-2af37b7b2aea"/>
+				<textElement>
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Salary Slip for the month of "+$F{short_name}+"-"+$F{salarymonthyear}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="238" width="275" height="15" uuid="bae450f2-b7a2-4a70-afc0-a1e722b641c0"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["( "+$F{wordamt}+" Only )"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="241" y="254" width="100" height="12" uuid="2313ef50-f236-43d3-8963-70154bfad269"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="176" width="117" height="15" uuid="6a02126b-11f6-4d28-b921-1e288f0becda"/>
+				<text><![CDATA[Incentive Bar Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="191" width="127" height="15" uuid="bb111cd8-be8a-4ff8-a7ac-644b1fd57feb"/>
+				<text><![CDATA[Tennis Expenses Amount]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="177" y="175" width="100" height="15" uuid="55d308c0-a5c8-49a8-9020-89b14602a998"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{incentive_bar_amt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="177" y="189" width="100" height="18" uuid="646b3b2f-6496-4a92-a803-ce0e037ac271"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{tennis_exp_amt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

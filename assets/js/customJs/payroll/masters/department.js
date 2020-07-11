@@ -65,6 +65,62 @@ $(document).ready(function(){
     });
 
 
+  $(document).on('keyup','#dept_code',function(e){
+
+        e.preventDefault();
+        $("#departmentsavebtn").attr('disabled',false);   
+        $("#errormsg").text('');
+        var dept_code = $.trim($(this).val());
+      
+        var mode = $('#mode').val();
+   
+      if(dept_code!=''){
+       $.ajax({
+           type: "POST",
+           url:basepath+'departmentmaster/checkexistanceDeptCode',
+           data:{dept_code:dept_code},
+           dataType: 'json',
+           success: function(result) {
+   
+            if(result.msg_status == 1){
+                
+                if(mode == 'ADD'){
+   
+                  $("#errormsg").text(result.msg_data);
+                  $("#departmentsavebtn").attr('disabled',true);  
+                }
+                
+            }
+           
+             
+           },
+           error: function(jqXHR, exception) {
+               $('#btnusersaveDiv').css('display','none');
+               var msg = '';
+               if (jqXHR.status === 0) {
+                   msg = 'Not connect.\n Verify Network.';
+               } else if (jqXHR.status == 404) {
+                   msg = 'Requested page not found. [404]';
+               } else if (jqXHR.status == 500) {
+                   msg = 'Internal Server Error [500].';
+               } else if (exception === 'parsererror') {
+                   msg = 'Requested JSON parse failed.';
+               } else if (exception === 'timeout') {
+                   msg = 'Time out error.';
+               } else if (exception === 'abort') {
+                   msg = 'Ajax request aborted.';
+               } else {
+                   msg = 'Uncaught Error.\n' + jqXHR.responseText;
+               }
+               // alert(msg);  
+           }
+       }); /*end ajax call*/
+   
+       }
+   
+    });
+
+
 
     //form submit
 
@@ -74,8 +130,26 @@ $(document).ready(function(){
               $("#errormsg").text('');
               var mode = $("#mode").val();
               var dept_name = $("#dept_name").val();
-            if(dept_name != '')
-            {   
+              var dept_code = $("#dept_code").val();
+                $("#errormsg").text('');
+              if(dept_name == '')
+              {  
+                  $("#errormsg").removeClass('succmsg');
+                  $("#errormsg").addClass('errormsgcolor');
+                  $("#errormsg").text('Error: Enter Department Name');
+                  $("#dept_name").focus();
+                  return false;
+              } 
+
+              if(dept_code == '')
+              {  
+                  $("#errormsg").removeClass('succmsg');
+                  $("#errormsg").addClass('errormsgcolor');
+                  $("#errormsg").text('Error: Enter Department Code');
+                  $("#dept_code").focus();
+                  return false;
+              } 
+    
     
                 var formDataserialize = $("#departmentmasterFrom").serialize();
                 formDataserialize = decodeURI(formDataserialize);
@@ -108,6 +182,7 @@ $(document).ready(function(){
                              $("#departmentsavebtn").css('display', 'inline-block');
                              $("#loaderbtn").css('display', 'none');
                              $('#dept_name').val('');                    
+                             $('#dept_code').val('');                    
                              
     
                             }
@@ -141,14 +216,7 @@ $(document).ready(function(){
             
                 
     
-            }else{
-                $("#errormsg").removeClass('succmsg');
-                $("#errormsg").addClass('errormsgcolor');
-                $("#errormsg").text('Error: Enter Department Name');
-                $("#dept_name").focus();
-
-            }
-    
+         
     
             
         });

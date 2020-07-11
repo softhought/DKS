@@ -4,10 +4,10 @@
         <div class="card card-primary">
             <div class="card-header box-shdw">
               <h3 class="card-title">Special Member List</h3>
-              <!--  <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
-              <a href="<?php echo base_url(); ?>membermaster/addmember" class="btn btn-default btnpos">
-               <i class="fas fa-plus"></i> Add </a>
-            </div> -->
+               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
+              <a href="<?php echo base_url(); ?>specialmember/print_specialmember" target="_blank" class="btn btn-default btnpos">
+               <i class="fas fa-print"></i> Print </a>
+            </div>
              
               
             </div><!-- /.card-header -->

@@ -20,6 +20,7 @@
                     <th>From Time</th>
                     <th>To Time</th>
                     <th>In Hour</th>
+                    <th>Day & Night</th>
                     <th>Action</th>
                                         
                     </tr>
@@ -33,6 +34,7 @@
                    <td><?php echo date('h:i A',strtotime($fixedtimelist->from_time)); ?></td>
                    <td><?php echo date('h:i A',strtotime($fixedtimelist->to_time)); ?></td>
                    <td><?php echo $fixedtimelist->in_hour; ?></td>
+                   <td><?php echo $fixedtimelist->day_night; ?></td>
                    <td>
                      <a href="<?php echo base_url(); ?>fixedhardcourttime/addedittime/<?php echo $fixedtimelist->time_slot_id; ?>" class="btn tbl-action-btn padbtn">
                   <i class="fas fa-edit"></i> 

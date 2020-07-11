@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class memberreceipt extends CI_Controller {
     public function __construct() {
@@ -82,7 +81,7 @@ public function index()
 
                 // getSingleRowByWhereCls(tablename,where params)
                  $result['receiptEditdata'] = $this->memberreceiptmodel->getMemberReceiptData($memberreceiptID); 
-                 // pre($result['receiptEditdata']);exit;
+                 //pre($result['receiptEditdata']);exit;
                  
                 
             }
@@ -172,7 +171,7 @@ public function index()
            $insert_array = array(
                                     'member_code' =>  $newCode,
                                     'member_name' => $firstname." ".$lastname,
-                                    'status' => 'ACTIVE STUDENT',
+                                    'status' => 'ACTIVE MEMBER',
                                  
                      );
             
@@ -263,6 +262,9 @@ public function index()
         $memberreceiptID = $searcharray['memberreceiptID'];
         $tran_type = $searcharray['tran_type'];
         $sel_member_id = $searcharray['sel_member_code'];
+        $member_name = $searcharray['member_name'];
+        $sel_tran_related = $searcharray['sel_tran_related'];
+        if($tran_type=='ORITM'){ $sel_tran_related = $searcharray['sel_tran_related'];}else{$sel_tran_related='NULL';}
         $receipt_dt = $searcharray['receipt_dt'];
 
         $amount = $searcharray['amount'];
@@ -333,7 +335,7 @@ public function index()
              $insert_array = array(
                                     'member_code' =>  $newCode,
                                     'member_name' => $firstname." ".$lastname,
-                                    'status' => 'ACTIVE STUDENT',
+                                    'status' => 'ACTIVE MEMBER',
                                  
                      );     
              $sel_member_id = $this->commondatamodel->insertSingleTableData('member_master',$insert_array);
@@ -392,6 +394,8 @@ public function index()
                                     'user_id' => $session['userid'],
                                     'company_id' => $company,
                                     'year_id' => $year,
+                                    'name' => $member_name,
+                                    'tran_related' => $sel_tran_related,
                                  );
           
            
@@ -456,6 +460,9 @@ public function index()
                                     'created_on' => date('Y-m-d'),
                                     'user_id' => $session['userid'],
                                     'company_id' => $company,
+                                    'year_id' => $year,
+                                    'name' => $member_name,
+                                    'tran_related' => $sel_tran_related,
                                  );
 
                  }else{
@@ -491,14 +498,11 @@ public function index()
                                     'created_on' => date('Y-m-d'),
                                     'user_id' => $session['userid'],
                                     'company_id' => $company,
+                                    'year_id' => $year,
+                                    'name' => $member_name,
+                                    'tran_related' => $sel_tran_related,
                                  );
-          
-
-
-
-
-
-
+  
                  }
           
            
@@ -507,14 +511,9 @@ public function index()
 
           $updatedata = $this->commondatamodel->updateSingleTableData('member_receipt',$upd_array_mem,$upd_where);
 
-
-
-
                     $activity_description = json_encode($upd_array_mem);
                     $old_description = json_encode($memreceipt_array_before_upd);
                     $this->insertMemberReceiptActivity($activity_description,$old_description,$memberreceiptID,"Update");
-
-                    
 
             if($updatedata)
                     {
@@ -522,9 +521,7 @@ public function index()
                             "msg_status" => 1,
                             "msg_data" => "Updated successfully",
                             "mode" => "ADD"
-                           
-                           
-
+  
                         );
                     }
                     else
@@ -635,14 +632,16 @@ public function index()
             // pre($memberid);
             // pre($company);
             // pre($companylocation);exit;
+            $image_path =  $_SERVER['DOCUMENT_ROOT'].'/assets/img/report-logo-dks.jpg';
+          //  $image_path =  $_SERVER['DOCUMENT_ROOT'].'/dks/assets/img/report-logo-dks.jpg';
             $printDate=date("d-m-Y");            
              //$jasperphp->debugsql=true;
-            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'receptId'=>"'".$receptid."'",'phone'=> $phone);
-            
+            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'receptId'=>$receptid,'phone'=> $phone,'image_path'=> $image_path);
+            //pre($jasperphp->arrayParameter);exit;  
             $jasperphp->load_xml_file($file); 
             $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
             $jasperphp->outpage('I','Receipt-'.date('d_m_Y-His').'.pdf');  
-             //pre($jasperphp); exit;    
+            // pre($jasperphp);     
     
 
             // $page = 'trial_balance/trailWithJasper.php';

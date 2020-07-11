@@ -17,6 +17,7 @@ if ( ! function_exists('createbody_method'))
 	 /* leftmenu */
 	
 	 $menu = $CI->menumodel->getAllAdministrativeMenu($session['userid']);
+	 $data['activeuser']=$session['name'];
 
 	  $where = array('year_id' => $session['yearid']);
 

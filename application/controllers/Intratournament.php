@@ -124,6 +124,11 @@ public function addFees(){
         
                $rowCheck=$dataArry['rowCheck'];
                $billing_style=$dataArry['billing_style'];
+               $month=$dataArry['month'];
+               $quarter_month=$dataArry['quarter_month'];
+
+
+              
 
      
 
@@ -131,11 +136,27 @@ public function addFees(){
 
                  	 $admissionid = $dataArry['admissionid_'.$value];
 
-                 
-		                 $del_where = array(
-		                 							'admission_id' => $admissionid
-		                 							
-		                 						   );
+                      if($billing_style=='Q') {
+                        $del_where = array(
+                                  'admission_id' => $admissionid,
+                                  'quarter_id' => $quarter_month,
+                                  'yearid' => $year,
+                                  'company_id' => $company,
+                                   );
+                       $month=NULL;
+
+                      }else{
+
+                        $del_where = array(
+                                  'admission_id' => $admissionid,
+                                  'month_id' => $month,
+                                  'yearid' => $year,
+                                  'company_id' => $company,
+                                   );
+                        $quarter_month=NULL;
+                      }
+		                 
+
 		               	$this->commondatamodel->deleteTableData('intra_tournament_fees',$del_where);
                  	
                      
@@ -145,8 +166,8 @@ public function addFees(){
                    $turnament_array = array(
                                                 'admission_id' => $admissionid,
                                                 'student_code' => $student_code,
-                                                'month_id' => NULL,
-                                                'quarter_id' => NULL,
+                                                'month_id' => $month,
+                                                'quarter_id' => $quarter_month,
                                                 'yearid' => $year,
                                                 'billing_style' => $billing_style,
                                                 'fees' => $dataArry['fees'],

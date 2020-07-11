@@ -41,14 +41,7 @@
     </td>
      
    
-     <td style="text-align: right;width: 20%">
-       <div class="form-group dispblock_<?php echo $rowno; ?>" style="display: none;">
-            <div class="input-group input-group-sm"> 
-                <input type="hidden" class="form-control decimalnumber editemployeedtl_<?php echo $rowno; ?>" name="dtl_salary_da[]" id="dtl_salary_da_<?php echo $rowno; ?>" value="<?php echo $salary_da;?>" > 
-             </div>
-         </div>         
-     <span class="showdata_<?php echo $rowno; ?>"><?php echo $salary_da;?> </span>                  
-    </td>
+
 
     <td style="text-align: right;width: 20%">
        <div class="form-group dispblock_<?php echo $rowno; ?>" style="display: none;">
@@ -57,6 +50,15 @@
              </div>
          </div>         
      <span class="showdata_<?php echo $rowno; ?>"><?php echo $house_rent;?> </span>                  
+    </td>
+
+    <td style="text-align: right;width: 20%">
+       <div class="form-group dispblock_<?php echo $rowno; ?>" style="display: none;">
+            <div class="input-group input-group-sm"> 
+                <input type="hidden" class="form-control decimalnumber editemployeedtl_<?php echo $rowno; ?>" name="dtl_salary_traveling[]" id="dtl_salary_traveling_<?php echo $rowno; ?>" value="<?php echo $traveling;?>" > 
+             </div>
+         </div>         
+     <span class="showdata_<?php echo $rowno; ?>"><?php echo $traveling;?> </span>                  
     </td>
    
     

@@ -27,8 +27,10 @@ public function index(){
              $from_dt=$result['accountingyear']->start_date;
              $to_dt=$result['accountingyear']->end_date;
 
-            $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
-            $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+            // $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
+            // $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+          
+            $result['memberList'] = $this->correctionentrymodel->getallmemberlist();
          
            //  $entry_module='All';
            $member_id='All';
@@ -79,7 +81,8 @@ public function addmembercorrection(){
 
      
                 
-        $result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
+        //$result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
+        $result['memberCodeList'] = $this->correctionentrymodel->getallmemberlist();
         
        // pre($result['transactionEditdata']);exit;
 

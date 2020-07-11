@@ -28,4 +28,44 @@ public function index()
     
 }
 
+
+
+
+public function print_specialmember(){
+       if($this->session->userdata('user_detail'))
+        {
+            $session = $this->session->userdata('user_detail');
+            $company=$session['companyid'];
+            $year=$session['yearid'];
+
+
+            // load library
+            $this->load->library('Pdf');
+            $pdf = $this->pdf->load();
+            ini_set('memory_limit', '256M'); 
+
+            $page = "dashboard/special-member/special_member_list_pdf.php"; 
+            $result['specialmemberlist'] = $this->membermastermodel->getallspecialmemberlist();
+
+                 // $html = $this->load->view($page, $result, true);
+               
+                //  $html="Hello";
+                $html = $this->load->view($page, $result, true);
+                // render the view into HTML
+                $pdf->WriteHTML($html); 
+                $output = 'specialmemberPdf' . date('Y_m_d_H_i_s') . '_.pdf'; 
+                $pdf->Output("$output", 'I');
+                exit();
+         }
+         else {
+            redirect('login', 'refresh');
+        }
 }
+
+
+
+
+
+
+
+} // end of class

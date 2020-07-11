@@ -253,6 +253,8 @@ public function getLastOrderHistory($category,$oderid)
 				->from('order_master')
 				->join('member_master','member_master.member_id=order_master.member_id','INNER')
 				->where($where)
+				->where("member_master.member_code NOT LIKE 'D%'")
+				->where("member_master.member_code NOT LIKE 'B%'")
 				->order_by("order_master.order_id", "desc")
 				->limit(1);
 		$query = $this->db->get();
@@ -390,8 +392,34 @@ public function getLastOrderHistory($category,$oderid)
           }
     }
 
-
-
+public function getonlymemberlist()
+    {
+      $data = array();
+      $this->db->select("member_id,member_code")
+          ->from('member_master')
+          ->where("status",'ACTIVE MEMBER')
+          ->where("member_code NOT LIKE 'D%'")
+          ->where("member_code NOT LIKE 'B%'")         
+          ->order_by('member_code', 'asc');
+         
+      $query = $this->db->get();
+      
+     #echo $this->db->last_query();exit;
+      
+      if($query->num_rows()> 0)
+      {
+          foreach ($query->result() as $rows)
+          {
+              $data[] = $rows;
+          }
+          return $data;
+               
+          }
+      else
+      {
+              return $data;
+          }
+    }
 
 
 } // end of class

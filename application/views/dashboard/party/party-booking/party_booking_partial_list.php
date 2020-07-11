@@ -38,7 +38,7 @@
                   </a>
 
                     <?php if($Allpartybookingcode->is_cancel == 'N'){ ?>
-                      <button type="button"  data-toggle="tooltip" data-placement="bottom" title = "Booking Confirm" data-bookingid = "<?php echo $Allpartybookingcode->booking_id; ?>"  data-iscancel = "Y"  class="cancelbtn btn tbl-action-btn padbtn" style="padding-right:7px;padding-left: 7px;"><i class="fas fa-check"></i> </button>
+                      <button type="button" <?php if($Allpartybookingcode->party_bill_no != ""){ ?>disabled <?php } ?>  data-toggle="tooltip" data-placement="bottom" title = "Booking Confirm" data-bookingid = "<?php echo $Allpartybookingcode->booking_id; ?>"  data-iscancel = "Y"  class="cancelbtn btn tbl-action-btn padbtn" style="padding-right:7px;padding-left: 7px;"><i class="fas fa-check"></i> </button>
                     
                     <?php }else if($Allpartybookingcode->is_cancel == 'Y'){ ?>
 

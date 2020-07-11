@@ -23,8 +23,9 @@ public function index()
         $page = "dashboard/gym_swimming_minbilling/gym_swimming_minbilling_list";
         $header=""; 
       
-        $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
-        $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+        // $where_member = array('member_master.status' => 'ACTIVE MEMBER' );
+        // $result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',$where_member);
+         $result['memberList'] = $this->gymswimming->getallmemberlist();
          
   
 

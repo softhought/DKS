@@ -11,12 +11,19 @@ class Dashboard extends CI_Controller {
     }
 
     public function index()
-	{      
+	{ 
+        $session = $this->session->userdata('user_detail');
+    if($this->session->userdata('user_detail'))
+    {     
 		$page = "dashboard/dashboard";
 		$result="";
 		$header="";
 		$session="";            
-		createbody_method($result, $page, $header, $session);
+        createbody_method($result, $page, $header, $session);
+    }else{
+        redirect('login','refresh');
+  
+ }
 	}
 
 

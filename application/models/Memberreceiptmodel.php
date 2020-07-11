@@ -121,7 +121,7 @@ class memberreceiptmodel extends CI_Model{
 
     $this->db->select("member_receipt.*,member_master.title_one,member_master.member_name,member_master.member_code")
         ->from('member_receipt')
-        ->join('member_master','member_master.member_id = member_receipt.member_id','INNER')
+        ->join('member_master','member_master.member_id = member_receipt.member_id','LEFT')
         ->where($where)
         ->limit(1);
     $query = $this->db->get();
@@ -146,7 +146,7 @@ class memberreceiptmodel extends CI_Model{
     {
         $data = array();
 
-
+        $trn_type = array('ORADM','ORITM','RCFM');
         if ($member_id=='All') {
             $where_member = [];
         }else{
@@ -155,11 +155,12 @@ class memberreceiptmodel extends CI_Model{
        
                 $this->db->select("member_receipt.*,member_master.member_name,member_master.member_code")
                 ->from('member_receipt')
-                ->join('member_master','member_master.member_id = member_receipt.member_id','INNER')
+                ->join('member_master','member_master.member_id = member_receipt.member_id','LEFT')
                 ->where('DATE_FORMAT(`member_receipt`.`receipt_date`,"%Y-%m-%d") >= ', $from_dt)
                 ->where('DATE_FORMAT(`member_receipt`.`receipt_date`,"%Y-%m-%d") <= ', $to_dt)
-                ->where($where_member);
-        $query = $this->db->get();
+                ->where($where_member)
+                ->where_in('member_receipt.tran_type', $trn_type);//added by anil on 06-04-2020;
+               $query = $this->db->get();
         #echo $this->db->last_query();
 
         if($query->num_rows()> 0)

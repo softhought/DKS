@@ -81,7 +81,8 @@ public function addeditemployee(){
             $data['month_id'] = $this->input->post('month_id');
             $data['month_name'] = $this->input->post('month_name');
             $data['basic_salary'] = $this->input->post('basic_salary');
-            $data['salary_da'] = $this->input->post('salary_da');
+           // $data['salary_da'] = $this->input->post('salary_da');
+            $data['traveling'] = $this->input->post('traveling');
             $data['house_rent'] = $this->input->post('house_rent');
         
             $data['dtlmonthlist'] = $this->commondatamodel->getAllRecordWhereOrderBy('month_master',[],'id');
@@ -253,7 +254,8 @@ if($this->input->post('delIds') != ''){
 
        $dtl_month_id = $this->input->post('dtl_month_id');
        $dtl_basic_sal = $this->input->post('dtl_basic_sal');
-       $dtl_salary_da = $this->input->post('dtl_salary_da');
+       //$dtl_salary_da = $this->input->post('dtl_salary_da');
+       $dtl_salary_traveling = $this->input->post('dtl_salary_traveling');
        $dtl_salary_hra = $this->input->post('dtl_salary_hra');
        
         
@@ -267,7 +269,7 @@ if($this->input->post('delIds') != ''){
                                    'year_id'=>$session['yearid'],
                                    'company_id'=>$session['companyid'],
                                    'basic_salary'=>$dtl_basic_sal[$i],
-                                   'da_amount'=>$dtl_salary_da[$i],
+                                   'traveling_amount'=>$dtl_salary_traveling[$i],
                                    'hra_amount'=>$dtl_salary_hra[$i],
                                    'created_on'=>date('Y-m-d')
                                  ); 
@@ -284,7 +286,7 @@ if($this->input->post('delIds') != ''){
                                    'year_id'=>$session['yearid'],
                                    'company_id'=>$session['companyid'],
                                    'basic_salary'=>$dtl_basic_sal[$i],
-                                   'da_amount'=>$dtl_salary_da[$i],
+                                   'traveling_amount'=>$dtl_salary_traveling[$i],
                                    'hra_amount'=>$dtl_salary_hra[$i],                                  
                                  );
                 $upd_where = array('emp_dtl_id'=>$employeedtlId[$i],'year_id'=>$session['yearid'],'company_id'=>$session['companyid']);                 
@@ -351,6 +353,61 @@ $session = $this->session->userdata('user_detail');
    }else{
           redirect('login','refresh');
       }                
+}
+
+
+public function hra_rate(){
+
+    $session = $this->session->userdata('user_detail');
+      if($this->session->userdata('user_detail'))
+      { 
+
+           $company=$session['companyid'];
+           $year=$session['yearid'];
+     
+
+
+          $hra="";
+          $month_id = $this->input->post('month_id');
+          $basic_salary = $this->input->post('basic_salary');
+
+          $where = array(
+                          'salary_parameter_master.month_id' => $month_id,
+                          'salary_parameter_master.year_id' => $year
+                         );
+
+          $hraRate = $this->commondatamodel->getSingleRowByWhereCls('salary_parameter_master',$where);
+          
+
+          if ($hraRate) {
+            $hra=($basic_salary*$hraRate->hra_rate)/100;
+          }
+
+      
+        
+               
+
+                    $json_response = array(
+                          "msg_status" => 1,
+                          "hra" => $hra,
+                          
+                      );
+
+                    
+         
+
+      header('Content-Type: application/json');
+      echo json_encode( $json_response );
+      exit; 
+
+
+       }else{
+          redirect('login','refresh');
+      }
+
+
+
+
 }
 
 

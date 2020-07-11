@@ -244,7 +244,8 @@ class PHPJasperXML {
     }
 //read level 0,Jasperreport page setting
     public function page_setting($xml_path) {
-        $this->arrayPageSetting["orientation"]="P";
+        //print_r($xml_path); // added by sandipan on 14.03.2020
+        $this->arrayPageSetting["orientation"]=$xml_path["orientation"]; // added by sandipan on 14.03.2020
         $this->arrayPageSetting["name"]=$xml_path["name"];
         $this->arrayPageSetting["language"]=$xml_path["language"];
         $this->arrayPageSetting["pageWidth"]=$xml_path["pageWidth"];

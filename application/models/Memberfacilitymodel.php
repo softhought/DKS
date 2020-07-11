@@ -159,7 +159,7 @@ class Memberfacilitymodel extends CI_Model{
         $this->db->select("*")
                 ->from('fixed_hard_court_timeslot')
                 ->where($where)
-                ->order_by("display_sl", "asc");
+                ->order_by("from_time", "asc");
         $query = $this->db->get();
         #echo $this->db->last_query();
 
@@ -339,7 +339,9 @@ public function getAllMemberListByCategory($category)
                         ")
         ->from('member_master')
         ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
-        
+        ->where("status",'ACTIVE MEMBER')
+        ->where("member_code NOT LIKE 'D%'")
+        ->where("member_code NOT LIKE 'B%'")
         ->where($where);
          $query = $this->db->get();
     #echo $this->db->last_query();
@@ -529,8 +531,11 @@ public function getallmebercode(){
 
         $data = array();
         
-        $this->db->select("member_master.member_code")
+        $this->db->select("member_master.*")
                 ->from('member_master')
+                ->where("status",'ACTIVE MEMBER')
+                ->where("member_code NOT LIKE 'D%'")
+                ->where("member_code NOT LIKE 'B%'")
                 ->order_by("member_code");
         $query = $this->db->get();
         #echo $this->db->last_query();
@@ -603,5 +608,185 @@ public function getallmonthlist(){
 
 }
 
+
+
+public function getAllMemberListByCategoryForDevFees($category,$month_id,$year_id)
+{
+    $data = array();
+      $where = array(
+                      'member_master.category' => $category
+                    );
+    
+    $this->db->select("
+                        member_master.*,
+                        member_catogary_master.category_name,
+                        development_fees_transaction.total_amount,
+                        development_fees_transaction.dev_tran_id,
+                        development_fees_transaction.month_id
+                    
+                        ")
+        ->from('member_master')
+        ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
+        ->join('development_fees_transaction',"development_fees_transaction.member_id=member_master.member_id and development_fees_transaction.month_id=$month_id and  development_fees_transaction.year_id= $year_id
+          ",'LEFT')
+        ->where("status",'ACTIVE MEMBER')
+        ->where("member_code NOT LIKE 'D%'")
+        ->where("member_code NOT LIKE 'B%'")
+        ->where($where);
+         $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+
+
+}
+
+public function getExitingmemberFixedHardCourt($sel_day,$sel_day_night,$sel_single_double,$sel_time_slot,$court_no)
+	{
+        $where = array(
+            'fixed_hard_court_transaction.day_id' => $sel_day, 
+            'fixed_hard_court_transaction.day_night' => $sel_day_night, 
+            'fixed_hard_court_transaction.single_double' => $sel_single_double, 
+            'fixed_hard_court_transaction.time_slot_id' => $sel_time_slot, 
+            'fixed_hard_court_transaction.court_no' => $court_no, 
+            'fixed_hard_court_transaction.is_cancle' => 'N'
+           
+          );
+		$data = array();
+		$this->db->select("fixed_hard_court_transaction.*,
+                      member_master.member_name,member_master.member_code,
+                      day_master.day_name,
+                      day_master.day_code,
+                      fixed_hard_court_timeslot.from_time,
+                      fixed_hard_court_timeslot.to_time,
+        ")
+                ->from('fixed_hard_court_transaction')
+                ->join('member_master','fixed_hard_court_transaction.member_id = member_master.member_id','INNER')
+                ->join('day_master','day_master.day_id = fixed_hard_court_transaction.day_id','INNER')
+                ->join('fixed_hard_court_timeslot','fixed_hard_court_timeslot.time_slot_id = fixed_hard_court_transaction.time_slot_id','INNER')
+        				->where($where);
+		$query = $this->db->get();
+		
+		#echo "<br>".$this->db->last_query();
+		
+		    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+
+  }
+
+
+
+  public function getExitingmemberFixedHardCourtWithInnoreId($sel_day,$sel_day_night,$sel_single_double,$sel_time_slot,$court_no,$ignore_id)
+  {
+        $where = array(
+            'fixed_hard_court_transaction.day_id' => $sel_day, 
+            'fixed_hard_court_transaction.day_night' => $sel_day_night, 
+            'fixed_hard_court_transaction.single_double' => $sel_single_double, 
+            'fixed_hard_court_transaction.time_slot_id' => $sel_time_slot, 
+            'fixed_hard_court_transaction.court_no' => $court_no, 
+            'fixed_hard_court_transaction.is_cancle' => 'N'
+           
+          );
+    $data = array();
+    $this->db->select("fixed_hard_court_transaction.*,
+                      member_master.member_name,member_master.member_code,
+                      day_master.day_name,
+                      day_master.day_code,
+                      fixed_hard_court_timeslot.from_time,
+                      fixed_hard_court_timeslot.to_time,
+        ")
+                ->from('fixed_hard_court_transaction')
+                ->join('member_master','fixed_hard_court_transaction.member_id = member_master.member_id','INNER')
+                ->join('day_master','day_master.day_id = fixed_hard_court_transaction.day_id','INNER')
+                ->join('fixed_hard_court_timeslot','fixed_hard_court_timeslot.time_slot_id = fixed_hard_court_transaction.time_slot_id','INNER')
+                ->where($where)
+                ->where_not_in('ftran_id', $ignore_id);
+    $query = $this->db->get();
+    
+    #echo "<br>".$this->db->last_query();
+    
+        if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+
+  }
+
+
+
+  public function getAllMemberListByCategoryForBenovolentFees($category,$month_id,$year_id)
+{
+    $data = array();
+      $where = array(
+                      'member_master.category' => $category
+                    );
+    
+    $this->db->select("
+                        member_master.*,
+                        member_catogary_master.category_name,
+                        benvolent_fund_transaction.total_amount,
+                        benvolent_fund_transaction.btran_id,
+                        benvolent_fund_transaction.month_id
+                    
+                        ")
+        ->from('member_master')
+        ->join('member_catogary_master','member_catogary_master.cat_id=member_master.category','INNER')
+        ->join('benvolent_fund_transaction',"benvolent_fund_transaction.member_id=member_master.member_id and benvolent_fund_transaction.month_id=$month_id and  benvolent_fund_transaction.year_id= $year_id
+          ",'LEFT')
+        ->where("status",'ACTIVE MEMBER')
+        ->where("member_code NOT LIKE 'D%'")
+        ->where("member_code NOT LIKE 'B%'")
+        ->where($where);
+         $query = $this->db->get();
+    #echo $this->db->last_query();
+
+    if($query->num_rows()> 0)
+    {
+            foreach ($query->result() as $rows)
+      {
+        $data[] = $rows;
+            }
+            return $data;
+             
+        }
+    else
+    {
+             return $data;
+         }
+
+
+}
 
 } //  end of class

@@ -94,8 +94,10 @@ class Benvolentfund extends CI_Controller {
 
      
                 
-        $result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
-        
+        //$result['memberCodeList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
+        $result['memberCodeList'] = $this->memberfacilitymodel->getallmebercode();
+
+
        // pre($result['transactionEditdata']);exit;
 
         createbody_method($result, $page, $header, $session);
@@ -111,16 +113,15 @@ class Benvolentfund extends CI_Controller {
         { 
             $result =[];
            
-           
+          $year=$session['yearid'];
           $category=$this->input->post('category');
+          $sel_month=$this->input->post('sel_month');
         
-          $where = array(
-          					'member_master.category' => $category
-          				);
-           $result['memberList']=$this->commondatamodel->getAllRecordWhere("member_master",$where);
+
+           $result['memberList']=$this->memberfacilitymodel->getAllMemberListByCategoryForBenovolentFees($category,$sel_month,$year);
          
 			
-		//	pre($result['memberList']);exit;
+			//pre($result['memberList']);exit;
             
     		
             $page = 'dashboard/benvolent_fund/member_benvolent_fund_partial_view';
@@ -142,7 +143,7 @@ class Benvolentfund extends CI_Controller {
             $json_response = array();
             $formData = $this->input->post('formDatas');
             parse_str($formData, $dataArry);
-            $activity_description="";
+            $activity_description=[];
             $company=$session['companyid'];
             $year=$session['yearid'];
 

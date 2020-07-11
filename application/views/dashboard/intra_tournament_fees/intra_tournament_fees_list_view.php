@@ -22,6 +22,8 @@
                     <th>Student Code</th>
                     <th>Student Name</th>
                     <th>Billing Style</th>
+                    <th>Month</th>
+                    <th>Quarter</th>
                     
                   
                     <th>Fees Amt.</th>
@@ -51,7 +53,8 @@
                                 ?></td>
                  
                 
-                 
+                  <td><?php echo $studentlist->short_name; ?></td>
+                   <td><?php echo $studentlist->quarter; ?></td>
                    <td><?php echo $studentlist->fees; ?></td>
 
                  </tr>
@@ -60,6 +63,8 @@
                 </tbody>
                  <tfoot>
                            <tr>
+                           <th></th>
+                           <th></th>
                            <th></th>
                            <th></th>
                            <th></th>

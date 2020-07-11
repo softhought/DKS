@@ -40,7 +40,7 @@
      <?php echo $sgstamt;?>                   
     </td>
     <td style="text-align: right;"> 
-    <input type="hidden" name="item_netamtrow[]" id="item_netamtrow_<?php echo $rowno; ?>" value="<?php echo $item_netamt;?>">   
+    <input type="hidden" class="rowNetItmAmt" name="item_netamtrow[]" id="item_netamtrow_<?php echo $rowno; ?>" value="<?php echo $item_netamt;?>">   
      <?php echo $item_netamt;?>                   
     </td>
 
@@ -48,7 +48,7 @@
 
 
                   
-            </td> 
+          
 
 						<td style="vertical-align: middle;text-align: center;">
 							<?php 

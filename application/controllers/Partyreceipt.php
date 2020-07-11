@@ -6,6 +6,7 @@ class Partyreceipt extends CI_Controller {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('partyreceiptmodel','partyreceiptmodel',TRUE);
+        $this->load->model('companymodel', '', TRUE); 
 
       
     }
@@ -80,6 +81,8 @@ public function addReceipt(){
 
             
               $result['memberCodeList'] = $this->partyreceiptmodel->getPartyBookingmembere($company,$year);
+              //$result['memberCodeList'] = $this->partyreceiptmodel->partybookingmembercode();
+              //$result['memberCodeList'] = $this->partybillmodel->partybookingmembercode();
               $result['fineAccountList'] = $this->commondatamodel->getAllDropdownData('account_master');
               $result['acTobeDebited'] = $this->commondatamodel->getAllRecordWhere('payment_mode_details',[]);
              
@@ -206,7 +209,9 @@ public function receipt_action() {
                         $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => "Saved successfully",
-                            "mode" => "ADD"
+                            "mode" => "ADD",
+                            "receipt_id"=>$insertData,
+                            'receipt_no'=>$receipt_no
                            
                            
 
@@ -267,7 +272,7 @@ public function receipt_action() {
                         $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => "Updated successfully",
-                            "mode" => "ADD"
+                            "mode" => "EDIT"
                            
                            
 
@@ -402,7 +407,59 @@ public function addPartyBookingDetail()
         }
     }
 
+    public function partyreceiptprintJasper()
+    {
+        $session = $this->session->userdata('user_detail');
+        if($this->session->userdata('user_detail'))
+        {     
+         
+            $file= APPPATH."views/dashboard/reports/party-receipt/PartyReceipt.jrxml";
+            
+          
+            $this->load->library('jasperphp');
+            $jasperphp = $this->jasperphp->jasper();
+          
+            $dbdriver="mysql";
+            // $server="localhost";
+            // $db="teasamrat";
+            // $user="root";
+            // $pass="";
+            
+            $this->load->database();
+            $server=$this->db->hostname;
+            $user=$this->db->username;
+            $pass=$this->db->password;
+            $db=$this->db->database;
+           
+            $companyId = $session['companyid'];
+         
+            $receptid = $this->uri->segment(3);  
+           
+             $company=  $this->companymodel->getCompanyNameById($companyId);
+             $companylocation=  $this->companymodel->getCompanyAddressById($companyId);  
+             $phone =    $this->companymodel->getCompanyById($companyId)->phone; 
+            //  pre($phone);exit;       
+            // pre($memberid);
+            // pre($company);
+            // pre($companylocation);exit;
+            $image_path =  $_SERVER['DOCUMENT_ROOT'].'/assets/img/report-logo-dks.jpg';
+            $printDate=date("d-m-Y");            
+             //$jasperphp->debugsql=true;
+            $jasperphp->arrayParameter = array('CompanyName'=>$company,'CompanyAddress'=>$companylocation,'receptId'=>"'".$receptid."'",'phone'=> $phone,'image_path'=> $image_path);
+            //pre($jasperphp->arrayParameter);exit;
+            $jasperphp->load_xml_file($file); 
+            $jasperphp->transferDBtoArray($server,$user,$pass,$db,$dbdriver);
+            $jasperphp->outpage('I','PartyReceipt-'.date('d_m_Y-His').'.pdf');  
+             //pre($jasperphp); exit;    
+    
 
+            // $page = 'trial_balance/trailWithJasper.php';
+            // $this->load->view($page, $result, TRUE);
+
+        } else {
+            redirect('login', 'refresh');
+        }
+    }
 
 
 } // end of class

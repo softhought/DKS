@@ -22,7 +22,8 @@ class Order extends CI_Controller {
 			$result = [];
 			$category='CAT';
 			$result['itemlist'] = $this->ordermodel->getAllItemByCategory($category);
-			$result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
+			//$result['memberList'] = $this->commondatamodel->getAllRecordWhere('member_master',[]);
+			$result['memberList'] = $this->ordermodel->getonlymemberlist();
 
 
 			 $where = array('year_id' => $year);
@@ -437,7 +438,8 @@ public function order_action(){
                         $json_response = array(
                             "msg_status" => 1,
                             "msg_data" => "Saved successfully",
-                            "mode" => "ADD"
+                            "mode" => "ADD",
+                            "order_id"=>$insertId
                         );
                     }
                     else

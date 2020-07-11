@@ -61,7 +61,7 @@
                           </div>
                           <p id="billstyleerr" class="perrmsg"></p>
                </div>
-              <!--   <div class="col-md-2" id="monthblock">
+                 <div class="col-md-2" id="monthblock">
                           <div class="form-group">
                             <label for="specialcoching">Month</label>
                             <div class="input-group input-group-sm" id="montheerr">
@@ -99,7 +99,7 @@
 
                           </div>
                          
-               </div> -->
+               </div> 
                
                   <div class="col-md-2">
                           <div class="form-group">

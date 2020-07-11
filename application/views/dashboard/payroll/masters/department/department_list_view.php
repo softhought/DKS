@@ -18,6 +18,7 @@
                     <tr>
                     <th>Sl.No</th>
                     <th>Deparment Name</th>                   
+                    <th>Deparment Code</th>                   
                     <th>Action</th>
                                         
                     </tr>
@@ -29,6 +30,7 @@
                    <tr>
                    <td><?php echo $i++; ?></td>
                    <td><?php echo $departmentList->dept_name; ?></td>                   
+                   <td><?php echo $departmentList->dept_code; ?></td>                   
                    <td>
                      <a href="<?php echo base_url(); ?>departmentmaster/addeditdeparment/<?php echo $departmentList->dept_id; ?>" class="btn tbl-action-btn padbtn">
                   <i class="fas fa-edit"></i> 

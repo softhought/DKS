@@ -576,7 +576,7 @@ class partybillmodel extends CI_Model{
 				->limit(1);
 		$query = $this->db->get();
 		
-		#echo "<br>".$this->db->last_query();exit;
+	
 		
 		if($query->num_rows()> 0)
 		{
@@ -618,9 +618,57 @@ class partybillmodel extends CI_Model{
 
   }
 
+  public function partybookingmembercode()
+  {
+      $data = array();
+      $this->db->select(" `member_master`.*,party_bill_master.`party_bill_no`")
+              ->from('member_master')
+              ->join('party_booking_master','party_booking_master.member_master_id = member_master.member_id','INNER')
+              ->join('party_bill_master','party_booking_master.`member_master_id` = party_bill_master.`member_id`','LEFT')
+              ->where('party_bill_master.`party_bill_no` IS NULL')
+              ->where('party_booking_master.is_cancel','N');
+      $query = $this->db->get();
+      	#echo "<br>".$this->db->last_query();exit;
+      if($query->num_rows()> 0)
+      {
+          foreach ($query->result() as $rows)
+          {
+              $data[] = $rows;
+          }
+          return $data;
+           
+      }
+      else
+      {
+           return $data;
+       }
+  }
 
+  public function getallpartymemberforupdate($member_id)
+  {
+      $data = array();
+      $this->db->select(" `member_master`.*,party_bill_master.`id`,party_bill_master.`party_bill_no`")
+              ->from('party_booking_master')
+              ->join('member_master','party_booking_master.`member_master_id` = member_master.`member_id`','INNER')             
+              ->join('party_bill_master','party_booking_master.`member_master_id` = party_bill_master.`member_id`','LEFT') 
+              ->where("party_booking_master.`is_cancel` = 'N'")   
+              ->where("party_bill_master.`id` IS NULL")
+              ->or_where("party_bill_master.`id` = '".$member_id."'");
+      $query = $this->db->get();
+      #echo $this->db->last_query();exit;
+      if($query->num_rows()> 0)
+      {
+          foreach ($query->result() as $rows)
+          {
+              $data[] = $rows;
+          }
+          return $data;
+           
+      }
+      else
+      {
+           return $data;
+       }
 
-
-
-    
+    }  
 } // end of class

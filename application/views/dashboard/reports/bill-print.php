@@ -15,7 +15,7 @@
                            
             </div><!-- /.card-header -->
 
-           <form name="billprint" id="billprint" target="_blank">
+           <form name="billprint" id="billprint" target="_blank" action="<?php echo base_url();?>billprint/billPrintPdf" method="post" onSubmit="return validateBillGenerate();">
 
            <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>">
         
@@ -92,7 +92,7 @@
                           <div class="form-group">
                             <label for="specialcoching">Student(Opt.)</label>
                             <div class="input-group input-group-sm" id="student_drp">
-                               <select data-live-search="true" data-actions-box="true" class="form-control selectpicker" name="student_id" multiple id="student_id" >
+                               <select data-live-search="true" data-actions-box="true" class="form-control selectpicker" name="student_id[]" multiple id="student_id" >
                               <!-- <option value="">Select</option>    -->
                             </select>
                             </div>

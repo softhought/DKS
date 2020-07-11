@@ -5,12 +5,14 @@ class Partybookingmodel extends CI_Model{
     public function getallpartybookinglist($yearid)
 	{
 		$data = array();
-		$this->db->select("party_booking_master.*,member_master.*,party_location_master.location_name as partylocation")
+		$this->db->select("party_booking_master.*,member_master.*,party_location_master.location_name as partylocation,party_bill_master.`party_bill_no`")
                 ->from('party_booking_master')
                 ->join('member_master','party_booking_master.member_master_id = member_master.member_id','INNER')
                 ->join('party_location_master','party_booking_master.party_location_id = party_location_master.id','INNER')
+                ->join('party_bill_master','party_booking_master.`member_master_id` = party_bill_master.`member_id`','LEFT')
                 ->where('party_booking_master.year_id',$yearid);
-		$query = $this->db->get();
+        $query = $this->db->get();
+        #echo $this->db->last_query();exit;
 		if($query->num_rows()> 0)
 		{
             foreach ($query->result() as $rows)
@@ -122,10 +124,11 @@ class Partybookingmodel extends CI_Model{
             $where_loc = array('party_booking_master.party_location_id' => $location_id ); 
         }
        
-       $this->db->select("party_booking_master.*,member_master.*,party_location_master.location_name as partylocation")
+       $this->db->select("party_booking_master.*,member_master.*,party_location_master.location_name as partylocation,party_bill_master.`party_bill_no`")
                 ->from('party_booking_master')
                 ->join('member_master','party_booking_master.member_master_id = member_master.member_id','INNER')
                 ->join('party_location_master','party_booking_master.party_location_id = party_location_master.id','INNER')
+                ->join('party_bill_master','party_booking_master.`member_master_id` = party_bill_master.`member_id`','LEFT')
                 ->where('DATE_FORMAT(`party_booking_master`.`booking_date`,"%Y-%m-%d") >= ', $from_dt)
                 ->where('DATE_FORMAT(`party_booking_master`.`booking_date`,"%Y-%m-%d") <= ', $to_dt)
                 ->where($where_time)

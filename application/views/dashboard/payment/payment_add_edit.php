@@ -106,8 +106,7 @@ fieldset.scheduler-border {
               <h3 class="card-title">Receipt</h3>
 
               <div class="btn-group btn-group-sm float-right" role="group" aria-label="MoreActionButtons" >
-              <!--   <button type="button" class="btn btn-default"><i class="fas fa-plus"></i> Add </button>
-                <button type="button" class="btn btn-default"><i class="fas fa-clipboard-list"></i> List</button> -->
+              <a href="<?php echo base_url(); ?>receiptregister" class="btn btn-info btnpos" style="margin-top: 1px;"><i class="fas fa-clipboard-list"></i> List </a>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#codegeneration_modal" id="codegenbtn"><i class="fas fa-cog"></i> Generate Code</button>
                
               </div>
@@ -124,6 +123,9 @@ fieldset.scheduler-border {
 
 
              <input type="hidden" name="paymentID" id="paymentID" value="<?php echo $bodycontent['paymentID']; ?>" />
+             <input type="hidden" name="voucherID" id="voucherID" value="<?php if ($bodycontent['mode']=='EDIT') {
+                                        echo $bodycontent['paymentEditdata']->voucher_master_id;
+                                          } ?>" />
              <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>" />
 
               <div class="row">
@@ -141,6 +143,16 @@ fieldset.scheduler-border {
                               <option value="<?php echo $studentcode->student_code;?>"
                                data-name="<?php echo $studentcode->student_name; ?>"
                                data-billstyle="<?php echo $studentcode->bill_style; ?>"
+
+                               <?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->student_code==$studentcode->student_code) {
+                                            echo "selected";
+                                        }
+                                       
+                                     }
+
+                                ?>
 
                               ><?php echo $studentcode->student_code;?></option>
                               <?php } ?>
@@ -183,7 +195,7 @@ fieldset.scheduler-border {
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="payment_dt" id="payment_dt" value="<?php echo date('d/m/Y');?>">
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="payment_dt" id="payment_dt" value="<?php if($bodycontent['mode'] == 'EDIT'){ echo date("d/m/Y", strtotime($bodycontent['paymentEditdata']->payment_date));}else{echo date('d/m/Y');}?>">
                           </div>
                         </div>
                  </div>
@@ -204,7 +216,17 @@ fieldset.scheduler-border {
                               <?php
                               foreach ($tran_type as $key => $tran_type) {
                               ?>
-                              <option value="<?php echo $key;?>"><?php echo $tran_type?></option>
+                              <option value="<?php echo $key;?>"
+                                <?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type==$key) {
+                                            echo "selected";
+                                        }
+                                       
+                                     }
+
+                                ?>
+                                ><?php echo $tran_type?></option>
                               <?php } ?>
                             </select>
 
@@ -224,35 +246,33 @@ fieldset.scheduler-border {
                                                   );
 
                   ?>
-                    <div class="col-md-2">
-                          <div class="form-group">
-                            <label for="code">Payment Mode</label>
-                            <div class="input-group input-group-sm" id="paymentmodeerr">
-                              <select class="form-control select2" name="paymentmode" id="paymentmode"  style="width: 100%;">
-                              <option value="">Select</option>
-                              <?php
-                              foreach ($acTobeDebited as $key => $actobedebited) {
-                              
-                               ?>
-                               <option value="<?php echo $actobedebited;?>"><?php echo $actobedebited;?></option>
 
-                              <?php } ?>
-                            
-                            </select>
-                            </div>
-                          </div>
-                  </div>
-                     <div class="col-md-2">
+                  <input type="hidden" name="paymentmode" id="paymentmode" value="<?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        echo $bodycontent['paymentEditdata']->payment_mode;
+                                        
+                                     }
+                                ?>" />
+                    
+                     <div class="col-md-3">
                           <div class="form-group">
                             <label for="code">(A/C to be debited)</label>
                             <div class="input-group input-group-sm" id="actobedebitederr">
                               <select class="form-control select2" name="actobedebited" id="actobedebited"  style="width: 100%;">
                               <option value="">Select</option>
                               <?php
-                              foreach ($acTobeDebited as $key => $actobedebited) {
+                              foreach ($bodycontent['acTobeDebitedList'] as $actobedebitedlist) {
                               
                                ?>
-                               <option value="<?php echo $key;?>"><?php echo $actobedebited;?></option>
+                               <option value="<?php echo $actobedebitedlist->account_id;?>"
+                                 <?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->actobedebited==$actobedebitedlist->account_id) {
+                                            echo "selected";
+                                        }
+                                     }
+                                ?>
+                                ><?php echo $actobedebitedlist->payment_mode;?></option>
 
                               <?php } ?>
                             
@@ -260,7 +280,7 @@ fieldset.scheduler-border {
                             </div>
                           </div>
                   </div>
-                       <div class="col-md-2">
+                       <div class="col-md-3">
                           <div class="form-group">
                             <label for="code">A/C to be credited</label>
                             <div class="input-group input-group-sm" id="actobecreditederr">
@@ -270,7 +290,15 @@ fieldset.scheduler-border {
                               foreach ($bodycontent['actobeCreditedList'] as $actobecredited) {
                               
                                ?>
-                               <option value="<?php echo $actobecredited->account_id;?>"><?php echo $actobecredited->account_name;?></option>
+                               <option value="<?php echo $actobecredited->account_id;?>"
+                                 <?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->actobecredited==$actobecredited->account_id) {
+                                            echo "selected";
+                                        }
+                                     }
+                                ?>
+                                ><?php echo $actobecredited->account_name;?></option>
 
                               <?php } ?>
                             
@@ -278,7 +306,7 @@ fieldset.scheduler-border {
                             </div>
                           </div>
                        </div>
-                         <div class="col-md-2" id="fine_ac_drp" style="display: none">
+                         <div class="col-md-2" id="fine_ac_drp" style="display:none">
                           <div class="form-group">
                             <label for="code">Ledger For Fine</label>
                             <div class="input-group input-group-sm" id="fine_ledger_acerr">
@@ -288,7 +316,19 @@ fieldset.scheduler-border {
                               foreach ($bodycontent['fineAccountList'] as $fineaccountlist) {
                               
                                ?>
-                               <option value="<?php echo $fineaccountlist->account_id;?>"><?php echo $fineaccountlist->account_name;?></option>
+                               <option value="<?php echo $fineaccountlist->account_id;?>"
+                                <?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                            if($bodycontent['paymentEditdata']->fine_ledger_ac==$fineaccountlist->account_id) {
+                                                echo "selected";
+                                            }
+
+                                        }
+                                        
+                                     }
+                                ?>
+                                ><?php echo $fineaccountlist->account_name;?></option>
 
                               <?php } ?>
                             
@@ -322,7 +362,19 @@ fieldset.scheduler-border {
                               foreach ($bodycontent['quartermonthList'] as $monthlyquarter) {
                               
                                ?>
-                               <option value="<?php echo $monthlyquarter->id;?>"><?php echo $monthlyquarter->quarter;?></option>
+                               <option value="<?php echo $monthlyquarter->id;?>"
+                                <?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                            if($bodycontent['paymentEditdata']->fees_quarter==$monthlyquarter->id){
+                                                echo "selected";
+                                            }
+
+                                        }
+                                        
+                                     }
+                                ?>
+                                ><?php echo $monthlyquarter->quarter;?></option>
 
                               <?php } ?>
                             
@@ -357,7 +409,19 @@ fieldset.scheduler-border {
                               foreach ($bodycontent['monthList'] as $months) {
                               
                                ?>
-                               <option value="<?php echo $months->id;?>"><?php echo $months->short_name;?></option>
+                               <option value="<?php echo $months->id;?>"
+                                   <?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                            if($bodycontent['paymentEditdata']->fees_month==$months->id){
+                                                echo "selected";
+                                            }
+
+                                        }
+                                        
+                                     }
+                                ?>
+                                ><?php echo $months->short_name;?></option>
 
                               <?php } ?>
                             
@@ -370,7 +434,7 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Fees Year</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="fees_year" name="fees_year" placeholder="" autocomplete="off" value="<?php echo $bodycontent['acyear'];?>"   readonly >
+                            <input type="text" class="form-control forminputs " id="fees_year" name="fees_year" placeholder="" autocomplete="off" value="<?php if ($bodycontent['mode']=='EDIT') {echo $bodycontent['paymentEditdata']->fees_year;}else{ echo $bodycontent['acyear'];}?>"   readonly >
                             </div>
 
                           </div>
@@ -387,7 +451,7 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Bank</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="bank" name="bank" placeholder="" autocomplete="off" value="" >
+                            <input type="text" class="form-control forminputs " id="bank" name="bank" placeholder="" autocomplete="off" value="<?php if ($bodycontent['mode']=='EDIT') {echo $bodycontent['paymentEditdata']->cheque_bank;}?>" >
                             </div>
 
                           </div>
@@ -396,7 +460,7 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Branch</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="branch" name="branch" placeholder="" autocomplete="off" value=""  >
+                            <input type="text" class="form-control forminputs " id="branch" name="branch" placeholder="" autocomplete="off" value="<?php if ($bodycontent['mode']=='EDIT') {echo $bodycontent['paymentEditdata']->cheque_bank_branch;}?>"  >
                             </div>
 
                           </div>
@@ -405,7 +469,7 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Cheque No.</label>
                             <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="cheque_no" name="cheque_no" placeholder="" autocomplete="off" value="">
+                            <input type="text" class="form-control forminputs " id="cheque_no" name="cheque_no" placeholder="" autocomplete="off" value="<?php if ($bodycontent['mode']=='EDIT') {echo $bodycontent['paymentEditdata']->cheque_no;}?>">
                             </div>
 
                           </div>
@@ -418,7 +482,17 @@ fieldset.scheduler-border {
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask name="cheque_dt" id="cheque_dt">
+                            <input type="text" class="form-control datemask" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" name="cheque_dt" id="cheque_dt"
+                             value="<?php 
+                              if($bodycontent['mode']=='EDIT'){
+                               //echo date("d/m/Y",strtotime("16/06/2020"));
+                                if(trim($bodycontent['paymentEditdata']->cheque_date)!=null){
+                                echo date("d/m/Y", strtotime($bodycontent['paymentEditdata']->cheque_date));
+                                  }else{
+                                    //echo "dd/mm/yyyy";
+                                  }
+                              }
+                              ?>">
                           </div>
 
                           </div>
@@ -437,34 +511,50 @@ fieldset.scheduler-border {
                          <span  class="bg-gradient-warning btn-xs receivableDtl" data-toggle="modal" data-target="#billModalDetails" id="bill_dtl_btn"  ><i class="fas fa-cog"></i>&nbsp;Bill Details </span>
                       <div class="row" >
 
-                         <input type="hidden" name="bill_id" id="bill_id" value="" />
-                         <input type="hidden" name="clear_fine_amt" id="clear_fine_amt" value="" />
+                         <input type="hidden" name="bill_id" id="bill_id" value="<?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                           echo $bodycontent['paymentEditdata']->bill_id;
+                                        } 
+                                     }
+                                ?>" />
+                         <input type="hidden" name="clear_fine_amt" id="clear_fine_amt" value="<?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                           echo $bodycontent['paymentEditdata']->clear_fine_amt;
+                                        } 
+                                     }
+                                ?>" />
                          <input type="hidden" name="student_new_status" id="student_new_status" value="" />
                       <div class="col-md-1">
                               <div class="form-group">
                                 <label for="firstname">Amount</label>
                                   <div class="input-group input-group-sm" id="receivable_student_amterr">
-                                <input type="text" class="form-control forminputs " id="receivable_student_amt" name="receivable_student_amt" placeholder="" autocomplete="off" value="" onKeyUp="numericFilter(this);" readonly>
+                                <input type="text" class="form-control forminputs " id="receivable_student_amt" name="receivable_student_amt" placeholder="" autocomplete="off" value="<?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                           echo $bodycontent['paymentEditdata']->taxable_amount;
+                                        } 
+                                     }
+                                ?>" onKeyUp="numericFilter(this);" readonly>
                                 </div>
 
                               </div>
                      </div><!-- end of col-md-2 -->
 
-                      <div class="col-md-1">
-                              <div class="form-group">
-                                <label for="firstname">Fine Amt.</label>
-                                  <div class="input-group input-group-sm">
-                                <input type="text" class="form-control forminputs " id="receivable_student_fineamt" name="receivable_student_fineamt" placeholder="" autocomplete="off" value="" onKeyUp="numericFilter(this);" readonly >
-                                </div>
-
-                              </div>
-                     </div><!-- end of col-md-2 -->
+                     
 
                        <div class="col-md-1">
                           <div class="form-group">
                             <label for="firstname">Taxable</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="receivable_student_taxable" name="receivable_student_taxable" placeholder="" autocomplete="off" value=""  readonly  >
+                            <input type="text" class="form-control forminputs " id="receivable_student_taxable" name="receivable_student_taxable" placeholder="" autocomplete="off" value="<?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                           echo $bodycontent['paymentEditdata']->taxable_amount;
+                                        } 
+                                     }
+                                ?>"  readonly  >
                             </div>
 
                           </div>
@@ -479,7 +569,18 @@ fieldset.scheduler-border {
                                 <?php
                                  foreach ($bodycontent['cgstrate'] as $cgstrate) {  
                                ?>
-                               <option value="<?php echo $cgstrate->id?>" data-rate="<?php echo $cgstrate->rate; ?>" ><?php echo $cgstrate->gstDescription?></option>
+                               <option value="<?php echo $cgstrate->id?>" data-rate="<?php echo $cgstrate->rate; ?>"
+                                <?php 
+                                     if ($bodycontent['mode']=='EDIT'){
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                          if ($bodycontent['paymentEditdata']->cgst_id==$cgstrate->id) {
+                                           echo "selected";
+                                           } 
+                                        }
+                                       
+                                     }
+                                ?>
+                                ><?php echo $cgstrate->gstDescription?></option>
                               <?php }?>
                             </select>
                             </div>
@@ -489,7 +590,13 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">CGST Amt.</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="receivable_student_cgst_amt" name="receivable_student_cgst_amt" placeholder="" autocomplete="off" value=""  readonly  >
+                            <input type="text" class="form-control forminputs " id="receivable_student_cgst_amt" name="receivable_student_cgst_amt" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode']=='EDIT'){
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                          echo $bodycontent['paymentEditdata']->cgst_amt;   
+                                        } 
+                                     }
+                                ?>"  readonly  >
                             </div>
 
                           </div>
@@ -503,7 +610,18 @@ fieldset.scheduler-border {
                                 <?php
                                  foreach ($bodycontent['sgstrate'] as $sgstrate) {  
                                ?>
-                               <option value="<?php echo $sgstrate->id?>" data-rate="<?php echo $sgstrate->rate; ?>" ><?php echo $sgstrate->gstDescription?></option>
+                               <option value="<?php echo $sgstrate->id?>" data-rate="<?php echo $sgstrate->rate; ?>"
+                                <?php 
+                                     if ($bodycontent['mode']=='EDIT'){
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                          if ($bodycontent['paymentEditdata']->sgst_id==$sgstrate->id) {
+                                           echo "selected";
+                                           } 
+                                        }
+                                       
+                                     }
+                                ?>
+                                ><?php echo $sgstrate->gstDescription?></option>
                               <?php }?>
                             
                             </select>
@@ -514,16 +632,43 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">SGST Amt.</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="receivable_student_sgst_amt" name="receivable_student_sgst_amt" placeholder="" autocomplete="off" value="" readonly   >
+                            <input type="text" class="form-control forminputs " id="receivable_student_sgst_amt" name="receivable_student_sgst_amt" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode']=='EDIT'){
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                          echo $bodycontent['paymentEditdata']->sgst_amt;   
+                                        } 
+                                     }
+                                ?>" readonly   >
                             </div>
 
                           </div>
+                     </div><!-- end of col-md-2 -->
+                      <div class="col-md-1">
+                              <div class="form-group">
+                                <label for="firstname">Fine Amt.</label>
+                                  <div class="input-group input-group-sm">
+                                <input type="text" class="form-control forminputs " id="receivable_student_fineamt" name="receivable_student_fineamt" placeholder="" autocomplete="off" value="<?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                           echo $bodycontent['paymentEditdata']->fine_amt;
+                                        } 
+                                     }
+                                ?>" onKeyUp="numericFilter(this);" readonly >
+                                </div>
+
+                              </div>
                      </div><!-- end of col-md-2 -->
                        <div class="col-md-1">
                           <div class="form-group">
                             <label for="firstname">Net Amt.</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="receivable_student_netamt" name="receivable_student_netamt" placeholder="" autocomplete="off" value=""   readonly >
+                            <input type="text" class="form-control forminputs " id="receivable_student_netamt" name="receivable_student_netamt" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode']=='EDIT'){
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                          echo $bodycontent['paymentEditdata']->total_amount;   
+                                        } 
+                                     }
+                                ?>"   readonly >
                             </div>
 
                           </div>
@@ -532,7 +677,29 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Pay. Amt.</label>
                               <div class="input-group input-group-sm" id="receivable_student_paymentamterr">
-                            <input type="text" class="form-control forminputs " id="receivable_student_paymentamt" name="receivable_student_paymentamt" placeholder="" autocomplete="off" value=""    >
+                            <input type="text" class="form-control forminputs " id="receivable_student_paymentamt" name="receivable_student_paymentamt" placeholder="" autocomplete="off" value="<?php 
+                                     if($bodycontent['mode']=='EDIT'){
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                          echo $bodycontent['paymentEditdata']->payment_amount;   
+                                        } 
+                                     }
+                                ?>"    >
+                            </div>
+
+                          </div>
+                     </div><!-- end of col-md-2 -->
+
+                       <div class="col-md-1">
+                          <div class="form-group">
+                            <label for="firstname">Due. Amt.</label>
+                              <div class="input-group input-group-sm" id="receivable_student_dueamterr">
+                            <input type="text" class="form-control forminputs " id="receivable_student_dueamt" name="receivable_student_dueamt" placeholder="" autocomplete="off" readonly value="<?php 
+                                     if($bodycontent['mode']=='EDIT'){
+                                        if ($bodycontent['paymentEditdata']->transaction_type=='RCFS') {
+                                          echo $bodycontent['paymentEditdata']->due_amount;   
+                                        } 
+                                     }
+                                ?>"    >
                             </div>
 
                           </div>
@@ -577,7 +744,10 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Amount</label>
                               <div class="input-group input-group-sm" id="oth_rec_amterr">
-                            <input type="text" class="form-control forminputs " id="oth_rec_amt" name="oth_rec_amt" placeholder="" autocomplete="off" value=""  onKeyUp="numericFilter(this);">
+                            <input type="text" class="form-control forminputs " id="oth_rec_amt" name="oth_rec_amt" placeholder="" autocomplete="off" value="<?php  if ($bodycontent['mode']=='EDIT') {
+                             if($bodycontent['paymentEditdata']->transaction_type=='ORADM'){
+                              echo $bodycontent['paymentEditdata']->taxable_amount;
+                             } }?>"  onKeyUp="numericFilter(this);">
                             </div>
 
                           </div>
@@ -591,17 +761,28 @@ fieldset.scheduler-border {
                                 <?php
                                  foreach ($bodycontent['cgstrate'] as $cgstrate) {  
                                ?>
-                               <option value="<?php echo $cgstrate->id?>" data-rate="<?php echo $cgstrate->rate; ?>"><?php echo $cgstrate->gstDescription?></option>
+                               <option value="<?php echo $cgstrate->id?>" data-rate="<?php echo $cgstrate->rate; ?>"
+                                <?php  if ($bodycontent['mode']=='EDIT') {
+                                          if($bodycontent['paymentEditdata']->transaction_type=='ORADM'){
+                                            if ($bodycontent['paymentEditdata']->cgst_id==$cgstrate->id) {
+                                                echo "selected";
+                                            }
+                              
+                             } }?>
+                                ><?php echo $cgstrate->gstDescription?></option>
                               <?php }?>
                             </select>
                             </div>
                           </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                           <div class="form-group">
                             <label for="firstname">CGST Amt.</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="oth_rec_cgst_amt" name="oth_rec_cgst_amt" placeholder="" autocomplete="off" value=""  readonly  >
+                            <input type="text" class="form-control forminputs " id="oth_rec_cgst_amt" name="oth_rec_cgst_amt" placeholder="" autocomplete="off" value="<?php  if ($bodycontent['mode']=='EDIT') {
+                                          if($bodycontent['paymentEditdata']->transaction_type=='ORADM'){
+                                            echo $bodycontent['paymentEditdata']->cgst_amt;
+                             } }?>"  readonly  >
                             </div>
 
                           </div>
@@ -615,18 +796,44 @@ fieldset.scheduler-border {
                                 <?php
                                  foreach ($bodycontent['sgstrate'] as $sgstrate) {  
                                ?>
-                               <option value="<?php echo $sgstrate->id?>" data-rate="<?php echo $sgstrate->rate; ?>" ><?php echo $sgstrate->gstDescription?></option>
+                               <option value="<?php echo $sgstrate->id?>" data-rate="<?php echo $sgstrate->rate; ?>"
+                                <?php  if ($bodycontent['mode']=='EDIT') {
+                                          if($bodycontent['paymentEditdata']->transaction_type=='ORADM'){
+                                            if ($bodycontent['paymentEditdata']->sgst_id==$sgstrate->id) {
+                                                echo "selected";
+                                            }
+                              
+                             } }?>
+                                ><?php echo $sgstrate->gstDescription?></option>
                               <?php }?>
                             
                             </select>
                             </div>
                           </div>
                       </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                           <div class="form-group">
                             <label for="firstname">SGST Amt.</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="oth_rec_sgst_amt" name="oth_rec_sgst_amt" placeholder="" autocomplete="off" value="" readonly   >
+                            <input type="text" class="form-control forminputs " id="oth_rec_sgst_amt" name="oth_rec_sgst_amt" placeholder="" autocomplete="off" value="
+                            <?php  if ($bodycontent['mode']=='EDIT') {
+                                          if($bodycontent['paymentEditdata']->transaction_type=='ORADM'){
+                                            echo $bodycontent['paymentEditdata']->sgst_amt;
+                             } }?>" readonly   >
+                            </div>
+
+                          </div>
+                     </div><!-- end of col-md-2 -->
+
+
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="firstname">Security Deposit</label>
+                              <div class="input-group input-group-sm" id="security_depositerr">
+                            <input type="text" class="form-control forminputs " id="security_deposit" name="security_deposit" placeholder="" autocomplete="off" value="<?php  if ($bodycontent['mode']=='EDIT') {
+                             if($bodycontent['paymentEditdata']->transaction_type=='ORADM'){
+                              echo $bodycontent['paymentEditdata']->security_deposit;
+                             } }?>"  onKeyUp="numericFilter(this);">
                             </div>
 
                           </div>
@@ -636,7 +843,10 @@ fieldset.scheduler-border {
                           <div class="form-group">
                             <label for="firstname">Net Amt</label>
                               <div class="input-group input-group-sm">
-                            <input type="text" class="form-control forminputs " id="oth_rec_netamt" name="oth_rec_netamt" placeholder="" autocomplete="off" value=""   readonly>
+                            <input type="text" class="form-control forminputs " id="oth_rec_netamt" name="oth_rec_netamt" placeholder="" autocomplete="off" value="<?php  if ($bodycontent['mode']=='EDIT') {
+                                          if($bodycontent['paymentEditdata']->transaction_type=='ORADM'){
+                                            echo $bodycontent['paymentEditdata']->total_amount;
+                             } }?>"   readonly>
                             </div>
 
                           </div>
@@ -793,8 +1003,8 @@ fieldset.scheduler-border {
                           $detailCount = 0;
                           if($bodycontent['mode']=="EDIT")
                           {
-                          // $detailCount = sizeof($bodycontent['mensuMedList']);
-                           $detailCount = 0;
+                           $detailCount = sizeof($bodycontent['itemEditdata']);
+                           
                           }
 
                           // For Table style Purpose
@@ -826,8 +1036,84 @@ fieldset.scheduler-border {
                     </tr>
                   </thead>
                   <tbody>
-            
+                  <?php
+                      $itemNetTotal=0;
+                      foreach ($bodycontent['itemEditdata'] as $itemdata) {
+                      $itemNetTotal+=$itemdata->net_amount;
+                  ?>
+
+    <tr id="rowItemdetails_<?php echo $rowno; ?>" class="itemDtlCls" >
     
+    <td style="text-align: left;width: 20%"> 
+    <input type="hidden" class="tennisitemcls" name="tennisitemrow[]" id="tennisitemrow_<?php echo $rowno; ?>" value="<?php echo $itemdata->tennis_item_id;?>">   
+     <?php echo $itemdata->item_name;?>                   
+    </td>
+    <td style="text-align: left;"> 
+    <input type="hidden" name="hsncoderow[]" id="hsncoderow_<?php echo $rowno; ?>" value="<?php echo $itemdata->hsn_no;?>">   
+     <?php echo $itemdata->hsn_no;?>                  
+    </td>
+     <td style="text-align: right;"> 
+    <input type="hidden" name="itemqtyrow[]" id="itemqtyrow_<?php echo $rowno; ?>" value="<?php echo $itemdata->quantity;?>">   
+     <?php echo $itemdata->quantity;?>                   
+    </td>
+    <td style="text-align: right;"> 
+    <input type="hidden" name="itemraterow[]" id="itemraterow_<?php echo $rowno; ?>" value=" <?php echo $itemdata->rate;?>">   
+     <?php echo $itemdata->rate;?>                
+    </td>
+     <td style="text-align: right;"> 
+    <input type="hidden" name="itemtaxablerow[]" id="itemtaxablerow_<?php echo $rowno; ?>" value="<?php echo $itemdata->taxable;?>">   
+     <?php echo $itemdata->taxable;?>                    
+    </td>
+    <td style="text-align: right;"> 
+    <input type="hidden" name="item_cgst_raterow[]" id="item_cgst_raterow_<?php echo $rowno; ?>" value="<?php echo $itemdata->cgst_rate_id;?>">   
+     <?php echo $itemdata->cgst_rate;?>                  
+    </td>
+    <td style="text-align: right;"> 
+    <input type="hidden" name="item_cgst_amtrow[]" id="item_cgst_amtrow_<?php echo $rowno; ?>" value=" <?php echo $itemdata->cgst_amount;?>">   
+     <?php echo $itemdata->cgst_amount;?>                   
+    </td>
+    <td style="text-align: right;"> 
+    <input type="hidden" name="item_sgst_raterow[]" id="item_sgst_raterow_<?php echo $rowno; ?>" value="<?php echo $itemdata->sgst_rate_id;?>">   
+     <?php echo $itemdata->sgst_rate;?>                   
+    </td>
+    <td style="text-align: right;"> 
+    <input type="hidden" name="item_sgst_amtrow[]" id="item_sgst_amtrow_<?php echo $rowno; ?>" value="<?php echo $itemdata->sgst_amount;?>">   
+     <?php echo $itemdata->sgst_amount;?>                   
+    </td>
+    <td style="text-align: right;"> 
+    <input type="hidden" class="rowNetItmAmt" name="item_netamtrow[]" id="item_netamtrow_<?php echo $rowno; ?>" value=" <?php echo $itemdata->net_amount;?>">   
+      <?php echo $itemdata->net_amount;?>                    
+    </td>
+
+
+
+            <td style="vertical-align: middle;text-align: center;">
+            
+      <a href="javascript:;" class="delItenDetails" id="delDocRow_<?php echo $rowno; ?>" title="Delete">
+     
+      <i class="far fa-trash-alt" style="color: #d04949;; font-weight:700;"></i>
+           
+
+        </a>
+        
+        
+      </td>       
+        
+    
+    </tr>
+    
+
+
+
+
+
+
+            
+                <?php
+                      $rowno++;
+                      }
+
+                ?>
                
                 <input type="hidden" name="rowno" id="rowno" value="<?php echo $rowno;?>">     
                   </tbody>
@@ -839,6 +1125,20 @@ fieldset.scheduler-border {
 
 
 
+                      
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-9"></div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="firstname">&nbsp;</label>
+                            <div class="input-group input-group-sm">
+                           <span style="font-size: 13px;color: #561a4c !important;margin-top: 5px;">Total Amount</span>&nbsp;  <input type="text" class="form-control forminputs " id="grandtotalitemamt" name="grandtotalitemamt" placeholder="" autocomplete="off" value="<?php echo $itemNetTotal;?>"  readonly >
+                            </div>
+
+                          </div>
+                      </div>
                       
                     </div>
                       
@@ -855,7 +1155,12 @@ fieldset.scheduler-border {
                                   <div class="form-group">
                                     <label for="firstname">Narration</label>
                                     <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control forminputs " id="narration" name="narration" placeholder="" autocomplete="off" value="" style="text-transform:uppercase"  >
+                                    <input type="text" class="form-control forminputs " id="narration" name="narration" placeholder="" autocomplete="off" value="<?php 
+                                     if ($bodycontent['mode']=='EDIT') {
+                                        echo $bodycontent['paymentEditdata']->narration;
+                                        
+                                     }
+                                ?>" style="text-transform:uppercase"  >
                                     </div>
 
                                   </div>
@@ -1043,7 +1348,9 @@ fieldset.scheduler-border {
             </div>
             <div class="modal-body" style="font-size: 12px;">
             <table>
+              
               <tr>
+                <td colspan="2"><span class="btn btn-block btn-info btn-xs" id="voucherno"></span></td>
                 <td><button type="button" class="btn btn-block btn-success btn-xs">Print Receipt</button></td>
                 <td><button type="button" class="btn btn-block btn-danger btn-xs" data-dismiss="modal" aria-label="Close" id="close_btn_patment_rec">Close</button></td>
               </tr>

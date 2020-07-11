@@ -57,6 +57,29 @@
                            
                               </div> 
 
+                              <div class="col-md-3">
+                                  <label>Day & Night</label>
+                                  <div class="form-group">
+                                        <div class="input-group input-group-sm" >
+                                        <select class="form-control select2" name="sel_day_night" id="sel_day_night" >
+                                            <option value="" >Select</option>
+                                                  <?php foreach ($bodycontent['day_night_arr'] as $key => $value) {  ?>
+                                                    <option value="<?php echo $key;?>"
+                                                        <?php if($bodycontent['mode'] == 'EDIT'){
+                                                            if ($bodycontent['timeEditdata']->day_night==$key) {
+                                                            echo "selected";
+                                                            }
+                                                          } 
+                                                        ?>   ><?php echo $value;?></option>
+                                                    <?php } ?>
+                         
+                            </select>
+                                        
+                                        </div>
+                                      </div>
+               
+                                 </div>
+
               
              
                 </div>

@@ -318,14 +318,14 @@
                                           </div>       
                                     </div>
                                    
-                                      <div class="col-md-2">  
+                                    <!--   <div class="col-md-2">  
                                         <label for="salary_da">DA</label>                                                              
                                           <div class="form-group">
                                                 <div class="input-group input-group-sm">                                           
                                                     <input type="text" class="form-control decimalnumber"  name="salary_da" id="salary_da"  value="">
                                                   </div>
                                           </div>       
-                                    </div> 
+                                    </div> --> 
                                    
                                       <div class="col-md-2">   
                                          <label for="house_rent">HRA</label>                                                             
@@ -335,6 +335,15 @@
                                                   </div>
                                           </div>       
                                     </div> 
+
+                                      <div class="col-md-2">  
+                                        <label for="salary_da">Traveling</label>                                                              
+                                          <div class="form-group">
+                                                <div class="input-group input-group-sm">                                           
+                                                    <input type="text" class="form-control decimalnumber"  name="traveling" id="traveling"  value="">
+                                                  </div>
+                                          </div>       
+                                    </div>
                                     <div class="col-md-2">   
                                          <label for="acc_no">&nbsp;</label>                                                             
                                           <div class="form-group">
@@ -374,8 +383,9 @@
                               <tr>                                          
                                   <th>Month</th>
                                   <th>Basic</th>
-                                  <th>DA</th>
-                                  <th>HRA</th>                                                  
+                                  <th>HRA</th>
+                                  <th>Traveling</th>
+                                                                                   
                                   <th style="width: 80px;">Action</th>
                                 </tr>
                           </thead>
@@ -429,14 +439,7 @@
                         </td>
                         
                       
-                        <td style="text-align: right;width: 20%">
-                          <div class="form-group dispblock_<?php echo $rowno; ?>" style="display: none;">
-                                <div class="input-group input-group-sm"> 
-                                    <input type="hidden" class="form-control decimalnumber editemployeedtl_<?php echo $rowno; ?>" name="dtl_salary_da[]" id="dtl_salary_da_<?php echo $rowno; ?>" value="<?php echo $employeesalarydtl->da_amount;?>" > 
-                                </div>
-                            </div>         
-                        <span class="showdata_<?php echo $rowno; ?>"><?php echo $employeesalarydtl->da_amount;?> </span>                  
-                        </td>
+                     
 
                         <td style="text-align: right;width: 20%">
                           <div class="form-group dispblock_<?php echo $rowno; ?>" style="display: none;">
@@ -445,6 +448,14 @@
                                 </div>
                             </div>         
                         <span class="showdata_<?php echo $rowno; ?>"><?php echo $employeesalarydtl->hra_amount;?> </span>                  
+                        </td>
+                           <td style="text-align: right;width: 20%">
+                          <div class="form-group dispblock_<?php echo $rowno; ?>" style="display: none;">
+                                <div class="input-group input-group-sm"> 
+                                    <input type="hidden" class="form-control decimalnumber editemployeedtl_<?php echo $rowno; ?>" name="dtl_salary_traveling[]" id="dtl_salary_traveling_<?php echo $rowno; ?>" value="<?php echo $employeesalarydtl->traveling_amount;?>" > 
+                                </div>
+                            </div>         
+                        <span class="showdata_<?php echo $rowno; ?>"><?php echo $employeesalarydtl->traveling_amount;?> </span>                  
                         </td>
                       
                         

@@ -2,6 +2,7 @@
                 <thead>
                     <tr>
                     <th>Sl.No</th>
+                    <th>Bill No.</th>
                     <th>Bill dt.</th>
                     <th>Member Code</th>
                     <th>Member Name</th>
@@ -24,6 +25,7 @@
                   ?>
                    <tr>
                    <td><?php echo $i++; ?></td>
+                   <td><?php echo $billlist->member_bill_no; ?></td>
                    <td><?php echo date("d-m-Y", strtotime($billlist->bill_date)); ?></td>
                    <td><?php echo $billlist->member_code; ?></td>
                    <td><?php echo $billlist->member_name; ?></td>

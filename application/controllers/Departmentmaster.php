@@ -104,6 +104,47 @@ public function addeditdeparment(){
  
  }
 
+
+   function checkexistanceDeptCode(){
+
+    $session = $this->session->userdata('user_detail');
+     if($this->session->userdata('user_detail'))
+     {
+          $dept_code = trim(htmlspecialchars($this->input->post('dept_code')));
+ 
+          $where = array('dept_code'=>$dept_code);
+         
+          $getdata = $this->commondatamodel->getAllRecordWhere('department_master',$where);
+         
+   
+          if(!empty($getdata)){
+ 
+               $json_response = array(
+                             "msg_status" => 1,
+                             "msg_data" => "Department Code Already Exists",
+                             );
+ 
+          }else{
+ 
+               $json_response = array(
+                             "msg_status" => 0,
+                             "msg_data" => "",
+                             );
+          }
+ 
+         
+         header('Content-Type: application/json');
+         echo json_encode( $json_response );
+         exit; 
+ 
+     }
+     else{
+            redirect('login','refresh');
+      
+     }
+ 
+ }
+
   public function addedit_action(){
 
     $session = $this->session->userdata('user_detail');
@@ -119,13 +160,18 @@ public function addeditdeparment(){
           $mode = trim(htmlspecialchars($dataArry['mode']));
           $deptId = trim(htmlspecialchars($dataArry['deptId']));
           $dept_name = trim(htmlspecialchars($dataArry['dept_name']));
+          $dept_code = trim(htmlspecialchars($dataArry['dept_code']));
             
           
 
           
           if($mode == 'ADD' && $deptId == 0){
 
-            $data = array('dept_name'=>strtoupper($dept_name),'is_active'=>'Y','created_on'=>date('Y-m-d')); 
+            $data = array(
+                          'dept_name'=>strtoupper($dept_name),
+                          'dept_code'=>strtoupper($dept_code),
+                          'is_active'=>'Y',
+                          'created_on'=>date('Y-m-d')); 
 
             $insertdata = $this->commondatamodel->insertSingleTableData('department_master',$data);
 
@@ -155,7 +201,12 @@ public function addeditdeparment(){
 
           }else{
 
-              $data = array('dept_name'=>strtoupper($dept_name));
+              $data = array(
+                            'dept_name'=>strtoupper($dept_name),
+                            'dept_code'=>strtoupper($dept_code),
+                          );
+
+             
               $upd_where = array('department_master.dept_id' => $deptId);
               //old details
               $old_details = $this->commondatamodel->getSingleRowByWhereCls('department_master',$upd_where);

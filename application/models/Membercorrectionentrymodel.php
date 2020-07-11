@@ -143,4 +143,33 @@ class Membercorrectionentrymodel extends CI_Model{
          }
     }
 
+    public function getallmemberlist()
+    {
+      $data = array();
+      $this->db->select("member_master.*")
+          ->from('member_master')
+          ->where("status",'ACTIVE MEMBER')
+          ->where("member_code NOT LIKE 'D%'")
+          ->where("member_code NOT LIKE 'B%'")         
+          ->order_by('member_code', 'asc');
+         
+      $query = $this->db->get();
+      
+     #echo $this->db->last_query();exit;
+      
+      if($query->num_rows()> 0)
+      {
+          foreach ($query->result() as $rows)
+          {
+              $data[] = $rows;
+          }
+          return $data;
+               
+          }
+      else
+      {
+              return $data;
+          }
+    }
+
 }
