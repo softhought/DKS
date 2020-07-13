@@ -2,14 +2,6 @@ $(document).ready(function() {
 
  var basepath = $('#basepath').val();
 
- $('.datepicker').datepicker({
-    format: 'dd/mm/yyyy',
-    autoclose: true       
-
-
-});
-
-
  $(document).on('change','#actobedebited',function(){
    
   var selectedMode = $(this).find('option:selected').text();
@@ -69,46 +61,16 @@ $(document).ready(function() {
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 data: formData,
                 
-                success: function (data) {
+                success: function (result) {
 
-                    if (data.msg_status == 1) {
-
-                        if (mode=='ADD') {
-                            Swal.fire({    
-                                title: 'Receipt No : ' + data.receipt_no,    
-                                text: "Want to print",    
-                                icon: 'info',    
-                                width: 350,    
-                                padding: '1em',    
-                                showCancelButton: true,    
-                                confirmButtonColor: '#3085d6',    
-                                cancelButtonColor: 'btn btn-danger',    
-                                confirmButtonText: 'Yes',    
-                                cancelButtonText: 'No',    
-                                customClass: {    
-                                    title: 'alerttitale',    
-                                    content: 'alerttext',    
-                                    confirmButton: 'btn tbl-action-btn padbtn',    
-                                    cancelButton: 'btn tbl-action-btn padbtn',    
-                                },    
-                            }).then((result) => {    
-                                if (result.value) {    
-                                    window.open(basepath + 'partyreceipt/partyreceiptprintJasper/' + data.receipt_id, '_blank');    
-                                    window.location.replace(basepath + 'partyreceipt/addReceipt');       
-    
-                                } else {    
-                                    window.location.replace(basepath + 'partyreceipt/addReceipt');    
-                                }    
-                            });    
-                        }    
-                        else {
-                            window.location.replace(basepath+'partyreceipt');
-                        }
+                    if (result.msg_status == 1) {
 
                     } 
-                    
-                //        $("#loaderbtn").css('display', 'none');
-                //    window.location.replace(basepath+'partyreceipt');
+                    else {
+                     
+                    }
+                       $("#loaderbtn").css('display', 'none');
+                   window.location.replace(basepath+'partyreceipt');
                 }, 
                 error: function (jqXHR, exception) {
                   var msg = '';
@@ -193,59 +155,6 @@ $(document).on('input keyup','#amount,#service_charges',function(){
             }); /*end ajax call*/ 
 
   }
-
-});
-
-//daily party receipt 
-
-$(document).on('click', "#dailypartyreceiptshowbtn", function(e) {
-    e.preventDefault();
-
-
- var from_dt = $("#from_dt").val();
- var to_date = $("#to_date").val();
- var payment_id = $("#payment_id").val();
- 
-
-if(1){
-       $('#dailyreceipt_list_data').html('');
-     $("#loader").show();
-
-$.ajax({
-            type: "POST",
-            url: basepath+'Dailypartyreceipt/getPartyrReceiptListByDate',
-            dataType: "html",
-            data: {from_dt:from_dt,to_date:to_date,payment_id:payment_id},
-            
-            success: function (result) {
-               $("#loader").hide();
-                 $("#dailyreceipt_list_data").html(result);
-                 $(".dataTable").DataTable();
-               var total_amt = $("#total_amt").val();
-               $("#total_amount_value").html(total_amt);
-            }, 
-            error: function (jqXHR, exception) {
-              var msg = '';
-                if (jqXHR.status === 0) {
-                    msg = 'Not connect.\n Verify Network.';
-                } else if (jqXHR.status == 404) {
-                    msg = 'Requested page not found. [404]';
-                } else if (jqXHR.status == 500) {
-                    msg = 'Internal Server Error [500].';
-                } else if (exception === 'parsererror') {
-                    msg = 'Requested JSON parse failed.';
-                } else if (exception === 'timeout') {
-                    msg = 'Time out error.';
-                } else if (exception === 'abort') {
-                    msg = 'Ajax request aborted.';
-                } else {
-                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                }
-               // alert(msg);  
-            }
-        }); /*end ajax call*/ 
-
-}
 
 });
 

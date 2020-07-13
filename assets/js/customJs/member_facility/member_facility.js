@@ -713,7 +713,7 @@ $(document).ready(function() {
 
 /* Booking History */
 
-$(document).on('change keyup', "#sel_day,#sel_day_night,#sel_single_double,#sel_time_slot,#court_no", function(e) {
+$(document).on('change input', "#sel_day,#sel_day_night,#sel_single_double,#sel_time_slot,#court_no", function(e) {
 
         e.preventDefault();
 

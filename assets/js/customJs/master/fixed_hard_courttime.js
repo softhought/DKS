@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 
 
-var basepath = $("#basepath").val();
+var basepath = $("#basepath").val()
 
 
 
@@ -109,7 +109,6 @@ $(document).on('submit','#FixedhardtimeFrom',function(event)
                          $('#to_time').val('');                    
 
                          $('#in_hour').val('');
-                         $('#sel_day_night').val('').change();
 
 
 
@@ -196,38 +195,16 @@ $(document).on('submit','#FixedhardtimeFrom',function(event)
 })
 
 
-function calculate(){
 
-  var from_time = $("#from_time").val();
-  var to_time = $("#to_time").val();
 
-  var basepath = $("#basepath").val();
-  if(from_time != "" && to_time != ""){
-  $.ajax({
-
-    type: "POST",
-    url: basepath+'Fixedhardcourttime/calculatetime',
-    dataType: "json",
-    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-    data: {from_time:from_time,to_time:to_time},
-    success: function (result) {      
-      $("#in_hour").val(result.time);
-    }, 
-  });
-}
-}
 
 // function calculate() {
 
+// 	var time1 = $("#from_time").val().split(':'), time2 = $("#to_time").val().split(':');
 
+    
 
-//   $("#errormsg").text('');
-
-//   var time1 = $("#from_time").val().split(':'), time2 = $("#to_time").val().split(':');
-
-   
-
-//      var hours1 = parseInt(time1[0], 10),
+//      var hours1 = parseInt(time1[0], 10), 
 
 //          hours2 = parseInt(time2[0], 10),
 
@@ -235,227 +212,37 @@ function calculate(){
 
 //          mins2 = parseInt(time2[1], 10);
 
-//          mins = 0;
+//      var hours = hours2 - hours1, mins = 0;
 
+//     $("#errormsg").text('');
 
+//      // get hours
 
-//      if(time1   != '' && time2 != ''){
+//      if(hours < 0) hours = 12 + hours;
 
 
 
-     
+//      // get minutes
 
-//        timefor = {1:13,2:14,3:15,4:16,5:17,6:18,7:19,8:20,9:21,10:22,11:23,12:24};
+//      if(mins2 >= mins1) {
 
+//          mins = mins2 - mins1;
 
+//      }
 
-//     var clock1 = time1[1].split(' ');
+//      else {
 
-//     var clock2 = time2[1].split(' ');
+//          mins = (mins2 + 60) - mins1;
 
-//     var clockname1 = clock1[1];
+//          hours--;
 
-//     var clockname2 = clock2[1];
+//      }
 
 
 
-//     if(clockname1 == 'AM' && clockname2 == 'PM'){
+//      // convert to fraction of 60
 
-           
-
-//            if(hours2 > hours1){
-
-
-
-//             var hours = hours2 - hours1;
-
-
-
-//            }else if(hours1 > hours2){
-
-
-
-            
-
-//               var hours = timefor[hours2] - hours1;
-
-//            }
-
-//            else {
-
-           
-
-//               var hours = timefor[hours2] - hours1;
-
-         
-
-//            }
-
-
-
-           
-
-                     
-
-//          }else if(clockname1 == 'PM' && clockname2 == 'AM'){
-
-
-
-//           if(hours2 > hours1){
-
-
-
-//               var hours = hours2 - hours1;
-
-
-
-//            }else if(hours1 > hours2){
-
-
-
-//             var hours = (24 - timefor[hours1]) +  hours2;
-
-
-
-//            }
-
-//            else{
-
-
-
-//              var hours = timefor[hours1] - hours2;
-
-//            }
-
-
-
-         
-
-                   
-
-//          }else{
-
-
-
-//            if(clockname1 == 'AM' && clockname2 == 'AM'){
-
-
-
-//             if(hours2 > hours1){
-
-
-
-//             	if(hours2 == 12){
-
-
-
-//             		var hours =  (12 - hours1) + hours2;
-
-//             	}else{
-
-//             		var hours = hours2 - hours1;
-
-//             	}
-
-           
-
-//             }else{
-
-
-
-//                 var hours = 0;
-
-//             }
-
-
-
-             
-
-
-
-//             }else if(clockname1 == 'PM' && clockname2 == 'PM'){
-
-
-
-
-
-//               if(hours2 > hours1){
-
-
-
-//                if(hours2 == 12){
-
-
-
-//             		var hours =  (12 - hours1) + hours2;
-
-//             	}else{
-
-//             		var hours = hours2 - hours1;
-
-//             	}
-
-
-
-//               }else if(hours1 > hours2){
-
-
-
-//                 if(hours1 == 12){
-
-
-
-//                   var hours =  (12 - hours1) + hours2;
-
-//                 }else{
-
-
-
-//                    var hours = (24 - hours1) + hours2;
-
-//                 }
-
-              	  
-
-//               }else{
-
-//                 var hours = 0;
-
-//               }
-
-                       
-
-
-
-//             }
-
-
-
-//          }
-
-
-
-         
-
-//          if(mins2 >= mins1) {
-
-//         mins = mins2 - mins1;
-
-//     }
-
-//     else {
-
-//         mins = (mins2 + 60) - mins1;
-
-//         hours--;
-
-//     }
-
-
-
-// // convert to fraction of 60
-
-//      mins = mins / 60;      
+//      mins = mins / 60;       
 
 //      hours += mins;
 
@@ -467,13 +254,267 @@ function calculate(){
 
    
 
-//      }
+//  }
+
+
+
+function calculate() {
+
+
+
+  $("#errormsg").text('');
+
+  var time1 = $("#from_time").val().split(':'), time2 = $("#to_time").val().split(':');
+
+   
+
+     var hours1 = parseInt(time1[0], 10),
+
+         hours2 = parseInt(time2[0], 10),
+
+         mins1 = parseInt(time1[1], 10),
+
+         mins2 = parseInt(time2[1], 10);
+
+         mins = 0;
+
+
+
+     if(time1   != '' && time2 != ''){
+
+
+
+     
+
+       timefor = {1:13,2:14,3:15,4:16,5:17,6:18,7:19,8:20,9:21,10:22,11:23,12:24};
+
+
+
+    var clock1 = time1[1].split(' ');
+
+    var clock2 = time2[1].split(' ');
+
+    var clockname1 = clock1[1];
+
+    var clockname2 = clock2[1];
+
+
+
+    if(clockname1 == 'AM' && clockname2 == 'PM'){
+
+           
+
+           if(hours2 > hours1){
+
+
+
+            var hours = hours2 - hours1;
+
+
+
+           }else if(hours1 > hours2){
+
+
+
+            
+
+              var hours = timefor[hours2] - hours1;
+
+           }
+
+           else {
+
+           
+
+              var hours = timefor[hours2] - hours1;
+
+         
+
+           }
+
+
+
+           
+
+                     
+
+         }else if(clockname1 == 'PM' && clockname2 == 'AM'){
+
+
+
+          if(hours2 > hours1){
+
+
+
+              var hours = hours2 - hours1;
+
+
+
+           }else if(hours1 > hours2){
+
+
+
+            var hours = (24 - timefor[hours1]) +  hours2;
+
+
+
+           }
+
+           else{
+
+
+
+             var hours = timefor[hours1] - hours2;
+
+           }
+
+
+
+         
+
+                   
+
+         }else{
+
+
+
+           if(clockname1 == 'AM' && clockname2 == 'AM'){
+
+
+
+            if(hours2 > hours1){
+
+
+
+            	if(hours2 == 12){
+
+
+
+            		var hours =  (12 - hours1) + hours2;
+
+            	}else{
+
+            		var hours = hours2 - hours1;
+
+            	}
+
+           
+
+            }else{
+
+
+
+                var hours = (24 - hours1) + hours2;
+
+            }
+
+
+
+             
+
+
+
+            }else if(clockname1 == 'PM' && clockname2 == 'PM'){
+
+
+
+
+
+              if(hours2 > hours1){
+
+
+
+               if(hours2 == 12){
+
+
+
+            		var hours =  (12 - hours1) + hours2;
+
+            	}else{
+
+            		var hours = hours2 - hours1;
+
+            	}
+
+
+
+              }else if(hours1 > hours2){
+
+
+
+                if(hours1 == 12){
+
+
+
+                  var hours =  (12 - hours1) + hours2;
+
+                }else{
+
+
+
+                   var hours = (24 - hours1) + hours2;
+
+                }
+
+              	  
+
+              }else{
+
+                var hours = (24 - hours1) + hours2;
+
+              }
+
+                       
+
+
+
+            }
+
+
+
+         }
+
+
+
+         
+
+         if(mins2 >= mins1) {
+
+        mins = mins2 - mins1;
+
+    }
+
+    else {
+
+        mins = (mins2 + 60) - mins1;
+
+        hours--;
+
+    }
+
+
+
+// convert to fraction of 60
+
+     mins = mins / 60;      
+
+     hours += mins;
+
+     
+
+     hours = hours.toFixed(2);
+
+     $("#in_hour").val(hours);
+
+   
+
+     }
 
 
 
    
 
-//  }
+ }
 
 
 

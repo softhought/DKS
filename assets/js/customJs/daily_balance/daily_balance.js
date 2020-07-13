@@ -221,3 +221,7 @@ function validate(){
   
     return true;
 }
+
+function numericFilter(txb) {
+    txb.value = txb.value.replace(/[^\0-9]/ig, "");
+}

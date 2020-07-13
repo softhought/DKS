@@ -57,16 +57,16 @@ $(document).ready(function() {
                     if (result.msg_status == 1) {
 
                         if (mode == 'EDIT') {
-                            //$("#bookingsavebtn").css('display', 'inline-block');
-                           // $("#loaderbtn").css('display', 'none');
+                            $("#bookingsavebtn").css('display', 'inline-block');
+                            $("#loaderbtn").css('display', 'none');
                             window.location.href = basepath + 'partybooking';
 
                         } else {
 
                             $("#errormsg").removeClass('errormsgcolor');
                             $("#errormsg").text(result.msg_data).addClass('succmsg');
-                            //$("#bookingsavebtn").css('display', 'inline-block');
-                           // $("#loaderbtn").css('display', 'none');
+                            $("#bookingsavebtn").css('display', 'inline-block');
+                            $("#loaderbtn").css('display', 'none');
                             window.location.href = basepath + 'partybooking/addeditpartybooking';
 
 

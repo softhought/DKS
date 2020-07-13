@@ -26,34 +26,29 @@ $(document).ready(function(){
 
    });
 
-//    comment by anil on 12-06-2020
-
     // generate bill tennis
-    // $(document).on('click', "#billprintbtn", function(e) {
-    //     e.preventDefault();
+    $(document).on('click', "#billprintbtn", function(e) {
+        e.preventDefault();
 
-    //     //    $("#response_msg").html("");
-    //    if (validateBillGenerate()) { 
-    //         var billing_style =$("#billing_style").val();
-    //         var QM="";
-    //         if(billing_style=='M')
-    //         {
-    //             QM =$("#month").val();
-    //         }else if(billing_style=='Q'){
-    //             QM =$("#quarter_month").val();
-    //         }            
-    //         var student_id =$("#student_id").val();
+        //    $("#response_msg").html("");
+       if (validateBillGenerate()) { 
+            var billing_style =$("#billing_style").val();
+            var QM="";
+            if(billing_style=='M')
+            {
+                QM =$("#month").val();
+            }else if(billing_style=='Q'){
+                QM =$("#quarter_month").val();
+            }            
+            var student_id =$("#student_id").val();
            
-    //         var URL= basepath+'billprint/billPrintPdf/'+billing_style+'/'+QM+'/'+encodeURIComponent(student_id);
-    //         var w=window.open(URL,'_blank');
-    //         $(w.document).find('html').append('<head><title>Bill Print</title></head>');
-    // }
+            var URL= basepath+'billprint/billPrintPdf/'+billing_style+'/'+QM+'/'+encodeURIComponent(student_id);
+            var w=window.open(URL,'_blank');
+            $(w.document).find('html').append('<head><title>Bill Print</title></head>');
+    }
 
       
-    // });
-
-  
-    
+    });
 });// end of document ready 
 
 

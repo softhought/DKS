@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 var basepath = $("#basepath").val();
-
+alert()
 
     //form submit
 
@@ -75,12 +75,7 @@ var basepath = $("#basepath").val();
             
         });
 
-  $(document).on("change","#month",function(event){
-   
-    event.stopPropagation();
-    var month = $("#month").val();
-    
-    });
+
 
 
 
@@ -97,26 +92,15 @@ function validate(){
 	  var pf_rate = $("#pf_rate").val();
 	  var esi_rate = $("#esi_rate").val();
 	  var hra_rate = $("#hra_rate").val();
-      var esi_limit = $("#esi_limit").val();
-      var monthtxt = $("#month option:selected").text();
-      var mode = $("#mode").val();
-      var orgmonth = $("#orgmonth").val();
-     
+	  var esi_limit = $("#esi_limit").val();
+
 	   $("#errormsg").text("");
        $("#montheerr,#pf_rate,#esi_rate,#hra_rate,#esi_limit").removeClass("form_error");
 
        if (month=='') {
            $("#montheerr").addClass("form_error");
               return false;
-       }  
-        if(orgmonth != month){
-            if(validatemonthfun(month) == 1){
-            
-                $("#errormsg").text(monthtxt+" Month Already Added");
-                return false;
-            }   
-        }
-     
+       }
 
        if (pf_rate=='') {
            $("#pf_rate").addClass("form_error");
@@ -142,23 +126,5 @@ function validate(){
 
 }
 
-function validatemonthfun(month){
 
-  
-    var basepath = $("#basepath").val();
-    var txt = 0;
-    $.ajax({
-        type: "POST",
-        url: basepath+'salaryparameter/validatemonth',
-        dataType: "json",
-        async:false,
-        data: {month:month},
-        success: function (result) {
-             txt = result.msg_status;
-            
-        },
-    
-    });
-    return txt;
-} 
 
